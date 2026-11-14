@@ -715,8 +715,9 @@ window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); defe
 const isStandalone = () => window.navigator.standalone === true || window.matchMedia("(display-mode: standalone)").matches;
 const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 function installCard() {
-  if (isStandalone() || store.get("sp-install-hide") === "1") return "";
-  return `<div class="card install"><img src="apple-touch-icon.png" alt=""><div style="min-width:0"><b>Zet Slaappiraten op je beginscherm</b><div class="muted" style="font-size:12.5px">Dan open je de site als een app, met ons logo.</div><a href="#installeren" style="font-size:13.5px;font-weight:700">Toon hoe →</a></div><button class="x" type="button" data-act="installhide" aria-label="Verberg deze tip">×</button></div>`;
+  if (isStandalone()) { store.set("sp-installed", "1"); return ""; }
+  if (store.get("sp-installed") === "1") return "";
+  return `<div class="card install"><img src="apple-touch-icon.png" alt=""><div style="min-width:0"><b>Zet Slaappiraten op je beginscherm</b><div class="muted" style="font-size:12.5px">Dan open je de site als een app, met ons logo.</div><a href="#installeren" style="font-size:13.5px;font-weight:700">Toon hoe →</a></div></div>`;
 }
 const shareIcon = `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/></svg>`;
 const plusIcon = `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/></svg>`;
