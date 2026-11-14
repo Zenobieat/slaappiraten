@@ -1,5 +1,7 @@
 # Slaappiraten teamsite
 
+**Live:** https://slaappiraten.github.io
+
 Gratis teamwebsite voor de Slaappiraten (Ghent Students League, minivoetbal Poule B).
 Aanwezigheden, schema en stand uit Tournify, topscorers, profielen met e-mail-login, awards en voorspellingen.
 
