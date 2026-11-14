@@ -29,19 +29,19 @@ UID:2026-10-28-slaappiraten-foot-ball-lovers@slaappiraten
 DTSTAMP:20261114T174500Z
 DTSTART;TZID=Europe/Brussels:20261028T194500
 DTEND;TZID=Europe/Brussels:20261028T205000
-SUMMARY:⚽ Slaappiraten - Foot/Ball Lovers (15-4)
+SUMMARY:⚽ Slaappiraten - Foot/Ball Lovers (15-4) · aanwezig 19:45
 LOCATION:Zaal 3BC · Sporthal HoGent
-DESCRIPTION:Verzamelen om 19:45\, aftrap om 20:00 (uur nog niet bevestigd).\nGeef je aanwezigheid door: https://zenobieat.github.io/slaappiraten/#match-2026-10-28-slaappiraten-foot-ball-lovers
+DESCRIPTION:Slaappiraten tegen Foot/Ball Lovers (thuis)\, Poule B Ghent Students League.\n\n⏰ Aanwezig om 19:45\n⚽ Aftrap om 20:00 (uur nog niet bevestigd)\n📍 Zaal 3BC · Sporthal HoGent\n\n🍻 Te laat = trakteren!\n\nAanwezigheid doorgeven: https://zenobieat.github.io/slaappiraten/#match-2026-10-28-slaappiraten-foot-ball-lovers
 URL:https://zenobieat.github.io/slaappiraten/#match-2026-10-28-slaappiraten-foot-ball-lovers
 BEGIN:VALARM
 ACTION:DISPLAY
 TRIGGER:-PT1H
-DESCRIPTION:Over een uur verzamelen voor Foot/Ball Lovers
+DESCRIPTION:Over een uur aanwezig zijn voor Foot/Ball Lovers. Te laat = trakteren!
 END:VALARM
 BEGIN:VALARM
 ACTION:DISPLAY
 TRIGGER:-PT15M
-DESCRIPTION:Vertrekken! Over een kwartier verzamelen
+DESCRIPTION:Over een kwartier aanwezig zijn! Te laat = trakteren 🍻
 END:VALARM
 END:VEVENT
 END:VCALENDAR

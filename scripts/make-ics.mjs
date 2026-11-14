@@ -7,6 +7,7 @@ const d = JSON.parse(fs.readFileSync("data/tournify.json", "utf8"));
 const TEAM = (d.team || "Slaappiraten").toLowerCase();
 const ours = d.matches.filter((m) => [m.home, m.away].some((t) => t.toLowerCase() === TEAM));
 const pad = (n) => String(n).padStart(2, "0");
+const hhmm = (mins) => `${pad(Math.floor(mins / 60))}:${pad(mins % 60)}`;
 const SITE = "https://zenobieat.github.io/slaappiraten/";
 const TZ = `BEGIN:VTIMEZONE\r\nTZID:Europe/Brussels\r\nBEGIN:DAYLIGHT\r\nTZOFFSETFROM:+0100\r\nTZOFFSETTO:+0200\r\nTZNAME:CEST\r\nDTSTART:19700329T020000\r\nRRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU\r\nEND:DAYLIGHT\r\nBEGIN:STANDARD\r\nTZOFFSETFROM:+0200\r\nTZOFFSETTO:+0100\r\nTZNAME:CET\r\nDTSTART:19701025T030000\r\nRRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU\r\nEND:STANDARD\r\nEND:VTIMEZONE`;
 const esc = (s) => String(s).replace(/([,;\\])/g, "\\$1").replace(/\n/g, "\\n");
@@ -19,12 +20,12 @@ function event(m) {
   return [
     "BEGIN:VEVENT", `UID:${m.id}@slaappiraten`, `DTSTAMP:${stamp}`,
     `DTSTART;TZID=Europe/Brussels:${local(m.date, ko - 15)}`, `DTEND;TZID=Europe/Brussels:${local(m.date, ko + 50)}`,
-    `SUMMARY:${esc(`⚽ Slaappiraten - ${opp}${score}`)}`,
+    `SUMMARY:${esc(`⚽ Slaappiraten - ${opp}${score} · aanwezig ${hhmm(ko - 15)}`)}`,
     `LOCATION:${esc(m.venue || "Sporthal HoGent")}`,
-    `DESCRIPTION:${esc(`Verzamelen om ${pad(Math.floor((ko - 15) / 60))}:${pad((ko - 15) % 60)}, aftrap om ${m.time || "20:00"}${m.time ? "" : " (uur nog niet bevestigd)"}.\nGeef je aanwezigheid door: ${SITE}#match-${m.id}`)}`,
+    `DESCRIPTION:${esc(`Slaappiraten tegen ${opp} (${home ? "thuis" : "uit"}), ${m.poule || "Poule B"} Ghent Students League.\n\n⏰ Aanwezig om ${hhmm(ko - 15)}\n⚽ Aftrap om ${m.time || "20:00"}${m.time ? "" : " (uur nog niet bevestigd)"}\n📍 ${m.venue || "Sporthal HoGent"}\n\n🍻 Te laat = trakteren!\n\nAanwezigheid doorgeven: ${SITE}#match-${m.id}`)}`,
     `URL:${SITE}#match-${m.id}`,
-    "BEGIN:VALARM", "ACTION:DISPLAY", "TRIGGER:-PT1H", `DESCRIPTION:${esc(`Over een uur verzamelen voor ${opp}`)}`, "END:VALARM",
-    "BEGIN:VALARM", "ACTION:DISPLAY", "TRIGGER:-PT15M", "DESCRIPTION:Vertrekken! Over een kwartier verzamelen", "END:VALARM",
+    "BEGIN:VALARM", "ACTION:DISPLAY", "TRIGGER:-PT1H", `DESCRIPTION:${esc(`Over een uur aanwezig zijn voor ${opp}. Te laat = trakteren!`)}`, "END:VALARM",
+    "BEGIN:VALARM", "ACTION:DISPLAY", "TRIGGER:-PT15M", "DESCRIPTION:Over een kwartier aanwezig zijn! Te laat = trakteren 🍻", "END:VALARM",
     "END:VEVENT"
   ].join("\r\n");
 }
