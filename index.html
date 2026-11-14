@@ -413,6 +413,7 @@ function niceError(e) {
   if (/Password should be/i.test(m)) return "Kies een wachtwoord van minstens 6 tekens.";
   if (/rate limit|security purposes/i.test(m)) return "Even te veel pogingen. Probeer het binnen een minuutje opnieuw.";
   if (/Email not confirmed/i.test(m)) return "Bevestig eerst je e-mailadres via de mail die je kreeg.";
+  if (/attendance_status_check/i.test(m)) return "De supportersknop wordt nog geactiveerd in de database. Probeer het later opnieuw.";
   if (/Schip is vol/i.test(m)) return "Het schip is net vol (7 spelers). Je kan komen supporteren.";
   if (/row-level security/i.test(m)) return "Dat mag je niet aanpassen met jouw account.";
   if (/Failed to fetch|NetworkError/i.test(m)) return "Geen verbinding. Check je internet en probeer opnieuw.";

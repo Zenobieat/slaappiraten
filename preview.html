@@ -1,0 +1,848 @@
+<title>Slaappiraten</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Teamsite van de Slaappiraten: aanwezigheden, schema, stand, topscorers en awards.">
+<meta name="theme-color" content="#0c0b09">
+<link rel="icon" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: één smalle kolom (max 760px) als een kapiteinslogboek; tabbalk onderaan op gsm, onder de header op desktop. Zwart + goud uit het clubschild. */
+:root {
+  --bg: #0c0b09;
+  --surface: #171510;
+  --surface-2: #221f18;
+  --line: #362f23;
+  --fg: #f2ebdd;
+  --muted: #a99d87;
+  --gold: #c9a467;
+  --gold-text: #dcbb80;
+  --on-gold: #14110b;
+  --good: #5fc48a;
+  --bad: #ef6a5b;
+  --warn: #e7a94a;
+  --sea: #1b2329;
+  --font-display: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --radius: 14px;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f4eee2; --surface: #fffaf1; --surface-2: #ece3d0; --line: #dacdb3;
+    --fg: #17140e; --muted: #6a5f4b; --gold: #c39a55; --gold-text: #845f22; --on-gold: #14110b;
+    --good: #1f8f56; --bad: #c8412f; --warn: #a8670f; --sea: #d6e0e4; color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #f4eee2; --surface: #fffaf1; --surface-2: #ece3d0; --line: #dacdb3;
+  --fg: #17140e; --muted: #6a5f4b; --gold: #c39a55; --gold-text: #845f22; --on-gold: #14110b;
+  --good: #1f8f56; --bad: #c8412f; --warn: #a8670f; --sea: #d6e0e4; color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); }
+body { color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+a { color: var(--gold-text); }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 6px; }
+.wrap { max-width: 760px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.num { font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+
+/* Header */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 14px; padding-block: 8px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--fg); min-width: 0; }
+.brand img { width: 34px; height: 45px; object-fit: contain; flex: none; }
+.wordmark { font-family: var(--font-display); font-weight: 700; font-size: 16px; line-height: 1; letter-spacing: .22em; text-transform: uppercase; }
+.wordmark small { display: block; font-family: var(--font-body); font-weight: 500; font-size: 11px; letter-spacing: .06em; color: var(--gold-text); text-transform: none; margin-top: 5px; }
+.top .who { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); text-decoration: none; white-space: nowrap; }
+.avatar { width: 30px; height: 30px; border-radius: 50%; display: inline-grid; place-items: center; background: var(--surface-2); border: 1px solid var(--line); font-size: 16px; flex: none; }
+.avatar.lg { width: 64px; height: 64px; font-size: 34px; }
+@media (max-width: 380px) { .wordmark small { display: none; } .top .who span:last-child { display: none; } }
+
+/* Nav */
+.nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--surface); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
+.nav ul { list-style: none; margin: 0 auto; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); max-width: 760px; }
+.nav a { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 2px 9px; text-decoration: none; color: var(--muted); font-size: 11.5px; font-weight: 600; letter-spacing: .02em; }
+.nav a svg { width: 22px; height: 22px; }
+.nav a[aria-current="page"] { color: var(--gold-text); }
+.nav a[aria-current="page"] svg { stroke: var(--gold); }
+main { padding-block: 18px calc(96px + env(safe-area-inset-bottom, 0px)); }
+@media (min-width: 900px) {
+  .nav { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 62px); bottom: auto; border-top: 0; border-bottom: 1px solid var(--line); background: var(--bg); }
+  .nav a { flex-direction: row; justify-content: center; gap: 8px; font-size: 14px; padding: 12px 4px; }
+  .nav a svg { width: 18px; height: 18px; }
+  main { padding-bottom: 48px; }
+}
+
+/* Type */
+h1, h2, h3 { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; letter-spacing: .04em; line-height: 1.1; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(24px, 6vw, 34px); }
+h2 { font-size: 17px; letter-spacing: .08em; }
+h3 { font-size: 14px; letter-spacing: .08em; }
+.eyebrow { font-size: 11.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-text); margin: 0; }
+.stack { display: grid; gap: 14px; }
+.section { display: grid; gap: 12px; margin-top: 26px; }
+.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.section-head a { font-size: 13px; font-weight: 600; text-decoration: none; }
+.rule { width: 56px; height: 2px; background: var(--gold); border: 0; margin: 8px 0 0; }
+
+/* Surfaces */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; min-width: 0; }
+.row { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.row > .grow { flex: 1; min-width: 0; }
+.list { display: grid; }
+.list > * { padding: 11px 0; border-bottom: 1px solid var(--line); }
+.list > *:last-child { border-bottom: 0; }
+.banner { background: var(--surface-2); border: 1px dashed var(--gold); border-radius: var(--radius); padding: 10px 14px; font-size: 13.5px; }
+
+/* Hero: volgende wedstrijd */
+.hero { position: relative; overflow: hidden; background: radial-gradient(120% 140% at 100% 0%, color-mix(in srgb, var(--gold) 20%, transparent), transparent 55%), var(--surface); border: 1px solid color-mix(in srgb, var(--gold) 50%, var(--line)); border-radius: 18px; padding: 18px; display: grid; gap: 16px; }
+.hero > * { position: relative; }
+.hero .crest-bg { position: absolute; right: -30px; bottom: -40px; width: 180px; opacity: .08; pointer-events: none; }
+.versus { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; text-align: center; }
+.versus .team { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; letter-spacing: .04em; font-size: clamp(12.5px, 3.7vw, 21px); letter-spacing: .01em; line-height: 1.15; overflow-wrap: normal; word-break: normal; hyphens: manual; }
+.versus .team.us { color: var(--gold-text); }
+.versus .mid { font-family: var(--font-display); font-weight: 700; font-size: 13px; letter-spacing: .2em; color: var(--muted); }
+.versus .score { font-family: var(--font-display); font-weight: 800; font-size: clamp(32px, 9vw, 44px); line-height: 1; white-space: nowrap; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13.5px; color: var(--muted); justify-content: center; align-items: center; margin: 0; }
+.countdown { display: flex; justify-content: center; gap: 8px; }
+.countdown div { background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; min-width: 58px; text-align: center; }
+.countdown b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 21px; line-height: 1.15; }
+.countdown span { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+
+/* Aanwezig-knoppen */
+.rsvp { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.rsvp button { border: 1.5px solid var(--line); background: var(--surface-2); border-radius: 12px; padding: 11px 6px; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 14px; transition: transform .12s ease, background .12s; }
+.rsvp button small { font-weight: 500; font-size: 11.5px; color: var(--muted); }
+.rsvp button:hover { transform: translateY(-1px); }
+.rsvp button[aria-pressed="true"][data-s="yes"] { background: var(--good); border-color: var(--good); color: #08140d; }
+.rsvp button[aria-pressed="true"][data-s="maybe"] { background: var(--warn); border-color: var(--warn); color: #1a1003; }
+.rsvp button[aria-pressed="true"][data-s="no"] { background: var(--bad); border-color: var(--bad); color: #1c0805; }
+.rsvp button[aria-pressed="true"][data-s="fan"] { background: var(--gold); border-color: var(--gold); color: var(--on-gold); }
+.rsvp button.fan:not([aria-pressed="true"]) { border-color: var(--gold); border-style: dashed; }
+.rsvp-note { font-size: 12.5px; color: var(--muted); margin: 6px 0 0; }
+.who-cols { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 14px; }
+.who-cols > div { display: grid; gap: 6px; align-content: start; min-width: 0; }
+.who-cols .fans { border-left: 1px solid var(--line); padding-left: 14px; }
+@media (max-width: 380px) { .who-cols { grid-template-columns: 1fr; } .who-cols .fans { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 10px; } }
+.rsvp button[aria-pressed="true"] small { color: inherit; opacity: .8; }
+
+/* Bemanningsmeter */
+.crew { display: grid; gap: 8px; }
+.slots { display: flex; gap: 5px; flex-wrap: wrap; }
+.slot { width: 26px; height: 26px; border-radius: 50%; border: 1.5px dashed var(--line); display: grid; place-items: center; font-size: 14px; }
+.slot.on { border: 1.5px solid var(--good); background: color-mix(in srgb, var(--good) 18%, transparent); }
+.slot.extra { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 18%, transparent); }
+.pill { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); white-space: nowrap; }
+.pill.good { color: var(--good); border-color: color-mix(in srgb, var(--good) 50%, var(--line)); }
+.pill.bad { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 50%, var(--line)); }
+.pill.warn { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 50%, var(--line)); }
+.pill.gold { color: var(--gold-text); border-color: color-mix(in srgb, var(--gold) 55%, var(--line)); }
+
+/* Seizoen */
+.tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 6px; text-align: center; }
+.tile b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 24px; line-height: 1.15; }
+.tile span { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.form { display: flex; gap: 6px; }
+.res { width: 30px; height: 30px; border-radius: 8px; display: inline-grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 14px; flex: none; }
+.res.W { background: var(--good); color: #08140d; }
+.res.G { background: var(--warn); color: #1a1003; }
+.res.V { background: var(--bad); color: #1c0805; }
+.res.empty { border: 1.5px dashed var(--line); }
+
+/* Schatkist / doelsaldo */
+.treasure { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; }
+.treasure .big { font-family: var(--font-display); font-weight: 800; font-size: 50px; line-height: 1; color: var(--gold-text); }
+.treasure .big.neg { color: var(--bad); }
+.chart { width: 100%; height: auto; display: block; }
+.chart text { fill: var(--muted); font-size: 11px; font-family: var(--font-body); }
+
+/* Wedstrijden */
+.match { display: grid; grid-template-columns: 54px 1fr auto; gap: 12px; align-items: center; text-decoration: none; color: inherit; }
+.date-block { text-align: center; border-right: 1px solid var(--line); padding-right: 10px; }
+.date-block b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 21px; line-height: 1.05; }
+.date-block span { font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: .06em; }
+.match .opp { font-weight: 700; overflow-wrap: anywhere; }
+.match .sub { font-size: 12.5px; color: var(--muted); }
+.match .sc { font-family: var(--font-display); font-weight: 800; font-size: 18px; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+
+/* Tabellen */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 14px; }
+th { text-align: right; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 700; padding: 6px; border-bottom: 1px solid var(--line); }
+td { text-align: right; padding: 9px 6px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th:nth-child(2), td:nth-child(2) { text-align: left; white-space: normal; }
+th:first-child, td:first-child { text-align: center; width: 28px; }
+tr.us td { background: color-mix(in srgb, var(--gold) 14%, transparent); font-weight: 700; }
+tr.us td:nth-child(2) { color: var(--gold-text); }
+td.pts { font-weight: 800; }
+
+/* Ranglijsten */
+.rank { display: grid; grid-template-columns: 26px auto 1fr auto; gap: 10px; align-items: center; }
+.rank .pos { font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--muted); text-align: center; }
+.rank .val { font-family: var(--font-display); font-weight: 800; font-size: 19px; }
+.bar { height: 6px; background: var(--surface-2); border-radius: 999px; overflow: hidden; margin-top: 4px; }
+.bar i { display: block; height: 100%; background: var(--gold); border-radius: inherit; }
+.podium { display: grid; grid-template-columns: 1fr 1.15fr 1fr; gap: 8px; align-items: end; text-align: center; }
+.podium > div { background: var(--surface); border: 1px solid var(--line); border-radius: 12px 12px 4px 4px; padding: 12px 6px; display: grid; gap: 4px; justify-items: center; min-width: 0; }
+.podium .p1 { border-color: var(--gold); padding-block: 20px 14px; }
+.podium .nm { font-weight: 700; font-size: 13.5px; overflow-wrap: anywhere; }
+.podium .gl { font-family: var(--font-display); font-weight: 800; font-size: 26px; color: var(--gold-text); line-height: 1; }
+
+/* Awards */
+.awards { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.award { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: grid; gap: 4px; align-content: start; }
+.award .ic { font-size: 24px; }
+.award .t { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; font-size: 12.5px; letter-spacing: .06em; }
+.award .d { font-size: 12.5px; color: var(--muted); }
+.award .w { font-size: 13px; font-weight: 700; color: var(--gold-text); }
+.vote { display: grid; grid-template-columns: 1fr minmax(0, 1.2fr); gap: 10px; align-items: center; }
+.badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.cabinet { display: flex; flex-wrap: wrap; gap: 4px 8px; font-size: 14px; }
+
+/* Formulieren */
+.field { display: grid; gap: 5px; }
+.field label { font-size: 13px; font-weight: 600; }
+input[type="text"], input[type="email"], input[type="password"], input[type="number"], select {
+  width: 100%; background: var(--surface-2); border: 1.5px solid var(--line); border-radius: 10px; padding: 10px 12px; min-width: 0;
+}
+input:focus, select:focus { border-color: var(--gold); outline: none; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 11px; padding: 11px 16px; font-weight: 700; cursor: pointer; background: var(--gold); color: var(--on-gold); text-decoration: none; }
+.btn.ghost { background: transparent; color: var(--fg); border: 1.5px solid var(--line); }
+.btn.sm { padding: 7px 11px; font-size: 13px; border-radius: 9px; }
+.seg { display: inline-grid; grid-auto-flow: column; background: var(--surface-2); border: 1px solid var(--line); border-radius: 11px; padding: 3px; gap: 3px; justify-self: start; }
+.seg button { border: 0; background: transparent; border-radius: 8px; padding: 7px 14px; font-weight: 700; font-size: 13.5px; cursor: pointer; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--fg); box-shadow: 0 1px 0 var(--line); }
+.stepper { display: inline-grid; grid-template-columns: 34px 40px 34px; align-items: center; text-align: center; border: 1.5px solid var(--line); border-radius: 10px; overflow: hidden; }
+.stepper button { border: 0; background: var(--surface-2); height: 34px; font-size: 18px; font-weight: 700; cursor: pointer; }
+.stepper output { font-family: var(--font-display); font-weight: 800; font-size: 16px; }
+.emoji-pick { display: flex; flex-wrap: wrap; gap: 6px; }
+.emoji-pick button { width: 40px; height: 40px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface-2); font-size: 20px; cursor: pointer; }
+.emoji-pick button[aria-pressed="true"] { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 20%, transparent); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 420px) { .grid2 { grid-template-columns: 1fr; } .tiles { grid-template-columns: repeat(2, 1fr); } .treasure { grid-template-columns: 1fr; } }
+.who-list { display: grid; gap: 6px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 4px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); font-size: 13px; }
+.chip .avatar { width: 22px; height: 22px; font-size: 12px; }
+.toast { position: fixed; left: 50%; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%) translateY(20px); background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 11px; font-weight: 600; font-size: 14px; opacity: 0; transition: .2s; z-index: 40; pointer-events: none; max-width: calc(100% - 32px); }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.sponsor { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 13px; color: var(--muted); margin-top: 30px; padding-top: 16px; border-top: 1px solid var(--line); }
+.sponsor b { color: var(--fg); letter-spacing: .12em; font-family: var(--font-display); }
+.back { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 600; text-decoration: none; margin-bottom: 10px; }
+.empty-state { text-align: center; padding: 24px 12px; color: var(--muted); }
+details summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+details.who > summary { list-style: none; display: grid; gap: 6px; font-weight: 400; border-radius: 12px; }
+details.who > summary::-webkit-details-marker { display: none; }
+.who-hint { font-size: 12.5px; font-weight: 700; color: var(--gold-text); display: inline-flex; align-items: center; gap: 4px; }
+.who-hint::after { content: "▾"; transition: transform .15s; }
+details.who[open] .who-hint::after { transform: rotate(180deg); }
+details.who[open] .h-closed, details.who:not([open]) .h-open { display: none; }
+details.who .who-list { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.pron { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; text-align: center; align-items: center; }
+.pron-team { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; letter-spacing: .03em; font-size: 13px; overflow-wrap: normal; }
+.pron-team.us { color: var(--gold-text); }
+.stepper.big { grid-template-columns: 46px 58px 46px; justify-self: center; border-radius: 14px; }
+.stepper.big button { height: 52px; font-size: 24px; }
+.stepper.big output { font-size: 30px; }
+.pron-verdict { text-align: center; font-size: 13.5px; color: var(--muted); margin: 0; }
+.lock { color: var(--muted); font-size: 13px; }
+.meter { display: flex; height: 12px; border-radius: 999px; overflow: hidden; background: var(--surface-2); }
+.meter i { display: block; height: 100%; }
+.meter-labels { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 700; margin-top: 6px; }
+.scout-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.scout-tiles div { background: var(--surface-2); border-radius: 10px; padding: 8px 4px; text-align: center; }
+.scout-tiles b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 19px; line-height: 1.2; }
+.scout-tiles span { font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#home" aria-label="Slaappiraten, naar home">
+      <img src="logo.png" alt="" width="34" height="45">
+      <div class="wordmark">Slaappiraten<small>Ghent Students League</small></div>
+    </a>
+    <a class="who" id="who" href="#profiel"></a>
+  </div>
+</header>
+<nav class="nav" aria-label="Hoofdmenu">
+  <ul>
+    <li><a href="#home" data-v="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</a></li>
+    <li><a href="#aanwezig" data-v="aanwezig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="17" rx="2"/><path d="M9 3v3M15 3v3M8.5 13l2.5 2.5 4.5-5"/></svg>Aanwezig</a></li>
+    <li><a href="#schema" data-v="schema"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Schema</a></li>
+    <li><a href="#ranking" data-v="ranking"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 6h3v2a3 3 0 0 1-3 3M7 6H4v2a3 3 0 0 0 3 3"/></svg>Ranking</a></li>
+    <li><a href="#profiel" data-v="profiel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Profiel</a></li>
+  </ul>
+</nav>
+<main class="wrap" id="app" tabindex="-1">
+  <div class="empty-state">Schip wordt geladen…</div>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ============================================================
+   INSTELLINGEN: vul hier je Supabase-gegevens in.
+   Leeg laten = voorbeeldmodus met verzonnen spelers (alleen in jouw browser).
+   ============================================================ */
+const CONFIG = {
+  supabaseUrl: "",
+  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3bmhjcWxuYmpvempmdnpscGx6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzQxMjcsImV4cCI6MjExMDI1MDEyN30.Bc6ybvzDcOJQtff25vquXoc42APt2BN8lJGHr29J3pc", // publieke "anon"-sleutel, mag in de code staan
+  team: "Slaappiraten",
+  dataUrl: "data/tournify.json",
+  tournifyUrl: "https://tournifyapp.com/live/ghentstudentsleague26-27/schedule",
+  instagramUrl: "https://www.instagram.com/slaappiraten/",
+  sponsorUrl: "https://www.sportspace.be",
+  minPlayers: 5,
+  maxPlayers: 7
+};
+const SEED_DATA = {"source": "https://tournifyapp.com/live/ghentstudentsleague26-27/schedule", "updatedAt": "2026-11-14T17:45:00Z", "team": "Slaappiraten", "poule": "Poule B", "matches": [{"id": "2026-10-28-slaappiraten-foot-ball-lovers", "date": "2026-10-28", "time": null, "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "Slaappiraten", "away": "Foot/Ball Lovers", "homeScore": 15, "awayScore": 4}, {"id": "2026-10-28-fc-a-nul-the-ghentlemen", "date": "2026-10-28", "time": null, "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "FC A-nul", "away": "The Ghentlemen", "homeScore": 6, "awayScore": 10}, {"id": "2026-11-04-fc-emmatje-fc-a-nul", "date": "2026-11-04", "time": null, "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "FC EMMATJE", "away": "FC A-nul", "homeScore": 4, "awayScore": 12}, {"id": "2026-11-04-foot-ball-lovers-kvdo", "date": "2026-11-04", "time": null, "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "Foot/Ball Lovers", "away": "KVDO", "homeScore": 3, "awayScore": 26}, {"id": "2026-11-18-fc-emmatje-foot-ball-lovers", "date": "2026-11-18", "time": "19:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "FC EMMATJE", "away": "Foot/Ball Lovers", "homeScore": null, "awayScore": null}, {"id": "2026-11-18-the-ghentlemen-slaappiraten", "date": "2026-11-18", "time": "20:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "The Ghentlemen", "away": "Slaappiraten", "homeScore": null, "awayScore": null}, {"id": "2026-11-25-foot-ball-lovers-fc-a-nul", "date": "2026-11-25", "time": "19:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "Foot/Ball Lovers", "away": "FC A-nul", "homeScore": null, "awayScore": null}, {"id": "2026-11-25-slaappiraten-kvdo", "date": "2026-11-25", "time": "20:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "Slaappiraten", "away": "KVDO", "homeScore": null, "awayScore": null}, {"id": "2026-12-02-kvdo-the-ghentlemen", "date": "2026-12-02", "time": "19:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "KVDO", "away": "The Ghentlemen", "homeScore": null, "awayScore": null}, {"id": "2026-12-02-slaappiraten-fc-emmatje", "date": "2026-12-02", "time": "20:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "Slaappiraten", "away": "FC EMMATJE", "homeScore": null, "awayScore": null}, {"id": "2026-12-09-kvdo-fc-a-nul", "date": "2026-12-09", "time": "19:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "KVDO", "away": "FC A-nul", "homeScore": null, "awayScore": null}, {"id": "2026-12-09-the-ghentlemen-fc-emmatje", "date": "2026-12-09", "time": "20:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "The Ghentlemen", "away": "FC EMMATJE", "homeScore": null, "awayScore": null}, {"id": "2026-12-16-foot-ball-lovers-the-ghentlemen", "date": "2026-12-16", "time": "19:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "Foot/Ball Lovers", "away": "The Ghentlemen", "homeScore": null, "awayScore": null}, {"id": "2026-12-16-fc-a-nul-slaappiraten", "date": "2026-12-16", "time": "20:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "FC A-nul", "away": "Slaappiraten", "homeScore": null, "awayScore": null}, {"id": "2026-12-16-fc-emmatje-kvdo", "date": "2026-12-16", "time": "20:00", "venue": "Zaal 2C3A · Sporthal HoGent", "poule": "Poule B", "home": "FC EMMATJE", "away": "KVDO", "homeScore": null, "awayScore": null}], "standings": [{"rank": 1, "team": "KVDO", "played": 1, "won": 1, "drawn": 0, "lost": 0, "points": 3, "goalsFor": 26, "goalsAgainst": 3, "fairPlay": 0}, {"rank": 2, "team": "Slaappiraten", "played": 1, "won": 1, "drawn": 0, "lost": 0, "points": 3, "goalsFor": 15, "goalsAgainst": 4, "fairPlay": 0}, {"rank": 3, "team": "FC A-nul", "played": 2, "won": 1, "drawn": 0, "lost": 1, "points": 3, "goalsFor": 18, "goalsAgainst": 14, "fairPlay": 0}, {"rank": 4, "team": "The Ghentlemen", "played": 1, "won": 1, "drawn": 0, "lost": 0, "points": 3, "goalsFor": 10, "goalsAgainst": 6, "fairPlay": 0}, {"rank": 5, "team": "FC EMMATJE", "played": 1, "won": 0, "drawn": 0, "lost": 1, "points": 0, "goalsFor": 4, "goalsAgainst": 12, "fairPlay": 0}, {"rank": 6, "team": "Foot/Ball Lovers", "played": 2, "won": 0, "drawn": 0, "lost": 2, "points": 0, "goalsFor": 7, "goalsAgainst": 41, "fairPlay": 0}]};
+
+/* ---------- helpers ---------- */
+const $ = (s, el = document) => el.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const norm = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+const isUs = (t) => norm(t) === norm(CONFIG.team);
+const DAYS = ["zo", "ma", "di", "wo", "do", "vr", "za"];
+const LONGDAYS = ["zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag"];
+const MONTHS = ["jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"];
+const AVATARS = ["🏴‍☠️", "⚓", "🦜", "🦈", "🐙", "💀", "🗡️", "🧭", "🍺", "😴", "🔥", "👑", "🐐", "🧤", "🚀", "🦑"];
+const POSITIONS = ["Keeper", "Verdediger", "Middenvelder", "Aanvaller", "Overal en nergens"];
+const AWARDS = [
+  { id: "kapitein", ic: "🏆", t: "Kapitein van de match", d: "Beste speler van de avond" },
+  { id: "muur", ic: "🧤", t: "De Muur", d: "Beste keeper of redding" },
+  { id: "kanon", ic: "💥", t: "Kanonskogel", d: "Mooiste doelpunt" },
+  { id: "zeebonk", ic: "🪓", t: "Zeebonk", d: "Gewelddadigste speler" },
+  { id: "schipbreuk", ic: "🛟", t: "Schipbreuk", d: "Grootste blunder" },
+  { id: "slaapkop", ic: "😴", t: "Slaapkop", d: "Nog niet wakker of te laat" }
+];
+const STATUS = { yes: "Aan boord", maybe: "Misschien", no: "Kan niet", fan: "Supporter" };
+let toastTimer;
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 2600); }
+const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+
+function kickoff(m) { return new Date(`${m.date}T${m.time || "20:00"}:00`); }
+function played(m) { return m.homeScore != null && m.awayScore != null; }
+function side(m) { const home = isUs(m.home); return { home, opp: home ? m.away : m.home, us: home ? m.homeScore : m.awayScore, them: home ? m.awayScore : m.homeScore }; }
+function result(m) { const v = side(m); return v.us > v.them ? "W" : v.us < v.them ? "V" : "G"; }
+function fmtDate(m, long) { const d = kickoff(m); return `${long ? LONGDAYS[d.getDay()] : DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`; }
+
+/* ---------- backends ---------- */
+function seedDemo() {
+  const names = [["Rune","Kapitein Rune","Middenvelder","👑",7],["Jonas","De Muur","Keeper","🧤",1],["Wout","Kanon","Aanvaller","💥",9],["Seppe","","Verdediger","⚓",4],["Lars","Lange Lars","Aanvaller","🦈",11],["Arne","","Middenvelder","🦜",8],["Thibo","Tibo de Tank","Verdediger","🪓",5],["Milan","","Aanvaller","🔥",10],["Robbe","Slaapmuts","Middenvelder","😴",6],["Kobe","","Overal en nergens","🐙",14]];
+  const profiles = names.map((n, i) => ({ id: "demo" + i, name: n[0], nickname: n[1] || null, position: n[2], avatar: n[3], number: n[4], motto: null, is_admin: i === 0 }));
+  const m1 = "2026-10-28-slaappiraten-foot-ball-lovers", m2 = "2026-11-18-the-ghentlemen-slaappiraten", m3 = "2026-11-25-slaappiraten-kvdo";
+  const att = [], goals = [], votes = [], preds = [];
+  profiles.forEach((p, i) => {
+    if (i !== 9) att.push({ match_id: m1, player_id: p.id, status: "yes" });
+    att.push({ match_id: m2, player_id: p.id, status: i < 7 ? "yes" : i === 7 ? "maybe" : i === 8 ? "fan" : "no" });
+    if (i < 4) att.push({ match_id: m3, player_id: p.id, status: "yes" });
+  });
+  [[2,5,1],[4,4,2],[7,3,1],[0,2,4],[5,1,2]].forEach(([i, g, a]) => goals.push({ match_id: m1, player_id: "demo" + i, goals: g, assists: a }));
+  const v = (voter, cat, nom) => votes.push({ match_id: m1, voter_id: "demo" + voter, category: cat, nominee_id: "demo" + nom });
+  [1,3,4,5,6].forEach((x) => v(x, "kapitein", 2)); [0,7].forEach((x) => v(x, "kapitein", 4));
+  [0,2,3,4].forEach((x) => v(x, "muur", 1)); [0,1,3].forEach((x) => v(x, "kanon", 4)); [1,5].forEach((x) => v(x, "kanon", 2));
+  [0,1,2,5].forEach((x) => v(x, "zeebonk", 6)); [0,2,4].forEach((x) => v(x, "schipbreuk", 3)); [0,1,2,3,4].forEach((x) => v(x, "slaapkop", 8));
+  preds.push({ match_id: m1, player_id: "demo2", us: 15, them: 4 }, { match_id: m1, player_id: "demo1", us: 8, them: 3 }, { match_id: m1, player_id: "demo3", us: 4, them: 6 });
+  preds.push({ match_id: m2, player_id: "demo0", us: 8, them: 5 }, { match_id: m2, player_id: "demo2", us: 10, them: 3 }, { match_id: m2, player_id: "demo1", us: 6, them: 6 });
+  return { uid: null, profiles, attendance: att, goals, votes, predictions: preds };
+}
+const KEYS = { profiles: ["id"], attendance: ["match_id", "player_id"], goals: ["match_id", "player_id"], votes: ["match_id", "voter_id", "category"], predictions: ["match_id", "player_id"] };
+const Demo = {
+  mode: "demo", key: "slaappiraten-demo-v2",
+  async init() { let db = null; try { db = JSON.parse(store.get(this.key)); } catch {} this.db = db || seedDemo(); },
+  save() { store.set(this.key, JSON.stringify(this.db)); },
+  async fetchAll() { return this.db; },
+  uid() { return this.db.uid; },
+  async signInAs(id) { this.db.uid = id; this.save(); },
+  async signOut() { this.db.uid = null; this.save(); },
+  async upsert(table, row) { const arr = this.db[table]; const i = arr.findIndex((r) => KEYS[table].every((k) => r[k] === row[k])); if (i >= 0) arr[i] = { ...arr[i], ...row }; else arr.push(row); this.save(); },
+  async remove(table, match) { this.db[table] = this.db[table].filter((r) => !Object.keys(match).every((k) => r[k] === match[k])); this.save(); },
+  reset() { const uid = this.db.uid; this.db = seedDemo(); this.db.uid = uid; this.save(); }
+};
+function loadScript(src) { return new Promise((ok, bad) => { const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = () => bad(new Error("Kon " + src + " niet laden")); document.head.appendChild(s); }); }
+const Live = {
+  mode: "live", _uid: null, recovery: false,
+  async init() {
+    await loadScript("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js");
+    this.c = window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey);
+    const { data } = await this.c.auth.getSession();
+    this._uid = data.session?.user?.id || null;
+    this.c.auth.onAuthStateChange((event, s) => {
+      if (event === "PASSWORD_RECOVERY") { this.recovery = true; location.hash = "profiel"; }
+      const n = s?.user?.id || null;
+      if (n !== this._uid || event === "PASSWORD_RECOVERY") { this._uid = n; refresh(); }
+    });
+  },
+  uid() { return this._uid; },
+  async fetchAll() {
+    const tables = Object.keys(KEYS);
+    const res = await Promise.all(tables.map((t) => this.c.from(t).select("*")));
+    const out = {}; res.forEach((r, i) => { if (r.error) throw r.error; out[tables[i]] = r.data; });
+    return out;
+  },
+  async signIn(email, password) { const { error } = await this.c.auth.signInWithPassword({ email, password }); if (error) throw error; },
+  async signUp(email, password, name, code) {
+    const { data, error } = await this.c.auth.signUp({ email, password, options: { data: { name, team_code: code } } });
+    if (error) throw error; return data.session ? "ok" : "confirm";
+  },
+  async resetPassword(email) { const { error } = await this.c.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname }); if (error) throw error; },
+  async updatePassword(password) { const { error } = await this.c.auth.updateUser({ password }); if (error) throw error; this.recovery = false; },
+  async signOut() { await this.c.auth.signOut(); this._uid = null; },
+  async upsert(table, row) { const { error } = await this.c.from(table).upsert(row); if (error) throw error; },
+  async remove(table, match) { const { error } = await this.c.from(table).delete().match(match); if (error) throw error; }
+};
+function niceError(e) {
+  const m = String(e?.message || e);
+  if (/Invalid login/i.test(m)) return "E-mailadres of wachtwoord klopt niet.";
+  if (/already registered|already been registered/i.test(m)) return "Er bestaat al een account met dit e-mailadres. Log in of vraag een nieuw wachtwoord.";
+  if (/Database error saving new user|teamcode/i.test(m)) return "De teamcode klopt niet. Vraag hem aan de kapitein.";
+  if (/Password should be/i.test(m)) return "Kies een wachtwoord van minstens 6 tekens.";
+  if (/rate limit|security purposes/i.test(m)) return "Even te veel pogingen. Probeer het binnen een minuutje opnieuw.";
+  if (/Email not confirmed/i.test(m)) return "Bevestig eerst je e-mailadres via de mail die je kreeg.";
+  if (/attendance_status_check/i.test(m)) return "De supportersknop wordt nog geactiveerd in de database. Probeer het later opnieuw.";
+  if (/Schip is vol/i.test(m)) return "Het schip is net vol (7 spelers). Je kan komen supporteren.";
+  if (/row-level security/i.test(m)) return "Dat mag je niet aanpassen met jouw account.";
+  if (/Failed to fetch|NetworkError/i.test(m)) return "Geen verbinding. Check je internet en probeer opnieuw.";
+  return "Er ging iets mis: " + m;
+}
+
+/* ---------- state ---------- */
+const S = { api: null, data: { matches: [], standings: [] }, db: { profiles: [], attendance: [], goals: [], votes: [], predictions: [] }, schemaTab: store.get("sp-schema-tab") || "wedstrijden", authTab: "login" };
+const me = () => S.db.profiles.find((p) => p.id === S.api.uid()) || null;
+const player = (id) => S.db.profiles.find((p) => p.id === id);
+const pname = (p) => (p ? p.nickname || p.name : "Onbekende piraat");
+const av = (p) => esc(p?.avatar || "🏴‍☠️");
+const ours = () => (S.data.matches || []).filter((m) => isUs(m.home) || isUs(m.away)).sort((a, b) => kickoff(a) - kickoff(b));
+const playedOurs = () => ours().filter(played);
+const upcoming = () => ours().filter((m) => !played(m) && kickoff(m).getTime() > Date.now() - 3 * 3600e3);
+const nextMatch = () => upcoming()[0] || null;
+const att = (mid, pid) => S.db.attendance.find((a) => a.match_id === mid && a.player_id === pid)?.status || null;
+const attFor = (mid) => S.db.attendance.filter((a) => a.match_id === mid);
+const isAdmin = () => !!me()?.is_admin;
+
+function seasonStats() {
+  const ps = playedOurs(); let w = 0, g = 0, v = 0, gf = 0, ga = 0;
+  ps.forEach((m) => { const s = side(m); gf += s.us; ga += s.them; const r = result(m); if (r === "W") w++; else if (r === "V") v++; else g++; });
+  return { played: ps.length, w, g, v, gf, ga, gd: gf - ga };
+}
+function scorers() {
+  const map = {};
+  S.db.goals.forEach((r) => { const o = (map[r.player_id] ||= { goals: 0, assists: 0 }); o.goals += r.goals || 0; o.assists += r.assists || 0; });
+  return S.db.profiles.map((p) => ({ p, ...(map[p.id] || { goals: 0, assists: 0 }) }));
+}
+function attendanceStats() {
+  const ps = playedOurs(); const total = ps.length;
+  return S.db.profiles.map((p) => { const n = ps.filter((m) => att(m.id, p.id) === "yes").length; return { p, n, total, pct: total ? Math.round((n / total) * 100) : 0 }; });
+}
+function awardWinners(mid) {
+  const out = {};
+  AWARDS.forEach((a) => {
+    const counts = {}; S.db.votes.filter((v) => v.match_id === mid && v.category === a.id).forEach((v) => (counts[v.nominee_id] = (counts[v.nominee_id] || 0) + 1));
+    const max = Math.max(0, ...Object.values(counts));
+    out[a.id] = { max, winners: max ? Object.keys(counts).filter((k) => counts[k] === max) : [] };
+  });
+  return out;
+}
+function medalCabinet() {
+  const cab = {};
+  playedOurs().forEach((m) => Object.entries(awardWinners(m.id)).forEach(([aid, r]) => r.winners.forEach((pid) => { (cab[pid] ||= {}); cab[pid][aid] = (cab[pid][aid] || 0) + 1; })));
+  return cab;
+}
+function predPoints(p, s) { if (p.us === s.us && p.them === s.them) return 3; return Math.sign(p.us - p.them) === Math.sign(s.us - s.them) ? 1 : 0; }
+function predictionPoints() {
+  const pts = {};
+  playedOurs().forEach((m) => { const s = side(m); S.db.predictions.filter((p) => p.match_id === m.id).forEach((p) => { const n = predPoints(p, s); const o = (pts[p.player_id] ||= { pts: 0, exact: 0 }); o.pts += n; if (n === 3) o.exact++; }); });
+  return pts;
+}
+function badgesFor(pid) {
+  const b = []; const mine = S.db.goals.filter((g) => g.player_id === pid);
+  const goals = mine.reduce((s, g) => s + (g.goals || 0), 0);
+  if (goals > 0) b.push(["🎯", "Eerste buit", "Minstens één doelpunt gescoord"]);
+  if (mine.some((g) => g.goals >= 3)) b.push(["🎩", "Hattrick-held", "Drie of meer goals in één match"]);
+  if (goals >= 10) b.push(["💰", "Schatzoeker", "Tien doelpunten dit seizoen"]);
+  const sc = scorers().sort((a, c) => c.goals - a.goals); if (sc[0]?.goals > 0 && sc[0].p.id === pid) b.push(["👑", "Topschutter", "Meeste goals van de ploeg"]);
+  const as = attendanceStats().find((a) => a.p.id === pid); if (as && as.total >= 1 && as.n === as.total) b.push(["⚓", "IJzeren piraat", "Bij elke wedstrijd aanwezig"]);
+  if (predictionPoints()[pid]?.exact) b.push(["🔮", "Waarzegger", "Een uitslag exact voorspeld"]);
+  const cab = medalCabinet()[pid]; if (cab && Object.values(cab).reduce((s, n) => s + n, 0) >= 3) b.push(["🏅", "Medaillekast", "Drie of meer awards gewonnen"]);
+  return b;
+}
+
+/* ---------- render helpers ---------- */
+function rsvpButtons(mid) {
+  const u = me(); if (!u) return `<a class="btn ghost" href="#profiel" style="width:100%">Log in om je aanwezigheid door te geven</a>`;
+  const cur = att(mid, u.id);
+  const yes = attFor(mid).filter((a) => a.status === "yes").length;
+  const full = yes >= CONFIG.maxPlayers && cur !== "yes";
+  const opts = full
+    ? { fan: ["Ik kom supporteren", `schip is vol (${yes}/${CONFIG.maxPlayers})`], maybe: ["Misschien", "laat ik weten"], no: ["Kan niet", "volgende keer"] }
+    : { yes: ["Aan boord", "ik speel mee"], maybe: ["Misschien", "laat ik weten"], no: ["Kan niet", "volgende keer"] };
+  const btns = Object.entries(opts).map(([st, [t, sub]]) => `<button type="button" class="${st === "fan" ? "fan" : ""}" data-act="rsvp" data-m="${esc(mid)}" data-s="${st}" aria-pressed="${cur === st}">${t}<small>${sub}</small></button>`).join("");
+  const note = full ? `<p class="rsvp-note">Er zijn al ${CONFIG.maxPlayers} spelers. Valt er iemand af, dan kan je weer aan boord.</p>`
+    : cur === "fan" ? `<p class="rsvp-note">Je staat bij de supporters. Wil je toch spelen? Tik op Aan boord.</p>` : "";
+  return `<div class="rsvp" role="group" aria-label="Ben je erbij?">${btns}</div>${note}`;
+}
+function crewMeter(mid) {
+  const yes = attFor(mid).filter((a) => a.status === "yes").map((a) => player(a.player_id)).filter(Boolean);
+  const maybe = attFor(mid).filter((a) => a.status === "maybe").length;
+  const need = CONFIG.minPlayers; const slots = Math.max(need, Math.min(yes.length, CONFIG.maxPlayers)); const extra = yes.length - need; const fans = attFor(mid).filter((a) => a.status === "fan").length;
+  const label = yes.length >= CONFIG.maxPlayers ? `<span class="pill gold">Schip vol · ${yes.length}/${CONFIG.maxPlayers}</span>` : extra >= 0 ? `<span class="pill good">Genoeg volk · ${extra} wissel${extra === 1 ? "" : "s"}</span>` : `<span class="pill ${extra === -1 ? "warn" : "bad"}">Nog ${-extra} nodig</span>`;
+  return `<div class="crew"><div class="row"><div class="grow"><b class="num">${yes.length}</b> aan boord${maybe ? `, <span class="muted">${maybe} misschien</span>` : ""}${fans ? `, <span class="muted">${fans} supporter${fans === 1 ? "" : "s"}</span>` : ""}</div>${label}</div>
+    <div class="slots" aria-hidden="true">${Array.from({ length: slots }, (_, i) => `<span class="slot ${i < yes.length ? (i >= need ? "extra" : "on") : ""}">${i < yes.length ? av(yes[i]) : ""}</span>`).join("")}</div></div>`;
+}
+function formStrip(n = 5) {
+  const ps = playedOurs().slice(-n);
+  return `<div class="form" aria-label="Vorm, laatste ${n} wedstrijden">${ps.map((m) => `<span class="res ${result(m)}" title="${esc(side(m).opp)} ${side(m).us}-${side(m).them}">${result(m)}</span>`).join("")}${Array.from({ length: n - ps.length }, () => `<span class="res empty" aria-hidden="true"></span>`).join("")}</div>`;
+}
+function versus(m) {
+  const mid = played(m) ? `<div class="score num">${m.homeScore}<span class="muted"> – </span>${m.awayScore}</div>` : `<div class="mid">VS</div>`;
+  return `<div class="versus"><div class="team ${isUs(m.home) ? "us" : ""}">${esc(m.home)}</div>${mid}<div class="team ${isUs(m.away) ? "us" : ""}">${esc(m.away)}</div></div>`;
+}
+function countdown(m) {
+  const diff = kickoff(m) - Date.now(); if (diff <= 0) return `<p class="meta"><span class="pill gold">Nu bezig of net gespeeld</span></p>`;
+  const d = Math.floor(diff / 864e5), h = Math.floor((diff % 864e5) / 36e5), mi = Math.floor((diff % 36e5) / 6e4);
+  return `<div class="countdown" role="timer" aria-label="Nog ${d} dagen, ${h} uur en ${mi} minuten"><div><b class="num">${d}</b><span>dagen</span></div><div><b class="num">${h}</b><span>uur</span></div><div><b class="num">${mi}</b><span>min</span></div></div>`;
+}
+const crestBg = `<img class="crest-bg" src="logo.png" alt="" aria-hidden="true">`;
+function matchRow(m) {
+  const d = kickoff(m), s = side(m);
+  const right = played(m) ? `<span class="num">${s.us}–${s.them}</span><span class="res ${result(m)}">${result(m)}</span>` : `<span class="pill">${esc(m.time || "?")}</span>`;
+  const yes = attFor(m.id).filter((a) => a.status === "yes").length;
+  return `<a class="match" href="#match-${esc(m.id)}"><div class="date-block"><b class="num">${d.getDate()}</b><span>${MONTHS[d.getMonth()]}</span></div>
+    <div style="min-width:0"><div class="opp">${s.home ? "vs" : "@"} ${esc(s.opp)}</div><div class="sub">${DAYS[d.getDay()]} · ${esc(m.venue || "")}${!played(m) ? ` · ${yes} aan boord` : ""}</div></div>
+    <div class="sc">${right}</div></a>`;
+}
+function standingsTable() {
+  const rows = S.data.standings || []; if (!rows.length) return `<p class="muted">Nog geen stand beschikbaar.</p>`;
+  return `<div class="table-wrap"><table><thead><tr><th>#</th><th>Team</th><th title="Gespeeld">G</th><th title="Gewonnen">W</th><th title="Gelijk">GL</th><th title="Verloren">V</th><th title="Doelpunten voor">DV</th><th title="Doelpunten tegen">DT</th><th title="Doelsaldo">+/-</th><th title="Punten">P</th></tr></thead><tbody>
+  ${rows.map((r) => { const gd = r.goalsFor - r.goalsAgainst; return `<tr class="${isUs(r.team) ? "us" : ""}"><td>${r.rank}</td><td>${esc(r.team)}</td><td>${r.played}</td><td>${r.won}</td><td>${r.drawn}</td><td>${r.lost}</td><td>${r.goalsFor}</td><td>${r.goalsAgainst}</td><td>${gd > 0 ? "+" : ""}${gd}</td><td class="pts">${r.points}</td></tr>`; }).join("")}
+  </tbody></table></div>`;
+}
+function updatedLine() {
+  if (!S.data.updatedAt) return "";
+  const d = new Date(S.data.updatedAt);
+  return `<p class="muted" style="font-size:12.5px;margin:0">Uit Tournify, bijgewerkt ${d.getDate()} ${MONTHS[d.getMonth()]} om ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")} · <a href="${CONFIG.tournifyUrl}" target="_blank" rel="noopener">bekijk live op Tournify</a></p>`;
+}
+/* Zeekaart: cumulatief doelsaldo, zeeniveau = 0 */
+function seaChart() {
+  const ps = playedOurs(); if (!ps.length) return `<p class="muted">De zeekaart verschijnt na de eerste wedstrijd.</p>`;
+  const pts = [0]; ps.forEach((m) => { const s = side(m); pts.push(pts[pts.length - 1] + s.us - s.them); });
+  const W = 600, H = 200, L = 38, R = 16, T = 14, B = 30;
+  const max = Math.max(5, ...pts.map(Math.abs)); const step = max <= 10 ? 5 : max <= 30 ? 10 : 20; const lim = Math.ceil(max / step) * step;
+  const x = (i) => L + (i * (W - L - R)) / Math.max(1, pts.length - 1); const y = (v) => T + ((lim - v) * (H - T - B)) / (2 * lim);
+  const path = pts.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(" ");
+  const ticks = []; for (let v = -lim; v <= lim; v += step) ticks.push(v);
+  const last = pts.length - 1;
+  const abbr = (n) => n.split(/[\s/-]+/).filter(Boolean).map((w) => w[0]).join("").slice(0, 3).toUpperCase();
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Doelsaldo na elke wedstrijd, nu ${pts[last] > 0 ? "+" : ""}${pts[last]}">
+    <rect x="${L}" y="${y(0)}" width="${W - L - R}" height="${H - B - y(0)}" fill="var(--sea)"/>
+    ${ticks.map((v) => `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="${v === 0 ? 1.5 : 1}" ${v === 0 ? "" : 'stroke-dasharray="3 4"'}/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${v > 0 ? "+" : ""}${v}</text>`).join("")}
+    <text x="${W - R - 4}" y="${y(0) + 15}" text-anchor="end">zeeniveau</text>
+    <path d="${path} L${x(last)},${y(0)} L${x(0)},${y(0)} Z" fill="var(--gold)" fill-opacity=".16"/>
+    <path d="${path}" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    ${pts.map((v, i) => (i ? `<circle cx="${x(i)}" cy="${y(v)}" r="${i === last ? 5.5 : 3.5}" fill="${i === last ? "var(--gold)" : "var(--surface)"}" stroke="var(--gold)" stroke-width="2"/>` : "")).join("")}
+    <text x="${x(0)}" y="${H - 10}" text-anchor="middle">start</text>
+    ${ps.map((m, i) => `<text x="${x(i + 1)}" y="${H - 10}" text-anchor="${i + 1 === last ? "end" : "middle"}">${esc(abbr(side(m).opp))}</text>`).join("")}
+  </svg>`;
+}
+function sponsorBlock() {
+  return `<div class="sponsor"><span>Proudly sponsored by <a href="${CONFIG.sponsorUrl}" target="_blank" rel="noopener"><b>SPORTSPACE</b></a></span><a href="${CONFIG.instagramUrl}" target="_blank" rel="noopener">@slaappiraten op Instagram</a></div>`;
+}
+
+/* ---------- volgende wedstrijd: wie komt er, pronostiek, scouting ---------- */
+function whoIsComing(mid, open) {
+  const list = S.db.profiles.map((p) => ({ p, s: att(mid, p.id) }));
+  const g = (st) => list.filter((x) => x.s === st); const unknown = list.filter((x) => !x.s);
+  const chips = (arr) => arr.length ? `<div class="chips">${arr.map((x) => `<span class="chip"><span class="avatar">${av(x.p)}</span>${esc(pname(x.p))}</span>`).join("")}</div>` : `<span class="muted" style="font-size:13px">Niemand</span>`;
+  return `<details class="who" ${open ? "open" : ""}><summary>${crewMeter(mid)}<span class="who-hint"><span class="h-closed">Bekijk wie er komt</span><span class="h-open">Verberg lijst</span></span></summary>
+    <div class="who-list who-cols"><div><p class="eyebrow" style="color:var(--good)">Aan boord (${g("yes").length}/${CONFIG.maxPlayers})</p>${chips(g("yes"))}<p class="eyebrow" style="color:var(--warn)">Misschien (${g("maybe").length})</p>${chips(g("maybe"))}<p class="eyebrow" style="color:var(--bad)">Kan niet (${g("no").length})</p>${chips(g("no"))}<p class="eyebrow muted">Nog niets laten weten (${unknown.length})</p>${chips(unknown)}</div>
+    <div class="fans"><p class="eyebrow">📣 Supporters (${g("fan").length})</p>${chips(g("fan"))}</div></div></details>`;
+}
+const pdraft = {};
+function predictBox(m) {
+  const u = me(); const s = side(m); const started = kickoff(m) <= Date.now();
+  const preds = S.db.predictions.filter((p) => p.match_id === m.id);
+  const mine = u ? preds.find((p) => p.player_id === u.id) : null;
+  const d = pdraft[m.id] || (mine ? { us: mine.us, them: mine.them } : { us: 0, them: 0 });
+  const changed = !mine || mine.us !== d.us || mine.them !== d.them;
+  const verdict = d.us > d.them ? "Jij voorspelt een overwinning" : d.us < d.them ? "Jij voorspelt een nederlaag. Durf!" : "Jij voorspelt een gelijkspel";
+  const ps = (k, v, lbl) => `<span class="stepper big" role="group" aria-label="${esc(lbl)}"><button type="button" data-act="pstep" data-m="${esc(m.id)}" data-k="${k}" data-d="-1" aria-label="Eén goal minder voor ${esc(lbl)}">−</button><output class="num" aria-live="polite">${v}</output><button type="button" data-act="pstep" data-m="${esc(m.id)}" data-k="${k}" data-d="1" aria-label="Eén goal meer voor ${esc(lbl)}">+</button></span>`;
+  const who = preds.map((p) => { const pp = player(p.player_id); const own = u && p.player_id === u.id; return `<div class="row"><span class="avatar">${av(pp)}</span><b class="grow">${esc(pname(pp))}${own ? ' <span class="muted" style="font-weight:500">(jij)</span>' : ""}</b>${started || own ? `<span class="num" style="font-weight:700">${p.us}–${p.them}</span>` : `<span class="lock">🔒 geheim tot de aftrap</span>`}</div>`; }).join("");
+  const missing = S.db.profiles.filter((p) => !preds.some((q) => q.player_id === p.id));
+  const avg = preds.length && started ? `<p class="pron-verdict">Teamgemiddelde: <b class="num">${(preds.reduce((t, p) => t + p.us, 0) / preds.length).toFixed(1)} – ${(preds.reduce((t, p) => t + p.them, 0) / preds.length).toFixed(1)}</b></p>` : "";
+  return `<section class="card stack" aria-labelledby="pron-${esc(m.id)}">
+    <div class="row"><div class="grow"><p class="eyebrow">Pronostiek</p><h2 id="pron-${esc(m.id)}" style="margin-top:4px">Wat wordt de uitslag?</h2></div><span class="pill gold">3 pt exact · 1 pt winnaar</span></div>
+    ${!u ? `<a class="btn ghost" href="#profiel">Log in om je pronostiek door te geven</a>` : started ? `<p class="muted" style="margin:0">De pronostieken zijn gesloten, de bal rolt.</p>` : `
+      <div class="pron"><div class="pron-team us">Slaappiraten</div><div class="pron-team">${esc(s.opp)}</div>${ps("us", d.us, "Slaappiraten")}${ps("them", d.them, s.opp)}</div>
+      <p class="pron-verdict">${verdict}</p>
+      <button class="btn" type="button" data-act="psave" data-m="${esc(m.id)}" ${changed ? "" : "disabled"}>${mine ? (changed ? "Pronostiek aanpassen" : "Pronostiek opgeslagen ✓") : "Pronostiek opslaan"}</button>`}
+    ${avg}
+    ${preds.length ? `<div class="list">${who}</div>` : `<p class="muted" style="margin:0;font-size:13.5px">Nog niemand heeft een pronostiek doorgegeven. Wees de eerste!</p>`}
+    ${missing.length && !started ? `<p class="muted" style="margin:0;font-size:12.5px">Nog niet voorspeld: ${missing.map((p) => esc(pname(p))).join(", ")}</p>` : ""}
+  </section>`;
+}
+function scouting(m) {
+  const s = side(m); const rows = S.data.standings || [];
+  const opp = rows.find((r) => norm(r.team) === norm(s.opp)); const us = rows.find((r) => isUs(r.team));
+  const oppPlayed = (S.data.matches || []).filter((x) => played(x) && (norm(x.home) === norm(s.opp) || norm(x.away) === norm(s.opp))).sort((a, b) => kickoff(a) - kickoff(b));
+  const oppRes = (x) => { const h = norm(x.home) === norm(s.opp); const f = h ? x.homeScore : x.awayScore, a = h ? x.awayScore : x.homeScore; return { r: f > a ? "W" : f < a ? "V" : "G", f, a, vs: h ? x.away : x.home }; };
+  const h2h = oppPlayed.filter((x) => isUs(x.home) || isUs(x.away));
+  const per = (r, k) => (r && r.played ? r[k] / r.played : null);
+  let chance = null;
+  if (opp?.played && us?.played) { const diff = (per(us, "goalsFor") - per(us, "goalsAgainst")) - (per(opp, "goalsFor") - per(opp, "goalsAgainst")); chance = Math.round(100 / (1 + Math.exp(-diff / 5))); }
+  let tag = "Onbekend terrein: nog geen wedstrijden gespeeld.";
+  if (opp?.played) { const gf = per(opp, "goalsFor"), ga = per(opp, "goalsAgainst"); tag = gf >= 9 ? "⚠️ Gevaarlijke aanval: dekking strak houden." : ga >= 9 ? "🎯 Lekke verdediging: schieten vanop elke afstand." : gf - ga > 3 ? "💪 Sterke ploeg, niet onderschatten." : gf - ga < -3 ? "🍀 Op papier haalbaar. Niet in slaap vallen!" : "⚖️ Evenwaardige tegenstander."; }
+  return `<section class="card stack" aria-labelledby="scout-${esc(m.id)}">
+    <div><p class="eyebrow">Scoutingrapport</p><h2 id="scout-${esc(m.id)}" style="margin-top:4px">${esc(s.opp)}</h2></div>
+    ${opp ? `<div class="scout-tiles"><div><b class="num">${opp.rank}e</b><span>Plaats</span></div><div><b class="num">${opp.points}</b><span>Punten</span></div><div><b class="num">${opp.played ? per(opp, "goalsFor").toFixed(1) : "–"}</b><span>Scoort/match</span></div><div><b class="num">${opp.played ? per(opp, "goalsAgainst").toFixed(1) : "–"}</b><span>Slikt/match</span></div></div>` : ""}
+    <p style="margin:0;font-weight:600">${tag}</p>
+    ${oppPlayed.length ? `<div><p class="muted" style="font-size:12.5px;margin:0 0 6px">Hun laatste resultaten</p><div class="list">${oppPlayed.slice(-3).reverse().map((x) => { const o = oppRes(x); return `<div class="row"><span class="res ${o.r}">${o.r}</span><span class="grow">tegen ${esc(o.vs)}</span><span class="num" style="font-weight:700">${o.f}–${o.a}</span></div>`; }).join("")}</div></div>` : ""}
+    ${h2h.length ? `<p class="muted" style="margin:0;font-size:13px">Onderling: ${h2h.map((x) => `${side(x).us}–${side(x).them}`).join(", ")}</p>` : `<p class="muted" style="margin:0;font-size:13px">Eerste keer dat we tegen ${esc(s.opp)} spelen.</p>`}
+    ${chance != null ? `<div><p class="muted" style="font-size:12.5px;margin:0 0 6px">Kansmeter volgens de zeekaart (op basis van doelsaldo, puur voor de fun)</p><div class="meter" role="img" aria-label="Winkans Slaappiraten ${chance} procent"><i style="width:${chance}%;background:var(--gold)"></i><i style="width:${100 - chance}%;background:var(--muted);opacity:.45"></i></div><div class="meter-labels"><span style="color:var(--gold-text)">Slaappiraten ${chance}%</span><span class="muted">${esc(s.opp)} ${100 - chance}%</span></div></div>` : ""}
+  </section>`;
+}
+
+/* ---------- views ---------- */
+function viewHome() {
+  const n = nextMatch(); const st = seasonStats(); const lastPlayed = playedOurs().slice(-1)[0];
+  const ourRow = (S.data.standings || []).find((r) => isUs(r.team));
+  const top = scorers().filter((s) => s.goals > 0).sort((a, b) => b.goals - a.goals).slice(0, 3);
+  return `<div class="stack">
+  ${n ? `<section class="hero" aria-labelledby="next-h">${crestBg}
+      <div class="row"><div class="grow"><p class="eyebrow" id="next-h">Volgende wedstrijd</p></div><a class="btn ghost sm" href="#match-${esc(n.id)}">Details</a></div>
+      ${versus(n)}
+      <p class="meta"><span>${fmtDate(n, true)}</span><span>${esc(n.time || "")}</span><span>${esc(n.venue || "")}</span></p>
+      ${countdown(n)}
+      <div class="stack" style="gap:10px"><h2>Ben jij erbij?</h2>${rsvpButtons(n.id)}${whoIsComing(n.id)}</div>
+    </section>
+    ${predictBox(n)}
+    ${scouting(n)}` : `<section class="hero">${crestBg}<p class="eyebrow">Volgende wedstrijd</p><p style="margin:0">Geen geplande wedstrijden meer in het schema. Rust uit, piraten.</p></section>`}
+
+  <section class="section" aria-labelledby="season-h">
+    <div class="section-head"><h2 id="season-h">Seizoen tot nu</h2>${ourRow ? `<a href="#schema" data-act="schematab" data-t="stand"><span class="pill gold">${ourRow.rank}e in ${esc(S.data.poule || "de poule")} · ${ourRow.points} pt</span></a>` : ""}</div>
+    <div class="tiles"><div class="tile"><b class="num">${st.played}</b><span>Gespeeld</span></div><div class="tile"><b class="num" style="color:var(--good)">${st.w}</b><span>Gewonnen</span></div><div class="tile"><b class="num" style="color:var(--warn)">${st.g}</b><span>Gelijk</span></div><div class="tile"><b class="num" style="color:var(--bad)">${st.v}</b><span>Verloren</span></div></div>
+    <div class="card treasure"><div><p class="eyebrow">Schatkist (doelsaldo)</p><div class="big num ${st.gd < 0 ? "neg" : ""}">${st.gd > 0 ? "+" : ""}${st.gd}</div><p class="muted" style="font-size:12.5px;margin:4px 0 0">${st.gf} buitgemaakt, ${st.ga} kwijtgespeeld</p></div>
+      <div style="min-width:0"><p class="muted" style="font-size:12.5px;margin:0 0 6px">Vorm, laatste 5</p>${formStrip()}</div></div>
+  </section>
+
+  ${lastPlayed ? `<section class="section" aria-labelledby="last-h"><div class="section-head"><h2 id="last-h">Laatste uitslag</h2><a href="#match-${esc(lastPlayed.id)}">Stem de awards</a></div>
+    <a class="card" href="#match-${esc(lastPlayed.id)}" style="text-decoration:none;color:inherit;display:grid;gap:8px">${versus(lastPlayed)}<p class="meta">${fmtDate(lastPlayed, true)} · ${esc(lastPlayed.venue || "")}</p></a></section>` : ""}
+
+  <section class="section" aria-labelledby="ts-h"><div class="section-head"><h2 id="ts-h">Topscorers</h2><a href="#ranking">Alle rankings</a></div>
+    ${top.length ? `<div class="card list">${top.map((s, i) => `<div class="rank"><span class="pos">${i + 1}</span><span class="avatar">${av(s.p)}</span><div style="min-width:0"><b>${esc(pname(s.p))}</b><div class="muted" style="font-size:12.5px">${s.assists} assist${s.assists === 1 ? "" : "s"}</div></div><span class="val num">${s.goals}</span></div>`).join("")}</div>` : `<div class="card empty-state">Nog geen doelpunten doorgegeven. Scoorde je? Geef het door bij de wedstrijd.</div>`}
+  </section>
+  ${sponsorBlock()}
+  </div>`;
+}
+function viewAanwezig() {
+  const up = upcoming(); const u = me();
+  const chips = (arr) => arr.length ? `<div class="chips">${arr.map((x) => `<span class="chip"><span class="avatar">${av(x.p)}</span>${esc(pname(x.p))}</span>`).join("")}</div>` : `<span class="muted" style="font-size:13px">Niemand</span>`;
+  return `<div class="stack"><div><p class="eyebrow">Aanwezigheden</p><h1>Wie is er aan boord?</h1><hr class="rule"></div>
+  ${!u ? `<div class="banner">Je bent niet ingelogd. <a href="#profiel">Log in</a> om door te geven of je komt.</div>` : ""}
+  ${up.length ? up.map((m) => {
+    const list = S.db.profiles.map((p) => ({ p, s: att(m.id, p.id) }));
+    const group = (s) => list.filter((x) => x.s === s);
+    const unknown = list.filter((x) => !x.s);
+    return `<section class="card stack" aria-label="${esc(side(m).opp)}">
+      <div class="row"><div class="grow"><p class="eyebrow">${fmtDate(m, true)} · ${esc(m.time || "")}</p><h2 style="margin-top:4px">${side(m).home ? "vs" : "@"} ${esc(side(m).opp)}</h2></div><a class="btn ghost sm" href="#match-${esc(m.id)}">Details</a></div>
+      ${rsvpButtons(m.id)}${whoIsComing(m.id)}</section>`;
+  }).join("") : `<div class="card empty-state">Geen komende wedstrijden in het schema.</div>`}
+  </div>`;
+}
+function viewSchema() {
+  const tab = S.schemaTab;
+  return `<div class="stack"><div class="row" style="flex-wrap:wrap"><div class="grow"><p class="eyebrow">${esc(S.data.poule || "")} · Minivoetbal</p><h1>${tab === "stand" ? "Stand" : "Schema"}</h1><hr class="rule"></div>
+    <div class="seg" role="group" aria-label="Kies weergave"><button type="button" data-act="schematab" data-t="wedstrijden" aria-pressed="${tab === "wedstrijden"}">Wedstrijden</button><button type="button" data-act="schematab" data-t="stand" aria-pressed="${tab === "stand"}">Stand</button></div></div>
+  ${tab === "stand" ? `<div class="card">${standingsTable()}</div><p class="muted" style="font-size:12.5px;margin:0">G gespeeld · W gewonnen · GL gelijk · V verloren · DV/DT doelpunten voor/tegen · P punten</p>`
+    : `<div class="card list">${ours().map(matchRow).join("") || `<div class="empty-state">Nog geen wedstrijden.</div>`}</div>`}
+  ${updatedLine()}</div>`;
+}
+function viewRanking() {
+  const sc = scorers().sort((a, b) => b.goals - a.goals || b.assists - a.assists);
+  const maxG = Math.max(1, ...sc.map((s) => s.goals));
+  const podium = sc.filter((s) => s.goals > 0).slice(0, 3);
+  const as = attendanceStats().sort((a, b) => b.n - a.n);
+  const assists = sc.filter((s) => s.assists > 0).sort((a, b) => b.assists - a.assists);
+  const cab = medalCabinet(); const pp = predictionPoints();
+  const preds = S.db.profiles.map((p) => ({ p, ...(pp[p.id] || { pts: 0, exact: 0 }) })).filter((x) => x.pts > 0 || S.db.predictions.some((q) => q.player_id === x.p.id)).sort((a, b) => b.pts - a.pts);
+  const st = seasonStats();
+  return `<div class="stack"><div><p class="eyebrow">Ranking</p><h1>Wie heerst er op het schip?</h1><hr class="rule"></div>
+  <section class="section" aria-labelledby="sea-h"><div class="section-head"><h2 id="sea-h">Zeekaart</h2><span class="pill gold">Doelsaldo ${st.gd > 0 ? "+" : ""}${st.gd}</span></div>
+    <div class="card">${seaChart()}<p class="muted" style="font-size:12.5px;margin:8px 0 0">Boven zeeniveau = meer gescoord dan tegengekregen. Elke stip is een wedstrijd.</p></div></section>
+  <section class="section" aria-labelledby="g-h"><h2 id="g-h">Topscorers</h2>
+    ${podium.length ? `<div class="podium">${[1, 0, 2].map((i) => podium[i] ? `<div class="p${i + 1}"><span class="avatar ${i === 0 ? "lg" : ""}">${av(podium[i].p)}</span><span class="nm">${esc(pname(podium[i].p))}</span><span class="gl num">${podium[i].goals}</span><span aria-label="plaats ${i + 1}">${["🥇", "🥈", "🥉"][i]}</span></div>` : `<div aria-hidden="true" style="visibility:hidden"></div>`).join("")}</div>` : ""}
+    <div class="card list">${sc.map((s, i) => `<div class="rank"><span class="pos">${i + 1}</span><span class="avatar">${av(s.p)}</span><div style="min-width:0"><b>${esc(pname(s.p))}</b><div class="bar"><i style="width:${(s.goals / maxG) * 100}%"></i></div></div><span class="val num">${s.goals}</span></div>`).join("") || `<div class="empty-state">Nog geen spelers.</div>`}</div></section>
+  ${assists.length ? `<section class="section" aria-labelledby="a-h"><h2 id="a-h">Assistkoningen</h2><div class="card list">${assists.map((s, i) => `<div class="rank"><span class="pos">${i + 1}</span><span class="avatar">${av(s.p)}</span><b style="min-width:0">${esc(pname(s.p))}</b><span class="val num">${s.assists}</span></div>`).join("")}</div></section>` : ""}
+  <section class="section" aria-labelledby="att-h"><h2 id="att-h">IJzeren piraat</h2><p class="muted" style="margin:-6px 0 0;font-size:13.5px">Aanwezig bij gespeelde wedstrijden.</p>
+    <div class="card list">${as.map((a, i) => `<div class="rank"><span class="pos">${i + 1}</span><span class="avatar">${av(a.p)}</span><div style="min-width:0"><b>${esc(pname(a.p))}</b><div class="bar"><i style="width:${a.pct}%"></i></div></div><span class="val num" style="font-size:16px">${a.n}/${a.total}</span></div>`).join("")}</div></section>
+  <section class="section" aria-labelledby="m-h"><h2 id="m-h">Medaillekast</h2><p class="muted" style="margin:-6px 0 0;font-size:13.5px">Na elke wedstrijd stemt de ploeg. Wie de meeste stemmen krijgt, wint de award.</p>
+    <div class="awards">${AWARDS.map((a) => { const tally = Object.entries(cab).map(([pid, c]) => [pid, c[a.id] || 0]).filter(([, n]) => n).sort((x, y) => y[1] - x[1]); const lead = tally[0];
+      return `<div class="award"><span class="ic" aria-hidden="true">${a.ic}</span><span class="t">${a.t}</span><span class="d">${a.d}</span><span class="w">${lead ? `${esc(pname(player(lead[0])))} · ${lead[1]}×` : "Nog niet uitgereikt"}</span></div>`; }).join("")}</div>
+    <div class="card list">${S.db.profiles.filter((p) => cab[p.id]).map((p) => `<div class="row"><span class="avatar">${av(p)}</span><b class="grow">${esc(pname(p))}</b><span class="cabinet">${AWARDS.filter((a) => cab[p.id][a.id]).map((a) => `<span title="${a.t}">${a.ic}<span class="num">${cab[p.id][a.id] > 1 ? "×" + cab[p.id][a.id] : ""}</span></span>`).join("")}</span></div>`).join("") || `<div class="empty-state">Nog geen awards. Stem na de volgende wedstrijd.</div>`}</div></section>
+  <section class="section" aria-labelledby="p-h"><h2 id="p-h">Waarzeggers</h2><p class="muted" style="margin:-6px 0 0;font-size:13.5px">Voorspel de uitslag: 3 punten voor exact, 1 punt voor de juiste winnaar.</p>
+    <div class="card list">${preds.map((x, i) => `<div class="rank"><span class="pos">${i + 1}</span><span class="avatar">${av(x.p)}</span><b style="min-width:0">${esc(pname(x.p))}${x.exact ? ` <span class="pill gold">🔮 ${x.exact} exact</span>` : ""}</b><span class="val num">${x.pts}</span></div>`).join("") || `<div class="empty-state">Nog geen voorspellingen. Doe er een bij de volgende wedstrijd.</div>`}</div></section>
+  </div>`;
+}
+function stepper(mid, pid, field, val, who) {
+  const lbl = field === "goals" ? "doelpunten" : "assists";
+  return `<span class="stepper" role="group" aria-label="${lbl}${who ? " " + esc(who) : ""}"><button type="button" data-act="goal" data-m="${esc(mid)}" data-p="${esc(pid)}" data-f="${field}" data-d="-1" aria-label="Eén ${field === "goals" ? "doelpunt" : "assist"} minder">−</button><output class="num" aria-live="polite">${val}</output><button type="button" data-act="goal" data-m="${esc(mid)}" data-p="${esc(pid)}" data-f="${field}" data-d="1" aria-label="Eén ${field === "goals" ? "doelpunt" : "assist"} meer">+</button></span>`;
+}
+function viewMatch(id) {
+  const m = (S.data.matches || []).find((x) => x.id === id); if (!m) return `<a class="back" href="#schema">← Schema</a><div class="card empty-state">Deze wedstrijd bestaat niet (meer).</div>`;
+  const u = me(); const pl = played(m); const s = side(m);
+  const yesIds = attFor(m.id).filter((a) => a.status === "yes").map((a) => a.player_id);
+  const roster = yesIds.length ? yesIds.map(player).filter(Boolean) : S.db.profiles;
+  const goalRows = S.db.goals.filter((g) => g.match_id === m.id && (g.goals || g.assists));
+  const loggedGoals = goalRows.reduce((t, g) => t + (g.goals || 0), 0);
+  const myGoals = u ? S.db.goals.find((g) => g.match_id === m.id && g.player_id === u.id) || { goals: 0, assists: 0 } : null;
+  const winners = pl ? awardWinners(m.id) : null;
+  const myPred = u ? S.db.predictions.find((p) => p.match_id === m.id && p.player_id === u.id) : null;
+  const allPreds = S.db.predictions.filter((p) => p.match_id === m.id);
+  const verdict = { W: "Buit binnengehaald", V: "Schip gezonken", G: "Gelijkspel op volle zee" };
+  return `<a class="back" href="#schema">← Schema</a><div class="stack">
+  <section class="hero">${crestBg}<p class="eyebrow">${fmtDate(m, true)}${m.time ? " · " + esc(m.time) : ""} · ${esc(m.venue || "")}</p>${versus(m)}
+    ${pl ? `<p class="meta"><span class="res ${result(m)}">${result(m)}</span><span>${verdict[result(m)]}</span></p>` : countdown(m)}</section>
+
+  ${!pl ? `<section class="section"><h2>Ben jij erbij?</h2>${rsvpButtons(m.id)}<div class="card">${whoIsComing(m.id, true)}</div></section>${predictBox(m)}${scouting(m)}` : ""}
+
+  ${pl ? `<section class="section" aria-labelledby="goals-h"><div class="section-head"><h2 id="goals-h">Doelpunten</h2><span class="pill ${loggedGoals === s.us ? "good" : "warn"}">${loggedGoals}/${s.us} doorgegeven</span></div>
+    ${u ? `<div class="card row" style="flex-wrap:wrap"><div class="grow" style="min-width:140px"><b>Jouw match</b><div class="muted" style="font-size:12.5px">Geef eerlijk door. De ploeg kijkt mee.</div></div><div class="row"><span style="font-size:13px">Goals</span>${stepper(m.id, u.id, "goals", myGoals.goals || 0)}</div><div class="row"><span style="font-size:13px">Assists</span>${stepper(m.id, u.id, "assists", myGoals.assists || 0)}</div></div>` : `<div class="banner"><a href="#profiel">Log in</a> om je goals door te geven.</div>`}
+    <div class="card list">${goalRows.sort((a, b) => b.goals - a.goals).map((g) => { const p = player(g.player_id); return `<div class="row"><span class="avatar">${av(p)}</span><b class="grow">${esc(pname(p))}</b><span class="num">${"⚽".repeat(Math.min(g.goals || 0, 8))}${g.goals > 8 ? " " + g.goals : ""}${g.assists ? ` <span class="muted">· ${g.assists} assist${g.assists > 1 ? "s" : ""}</span>` : ""}</span></div>`; }).join("") || `<div class="empty-state">Nog niemand heeft goals doorgegeven.</div>`}</div>
+    ${isAdmin() ? `<details class="card"><summary>Kapitein: goals invullen voor anderen</summary><div class="list" style="margin-top:8px">${S.db.profiles.map((p) => { const g = S.db.goals.find((x) => x.match_id === m.id && x.player_id === p.id) || {}; return `<div class="row" style="flex-wrap:wrap"><b class="grow">${esc(pname(p))}</b>${stepper(m.id, p.id, "goals", g.goals || 0, pname(p))}${stepper(m.id, p.id, "assists", g.assists || 0, pname(p))}</div>`; }).join("")}</div></details>` : ""}
+  </section>
+
+  <section class="section" aria-labelledby="aw-h"><h2 id="aw-h">Awards van deze match</h2>
+    <div class="awards">${AWARDS.map((a) => { const w = winners[a.id]; return `<div class="award"><span class="ic" aria-hidden="true">${a.ic}</span><span class="t">${a.t}</span><span class="d">${a.d}</span><span class="w">${w.winners.length ? w.winners.map((pid) => esc(pname(player(pid)))).join(" & ") + ` · ${w.max} stem${w.max > 1 ? "men" : ""}` : "Nog geen stemmen"}</span></div>`; }).join("")}</div>
+    ${u ? `<div class="card stack"><h3>Jouw stem</h3><p class="muted" style="margin:-8px 0 0;font-size:13px">Je kan niet op jezelf stemmen. Je stem aanpassen kan altijd.</p>${AWARDS.map((a) => { const mine = S.db.votes.find((v) => v.match_id === m.id && v.voter_id === u.id && v.category === a.id); return `<div class="vote"><label for="v-${a.id}">${a.ic} ${a.t}</label><select id="v-${a.id}" data-act="vote" data-m="${esc(m.id)}" data-c="${a.id}"><option value="">Kies een piraat…</option>${roster.filter((p) => p.id !== u.id).map((p) => `<option value="${esc(p.id)}" ${mine?.nominee_id === p.id ? "selected" : ""}>${esc(pname(p))}</option>`).join("")}</select></div>`; }).join("")}</div>` : `<div class="banner"><a href="#profiel">Log in</a> om te stemmen.</div>`}
+  </section>` : ""}
+
+  ${pl ? `<section class="section" aria-labelledby="pr-h"><h2 id="pr-h">Pronostieken</h2>
+    ${!pl && u ? `<form class="card row" data-form="predict" data-m="${esc(m.id)}" style="flex-wrap:wrap"><div class="grow" style="min-width:150px"><b>Jouw voorspelling</b><div class="muted" style="font-size:12.5px">Slaappiraten tegen ${esc(s.opp)}</div></div><input type="number" id="pred-us" name="us" min="0" max="60" inputmode="numeric" value="${myPred?.us ?? ""}" aria-label="Goals Slaappiraten" style="width:70px" required><span aria-hidden="true">–</span><input type="number" id="pred-them" name="them" min="0" max="60" inputmode="numeric" value="${myPred?.them ?? ""}" aria-label="Goals ${esc(s.opp)}" style="width:70px" required><button class="btn sm" type="submit">${myPred ? "Aanpassen" : "Opslaan"}</button></form>` : ""}
+    ${!pl && !u ? `<div class="banner"><a href="#profiel">Log in</a> om de uitslag te voorspellen.</div>` : ""}
+    <div class="card list">${allPreds.map((p) => { const pp = player(p.player_id); let pts = ""; if (pl) { const n = predPoints(p, s); pts = `<span class="pill ${n === 3 ? "gold" : n ? "good" : ""}">+${n}</span>`; } return `<div class="row"><span class="avatar">${av(pp)}</span><b class="grow">${esc(pname(pp))}</b><span class="num">${p.us}–${p.them}</span>${pts}</div>`; }).join("") || `<div class="empty-state">Niemand gaf een pronostiek door.</div>`}</div>
+  </section>` : ""}
+
+  <section class="section"><h2>Aanwezigheden</h2><div class="card list">${S.db.profiles.map((p) => { const st = att(m.id, p.id); return `<div class="row"><span class="avatar">${av(p)}</span><span class="grow">${esc(pname(p))}</span>${isAdmin() ? `<select data-act="adminatt" data-m="${esc(m.id)}" data-p="${esc(p.id)}" aria-label="Aanwezigheid ${esc(pname(p))}" style="width:auto"><option value="">—</option>${Object.entries(STATUS).map(([k, v]) => `<option value="${k}" ${st === k ? "selected" : ""}>${v}</option>`).join("")}</select>` : `<span class="pill ${st === "yes" ? "good" : st === "maybe" ? "warn" : st === "no" ? "bad" : st === "fan" ? "gold" : ""}">${st ? STATUS[st] : "?"}</span>`}</div>`; }).join("") || `<div class="empty-state">Nog geen spelers.</div>`}</div></section>
+  </div>`;
+}
+function viewProfiel() {
+  const u = me();
+  if (S.api.mode === "live" && S.api.recovery) {
+    return `<div class="stack"><div><p class="eyebrow">Wachtwoord</p><h1>Kies een nieuw wachtwoord</h1></div><form class="card stack" data-form="newpw"><div class="field"><label for="np">Nieuw wachtwoord</label><input id="np" name="pw" type="password" minlength="6" autocomplete="new-password" required></div><button class="btn" type="submit">Opslaan</button></form></div>`;
+  }
+  if (!u && S.api.uid() && S.api.mode === "live") return `<div class="card empty-state">Je profiel wordt aangemaakt… <button class="btn sm ghost" type="button" data-act="reload">Vernieuwen</button></div>`;
+  if (!u) return S.api.mode === "demo" ? viewDemoLogin() : viewLogin();
+  const sc = scorers().find((x) => x.p.id === u.id) || { goals: 0, assists: 0 };
+  const as = attendanceStats().find((a) => a.p.id === u.id); const badges = badgesFor(u.id); const cab = medalCabinet()[u.id] || {};
+  return `<div class="stack">
+  <div class="row"><span class="avatar lg">${av(u)}</span><div class="grow"><p class="eyebrow">${u.number != null ? "#" + esc(u.number) + " · " : ""}${esc(u.position || "Piraat")}${u.is_admin ? " · Kapitein" : ""}</p><h1>${esc(pname(u))}</h1>${u.nickname ? `<p class="muted" style="margin:2px 0 0">${esc(u.name)}</p>` : ""}</div></div>
+  <div class="tiles"><div class="tile"><b class="num">${sc.goals}</b><span>Goals</span></div><div class="tile"><b class="num">${sc.assists}</b><span>Assists</span></div><div class="tile"><b class="num">${as ? as.n + "/" + as.total : "0"}</b><span>Aanwezig</span></div><div class="tile"><b class="num">${Object.values(cab).reduce((t, n) => t + n, 0)}</b><span>Awards</span></div></div>
+  <section class="section"><h2>Badges</h2>${badges.length ? `<div class="badges">${badges.map(([ic, t, d]) => `<span class="pill gold" title="${esc(d)}">${ic} ${esc(t)}</span>`).join("")}</div>` : `<p class="muted" style="margin:0">Nog geen badges. Scoor, kom opdagen of voorspel juist om ze te verdienen.</p>`}
+    <details><summary>Welke badges bestaan er?</summary><ul class="muted" style="font-size:13.5px;padding-left:18px"><li>🎯 Eerste buit: minstens één goal</li><li>🎩 Hattrick-held: drie goals in één match</li><li>💰 Schatzoeker: tien goals dit seizoen</li><li>👑 Topschutter: meeste goals van de ploeg</li><li>⚓ IJzeren piraat: bij elke wedstrijd aanwezig</li><li>🔮 Waarzegger: een uitslag exact voorspeld</li><li>🏅 Medaillekast: drie of meer awards</li></ul></details></section>
+  <section class="section"><h2>Profiel aanpassen</h2>
+    <form class="card stack" data-form="profile">
+      <div class="grid2"><div class="field"><label for="pf-name">Naam</label><input id="pf-name" name="name" type="text" maxlength="40" value="${esc(u.name)}" required></div>
+      <div class="field"><label for="pf-nick">Bijnaam</label><input id="pf-nick" name="nickname" type="text" maxlength="30" value="${esc(u.nickname || "")}" placeholder="bv. De Muur"></div></div>
+      <div class="grid2"><div class="field"><label for="pf-num">Rugnummer</label><input id="pf-num" name="number" type="number" min="0" max="99" value="${esc(u.number ?? "")}"></div>
+      <div class="field"><label for="pf-pos">Positie</label><select id="pf-pos" name="position">${POSITIONS.map((p) => `<option ${u.position === p ? "selected" : ""}>${p}</option>`).join("")}</select></div></div>
+      <div class="field"><span style="font-size:13px;font-weight:600" id="av-l">Avatar</span><div class="emoji-pick" role="group" aria-labelledby="av-l">${AVATARS.map((a) => `<button type="button" data-act="avatar" data-a="${a}" aria-pressed="${(u.avatar || "🏴‍☠️") === a}" aria-label="Avatar ${a}">${a}</button>`).join("")}</div><input type="hidden" name="avatar" value="${av(u)}"></div>
+      <div class="field"><label for="pf-motto">Strijdkreet</label><input id="pf-motto" name="motto" type="text" maxlength="60" value="${esc(u.motto || "")}" placeholder="bv. Slapen doen we na de match"></div>
+      <button class="btn" type="submit">Opslaan</button>
+    </form></section>
+  <section class="section"><h2>De bemanning</h2><div class="card list">${S.db.profiles.map((p) => `<div class="row"><span class="avatar">${av(p)}</span><div class="grow"><b>${esc(pname(p))}</b>${p.number != null ? ` <span class="muted num">#${esc(p.number)}</span>` : ""}<div class="muted" style="font-size:12.5px">${esc(p.position || "")}${p.motto ? " · “" + esc(p.motto) + "”" : ""}</div></div></div>`).join("")}</div></section>
+  <div class="row" style="flex-wrap:wrap"><button class="btn ghost" type="button" data-act="logout">Uitloggen</button>${S.api.mode === "demo" ? `<button class="btn ghost" type="button" data-act="demoreset">Demo terugzetten</button>` : ""}<label class="row" style="margin-left:auto;font-size:13.5px;gap:8px" for="theme-pick">Thema <select id="theme-pick" data-act="theme" style="width:auto"><option value="">Systeem</option><option value="dark">Donker</option><option value="light">Licht</option></select></label></div>
+  ${sponsorBlock()}</div>`;
+}
+function viewDemoLogin() {
+  return `<div class="stack"><div><p class="eyebrow">Voorbeeld</p><h1>Kies een piraat</h1><hr class="rule"></div>
+  <div class="banner">In de voorbeeldmodus kies je een verzonnen speler. Zodra de site aan de database hangt, maakt iedereen een eigen account met e-mailadres.</div>
+  <div class="card list">${S.db.profiles.map((p) => `<button type="button" class="row" data-act="demologin" data-p="${esc(p.id)}" style="background:none;border:0;border-bottom:1px solid var(--line);text-align:left;cursor:pointer;width:100%"><span class="avatar">${av(p)}</span><span class="grow"><b>${esc(pname(p))}</b> <span class="muted">${esc(p.position)}</span></span><span class="muted">Kies</span></button>`).join("")}</div></div>`;
+}
+function viewLogin() {
+  const t = S.authTab;
+  return `<div class="stack"><div><p class="eyebrow">Account</p><h1>${t === "signup" ? "Monster aan" : t === "reset" ? "Wachtwoord vergeten" : "Log in"}</h1><hr class="rule"></div>
+  <div class="seg" role="group" aria-label="Kies"><button type="button" data-act="authtab" data-t="login" aria-pressed="${t === "login"}">Inloggen</button><button type="button" data-act="authtab" data-t="signup" aria-pressed="${t === "signup"}">Account maken</button></div>
+  ${t === "login" ? `<form class="card stack" data-form="login"><div class="field"><label for="li-e">E-mailadres</label><input id="li-e" name="email" type="email" autocomplete="email" required></div><div class="field"><label for="li-p">Wachtwoord</label><input id="li-p" name="pw" type="password" autocomplete="current-password" required></div><button class="btn" type="submit">Inloggen</button><button type="button" class="btn ghost sm" data-act="authtab" data-t="reset">Wachtwoord vergeten?</button></form>` : ""}
+  ${t === "signup" ? `<form class="card stack" data-form="signup"><div class="field"><label for="su-n">Naam</label><input id="su-n" name="name" type="text" maxlength="40" autocomplete="given-name" required></div><div class="field"><label for="su-e">E-mailadres</label><input id="su-e" name="email" type="email" autocomplete="email" required></div><div class="field"><label for="su-p">Wachtwoord (min. 6 tekens)</label><input id="su-p" name="pw" type="password" minlength="6" autocomplete="new-password" required></div><div class="field"><label for="su-c">Teamcode</label><input id="su-c" name="code" type="text" autocomplete="off" required placeholder="Vraag de kapitein"></div><button class="btn" type="submit">Account maken</button><p class="muted" style="font-size:12.5px;margin:0">De teamcode zorgt dat alleen de ploeg een account kan maken. Je e-mailadres is niet zichtbaar voor anderen.</p></form>` : ""}
+  ${t === "reset" ? `<form class="card stack" data-form="reset"><div class="field"><label for="rs-e">E-mailadres</label><input id="rs-e" name="email" type="email" autocomplete="email" required></div><button class="btn" type="submit">Stuur herstelmail</button></form>` : ""}
+  <p class="muted" style="font-size:13px;margin:0">Iedereen met de link kan het schema, de stand en de rankings bekijken. Inloggen is alleen nodig om aanwezigheden, goals en stemmen door te geven.</p></div>`;
+}
+
+/* ---------- router ---------- */
+function currentView() { const h = decodeURIComponent(location.hash.slice(1)); if (!h || h.includes("=")) return ["home"]; if (h.startsWith("match-")) return ["match", h.slice(6)]; return [["home", "aanwezig", "schema", "ranking", "profiel"].includes(h) ? h : "home"]; }
+function render() {
+  const [v, arg] = currentView(); const app = $("#app");
+  const html = v === "aanwezig" ? viewAanwezig() : v === "schema" ? viewSchema() : v === "ranking" ? viewRanking() : v === "profiel" ? viewProfiel() : v === "match" ? viewMatch(arg) : viewHome();
+  const demo = S.api.mode === "demo" ? `<div class="banner" style="margin-bottom:14px">Voorbeeldmodus: spelers, goals en stemmen zijn verzonnen en blijven in jouw browser. Het schema en de stand komen echt uit Tournify.</div>` : "";
+  app.innerHTML = demo + html;
+  const navV = v === "match" ? "schema" : v;
+  document.querySelectorAll(".nav a").forEach((a) => { if (a.dataset.v === navV) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  const u = me(); $("#who").innerHTML = u ? `<span class="avatar">${av(u)}</span><span>${esc(pname(u))}</span>` : `<span class="btn sm ghost">Inloggen</span>`;
+  const tp = $("#theme-pick"); if (tp) tp.value = store.get("sp-theme") || "";
+}
+let lastHash = "";
+window.addEventListener("hashchange", () => { render(); if (location.hash !== lastHash) { window.scrollTo(0, 0); lastHash = location.hash; } });
+
+/* ---------- actions ---------- */
+async function act(fn, okMsg) { try { await fn(); await reloadDb(); render(); if (okMsg) toast(okMsg); return true; } catch (e) { console.error(e); toast(niceError(e)); return false; } }
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-act]"); if (!b || b.tagName === "SELECT") return;
+  const d = b.dataset; const u = me();
+  switch (d.act) {
+    case "rsvp": if (!u) return; act(() => S.api.upsert("attendance", { match_id: d.m, player_id: u.id, status: d.s }), d.s === "yes" ? "Top, je bent aan boord!" : d.s === "fan" ? "Top, je staat bij de supporters!" : d.s === "maybe" ? "Genoteerd als misschien." : "Jammer! Genoteerd."); break;
+    case "goal": { const cur = S.db.goals.find((g) => g.match_id === d.m && g.player_id === d.p) || { goals: 0, assists: 0 }; const val = Math.max(0, Math.min(30, (cur[d.f] || 0) + Number(d.d)));
+      act(() => S.api.upsert("goals", { match_id: d.m, player_id: d.p, goals: d.f === "goals" ? val : cur.goals || 0, assists: d.f === "assists" ? val : cur.assists || 0 })); break; }
+    case "pstep": { const mm = (S.data.matches || []).find((x) => x.id === d.m); const mine = S.db.predictions.find((p) => p.match_id === d.m && p.player_id === u?.id);
+      const cur = pdraft[d.m] || (mine ? { us: mine.us, them: mine.them } : { us: 0, them: 0 }); pdraft[d.m] = { ...cur, [d.k]: Math.max(0, Math.min(40, cur[d.k] + Number(d.d))) };
+      const y = window.scrollY; render(); window.scrollTo(0, y); const again = document.querySelector(`[data-act="pstep"][data-m="${CSS.escape(d.m)}"][data-k="${d.k}"][data-d="${d.d}"]`); if (again) again.focus(); void mm; break; }
+    case "psave": { if (!u) return; const dr = pdraft[d.m] || { us: 0, them: 0 }; act(() => S.api.upsert("predictions", { match_id: d.m, player_id: u.id, us: dr.us, them: dr.them }), "Pronostiek opgeslagen. Succes!").then((ok) => ok && delete pdraft[d.m]).then(() => render()); break; }
+    case "schematab": S.schemaTab = d.t; store.set("sp-schema-tab", d.t); if (location.hash === "#schema") render(); break;
+    case "authtab": S.authTab = d.t; render(); break;
+    case "demologin": act(() => S.api.signInAs(d.p), "Welkom aan boord!").then(() => (location.hash = "home")); break;
+    case "logout": act(() => S.api.signOut(), "Uitgelogd."); break;
+    case "demoreset": S.api.reset(); act(async () => {}, "Voorbeeld teruggezet."); break;
+    case "reload": refresh(); break;
+    case "avatar": { const f = b.closest("form"); f.querySelector('[name="avatar"]').value = d.a; f.querySelectorAll('[data-act="avatar"]').forEach((x) => x.setAttribute("aria-pressed", String(x === b))); break; }
+  }
+});
+document.addEventListener("change", (e) => {
+  const el = e.target; const d = el.dataset; const u = me();
+  if (d.act === "vote" && u) act(() => (el.value ? S.api.upsert("votes", { match_id: d.m, voter_id: u.id, category: d.c, nominee_id: el.value }) : S.api.remove("votes", { match_id: d.m, voter_id: u.id, category: d.c })), "Stem opgeslagen.");
+  if (d.act === "adminatt") act(() => (el.value ? S.api.upsert("attendance", { match_id: d.m, player_id: d.p, status: el.value }) : S.api.remove("attendance", { match_id: d.m, player_id: d.p })), "Aanwezigheid aangepast.");
+  if (d.act === "theme") { if (el.value) document.documentElement.setAttribute("data-theme", el.value); else document.documentElement.removeAttribute("data-theme"); store.set("sp-theme", el.value); }
+});
+document.addEventListener("submit", (e) => {
+  const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault();
+  const v = Object.fromEntries(new FormData(f)); const u = me();
+  switch (f.dataset.form) {
+    case "login": act(() => S.api.signIn(v.email.trim(), v.pw), "Welkom terug!").then((ok) => ok && (location.hash = "home")); break;
+    case "signup": act(async () => { const r = await S.api.signUp(v.email.trim(), v.pw, v.name.trim(), v.code.trim()); if (r === "confirm") setTimeout(() => toast("Check je mailbox om je account te bevestigen."), 2700); }, "Account gemaakt. Welkom aan boord!"); break;
+    case "reset": act(() => S.api.resetPassword(v.email.trim()), "Herstelmail verstuurd als dat adres bestaat."); break;
+    case "newpw": act(() => S.api.updatePassword(v.pw), "Nieuw wachtwoord opgeslagen."); break;
+    case "profile": act(() => S.api.upsert("profiles", { id: u.id, name: v.name.trim(), nickname: v.nickname.trim() || null, number: v.number === "" ? null : Number(v.number), position: v.position, avatar: v.avatar, motto: v.motto.trim() || null }), "Profiel opgeslagen."); break;
+    case "predict": act(() => S.api.upsert("predictions", { match_id: f.dataset.m, player_id: u.id, us: Number(v.us), them: Number(v.them) }), "Voorspelling opgeslagen."); break;
+  }
+});
+
+/* ---------- boot ---------- */
+async function loadMatchData() {
+  try { const r = await fetch(CONFIG.dataUrl + "?t=" + Math.floor(Date.now() / 3e5), { cache: "no-store" }); if (!r.ok) throw new Error(r.status); S.data = await r.json(); }
+  catch (e) { if (SEED_DATA) S.data = SEED_DATA; else console.warn("Geen wedstrijddata", e); }
+}
+async function reloadDb() { const db = await S.api.fetchAll(); S.db = { profiles: [], attendance: [], goals: [], votes: [], predictions: [], ...db }; S.db.profiles = [...S.db.profiles].sort((a, b) => pname(a).localeCompare(pname(b), "nl")); }
+async function refresh() { try { await reloadDb(); } catch (e) { toast(niceError(e)); } render(); }
+(async function boot() {
+  const th = store.get("sp-theme"); if (th) document.documentElement.setAttribute("data-theme", th);
+  S.api = CONFIG.supabaseUrl && CONFIG.supabaseAnonKey ? Live : Demo;
+  try { await S.api.init(); } catch (e) { console.error(e); S.api = Demo; await Demo.init(); toast("Database niet bereikbaar, voorbeeldmodus actief."); }
+  await Promise.all([loadMatchData(), reloadDb().catch((e) => toast(niceError(e)))]);
+  lastHash = location.hash; render();
+  setInterval(() => { const [v] = currentView(); if (v === "home" && !document.querySelector("input:focus,select:focus")) render(); }, 60e3);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && S.api.mode === "live") refresh(); });
+})();
+</script>

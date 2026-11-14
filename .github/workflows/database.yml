@@ -1,0 +1,25 @@
+name: Database bijwerken
+
+# Voert alle bestanden in supabase/migrations/ uit op de Supabase-database.
+# Eenmalig nodig: repo-secret SUPABASE_DB_URL (Supabase > Connect > Session pooler, met wachtwoord ingevuld).
+on:
+  push:
+    branches: [main]
+    paths: ["supabase/migrations/**"]
+  workflow_dispatch: {}
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Migraties uitvoeren
+        env:
+          DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          if [ -z "$DB_URL" ]; then echo "::error::Secret SUPABASE_DB_URL ontbreekt"; exit 1; fi
+          sudo apt-get install -y -qq postgresql-client >/dev/null
+          for f in supabase/migrations/*.sql; do
+            echo "== $f"; psql "$DB_URL" -v ON_ERROR_STOP=1 -q -f "$f"
+          done
