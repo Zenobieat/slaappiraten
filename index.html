@@ -128,6 +128,13 @@ h3 { font-size: 14px; letter-spacing: .08em; }
 .rsvp button[aria-pressed="true"][data-s="yes"] { background: var(--good); border-color: var(--good); color: #08140d; }
 .rsvp button[aria-pressed="true"][data-s="maybe"] { background: var(--warn); border-color: var(--warn); color: #1a1003; }
 .rsvp button[aria-pressed="true"][data-s="no"] { background: var(--bad); border-color: var(--bad); color: #1c0805; }
+.rsvp button[aria-pressed="true"][data-s="fan"] { background: var(--gold); border-color: var(--gold); color: var(--on-gold); }
+.rsvp button.fan:not([aria-pressed="true"]) { border-color: var(--gold); border-style: dashed; }
+.rsvp-note { font-size: 12.5px; color: var(--muted); margin: 6px 0 0; }
+.who-cols { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 14px; }
+.who-cols > div { display: grid; gap: 6px; align-content: start; min-width: 0; }
+.who-cols .fans { border-left: 1px solid var(--line); padding-left: 14px; }
+@media (max-width: 380px) { .who-cols { grid-template-columns: 1fr; } .who-cols .fans { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 10px; } }
 .rsvp button[aria-pressed="true"] small { color: inherit; opacity: .8; }
 
 /* Bemanningsmeter */
@@ -292,14 +299,15 @@ details.who .who-list { margin-top: 12px; padding-top: 12px; border-top: 1px sol
    Leeg laten = voorbeeldmodus met verzonnen spelers (alleen in jouw browser).
    ============================================================ */
 const CONFIG = {
-  supabaseUrl: "https://qwnhcqlnbjozjfvzlplz.supabase.co",          // bv. "https://abcd1234.supabase.co"
-  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3bmhjcWxuYmpvempmdnpscGx6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzQxMjcsImV4cCI6MjExMDI1MDEyN30.Bc6ybvzDcOJQtff25vquXoc42APt2BN8lJGHr29J3pc",      // de "anon public" / "publishable" sleutel (mag publiek staan)
+  supabaseUrl: "https://qwnhcqlnbjozjfvzlplz.supabase.co",
+  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3bmhjcWxuYmpvempmdnpscGx6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2NzQxMjcsImV4cCI6MjExMDI1MDEyN30.Bc6ybvzDcOJQtff25vquXoc42APt2BN8lJGHr29J3pc", // publieke "anon"-sleutel, mag in de code staan
   team: "Slaappiraten",
   dataUrl: "data/tournify.json",
   tournifyUrl: "https://tournifyapp.com/live/ghentstudentsleague26-27/schedule",
   instagramUrl: "https://www.instagram.com/slaappiraten/",
   sponsorUrl: "https://www.sportspace.be",
-  minPlayers: 5
+  minPlayers: 5,
+  maxPlayers: 7
 };
 const SEED_DATA = {"source": "https://tournifyapp.com/live/ghentstudentsleague26-27/schedule", "updatedAt": "2026-11-14T17:45:00Z", "team": "Slaappiraten", "poule": "Poule B", "matches": [{"id": "2026-10-28-slaappiraten-foot-ball-lovers", "date": "2026-10-28", "time": null, "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "Slaappiraten", "away": "Foot/Ball Lovers", "homeScore": 15, "awayScore": 4}, {"id": "2026-10-28-fc-a-nul-the-ghentlemen", "date": "2026-10-28", "time": null, "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "FC A-nul", "away": "The Ghentlemen", "homeScore": 6, "awayScore": 10}, {"id": "2026-11-04-fc-emmatje-fc-a-nul", "date": "2026-11-04", "time": null, "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "FC EMMATJE", "away": "FC A-nul", "homeScore": 4, "awayScore": 12}, {"id": "2026-11-04-foot-ball-lovers-kvdo", "date": "2026-11-04", "time": null, "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "Foot/Ball Lovers", "away": "KVDO", "homeScore": 3, "awayScore": 26}, {"id": "2026-11-18-fc-emmatje-foot-ball-lovers", "date": "2026-11-18", "time": "19:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "FC EMMATJE", "away": "Foot/Ball Lovers", "homeScore": null, "awayScore": null}, {"id": "2026-11-18-the-ghentlemen-slaappiraten", "date": "2026-11-18", "time": "20:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "The Ghentlemen", "away": "Slaappiraten", "homeScore": null, "awayScore": null}, {"id": "2026-11-25-foot-ball-lovers-fc-a-nul", "date": "2026-11-25", "time": "19:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "Foot/Ball Lovers", "away": "FC A-nul", "homeScore": null, "awayScore": null}, {"id": "2026-11-25-slaappiraten-kvdo", "date": "2026-11-25", "time": "20:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "Slaappiraten", "away": "KVDO", "homeScore": null, "awayScore": null}, {"id": "2026-12-02-kvdo-the-ghentlemen", "date": "2026-12-02", "time": "19:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "KVDO", "away": "The Ghentlemen", "homeScore": null, "awayScore": null}, {"id": "2026-12-02-slaappiraten-fc-emmatje", "date": "2026-12-02", "time": "20:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "Slaappiraten", "away": "FC EMMATJE", "homeScore": null, "awayScore": null}, {"id": "2026-12-09-kvdo-fc-a-nul", "date": "2026-12-09", "time": "19:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "KVDO", "away": "FC A-nul", "homeScore": null, "awayScore": null}, {"id": "2026-12-09-the-ghentlemen-fc-emmatje", "date": "2026-12-09", "time": "20:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "The Ghentlemen", "away": "FC EMMATJE", "homeScore": null, "awayScore": null}, {"id": "2026-12-16-foot-ball-lovers-the-ghentlemen", "date": "2026-12-16", "time": "19:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "Foot/Ball Lovers", "away": "The Ghentlemen", "homeScore": null, "awayScore": null}, {"id": "2026-12-16-fc-a-nul-slaappiraten", "date": "2026-12-16", "time": "20:00", "venue": "Zaal 3BC · Sporthal HoGent", "poule": "Poule B", "home": "FC A-nul", "away": "Slaappiraten", "homeScore": null, "awayScore": null}, {"id": "2026-12-16-fc-emmatje-kvdo", "date": "2026-12-16", "time": "20:00", "venue": "Zaal 2C3A · Sporthal HoGent", "poule": "Poule B", "home": "FC EMMATJE", "away": "KVDO", "homeScore": null, "awayScore": null}], "standings": [{"rank": 1, "team": "KVDO", "played": 1, "won": 1, "drawn": 0, "lost": 0, "points": 3, "goalsFor": 26, "goalsAgainst": 3, "fairPlay": 0}, {"rank": 2, "team": "Slaappiraten", "played": 1, "won": 1, "drawn": 0, "lost": 0, "points": 3, "goalsFor": 15, "goalsAgainst": 4, "fairPlay": 0}, {"rank": 3, "team": "FC A-nul", "played": 2, "won": 1, "drawn": 0, "lost": 1, "points": 3, "goalsFor": 18, "goalsAgainst": 14, "fairPlay": 0}, {"rank": 4, "team": "The Ghentlemen", "played": 1, "won": 1, "drawn": 0, "lost": 0, "points": 3, "goalsFor": 10, "goalsAgainst": 6, "fairPlay": 0}, {"rank": 5, "team": "FC EMMATJE", "played": 1, "won": 0, "drawn": 0, "lost": 1, "points": 0, "goalsFor": 4, "goalsAgainst": 12, "fairPlay": 0}, {"rank": 6, "team": "Foot/Ball Lovers", "played": 2, "won": 0, "drawn": 0, "lost": 2, "points": 0, "goalsFor": 7, "goalsAgainst": 41, "fairPlay": 0}]};
 
@@ -321,7 +329,7 @@ const AWARDS = [
   { id: "schipbreuk", ic: "🛟", t: "Schipbreuk", d: "Grootste blunder" },
   { id: "slaapkop", ic: "😴", t: "Slaapkop", d: "Nog niet wakker of te laat" }
 ];
-const STATUS = { yes: "Aan boord", maybe: "Misschien", no: "Kan niet" };
+const STATUS = { yes: "Aan boord", maybe: "Misschien", no: "Kan niet", fan: "Supporter" };
 let toastTimer;
 function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 2600); }
 const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
@@ -340,7 +348,7 @@ function seedDemo() {
   const att = [], goals = [], votes = [], preds = [];
   profiles.forEach((p, i) => {
     if (i !== 9) att.push({ match_id: m1, player_id: p.id, status: "yes" });
-    att.push({ match_id: m2, player_id: p.id, status: i < 6 ? "yes" : i < 8 ? "maybe" : "no" });
+    att.push({ match_id: m2, player_id: p.id, status: i < 7 ? "yes" : i === 7 ? "maybe" : i === 8 ? "fan" : "no" });
     if (i < 4) att.push({ match_id: m3, player_id: p.id, status: "yes" });
   });
   [[2,5,1],[4,4,2],[7,3,1],[0,2,4],[5,1,2]].forEach(([i, g, a]) => goals.push({ match_id: m1, player_id: "demo" + i, goals: g, assists: a }));
@@ -354,7 +362,7 @@ function seedDemo() {
 }
 const KEYS = { profiles: ["id"], attendance: ["match_id", "player_id"], goals: ["match_id", "player_id"], votes: ["match_id", "voter_id", "category"], predictions: ["match_id", "player_id"] };
 const Demo = {
-  mode: "demo", key: "slaappiraten-demo-v1",
+  mode: "demo", key: "slaappiraten-demo-v2",
   async init() { let db = null; try { db = JSON.parse(store.get(this.key)); } catch {} this.db = db || seedDemo(); },
   save() { store.set(this.key, JSON.stringify(this.db)); },
   async fetchAll() { return this.db; },
@@ -405,6 +413,7 @@ function niceError(e) {
   if (/Password should be/i.test(m)) return "Kies een wachtwoord van minstens 6 tekens.";
   if (/rate limit|security purposes/i.test(m)) return "Even te veel pogingen. Probeer het binnen een minuutje opnieuw.";
   if (/Email not confirmed/i.test(m)) return "Bevestig eerst je e-mailadres via de mail die je kreeg.";
+  if (/Schip is vol/i.test(m)) return "Het schip is net vol (7 spelers). Je kan komen supporteren.";
   if (/row-level security/i.test(m)) return "Dat mag je niet aanpassen met jouw account.";
   if (/Failed to fetch|NetworkError/i.test(m)) return "Geen verbinding. Check je internet en probeer opnieuw.";
   return "Er ging iets mis: " + m;
@@ -475,15 +484,22 @@ function badgesFor(pid) {
 function rsvpButtons(mid) {
   const u = me(); if (!u) return `<a class="btn ghost" href="#profiel" style="width:100%">Log in om je aanwezigheid door te geven</a>`;
   const cur = att(mid, u.id);
-  return `<div class="rsvp" role="group" aria-label="Ben je erbij?">${Object.entries({ yes: ["Aan boord", "ik ben er"], maybe: ["Misschien", "laat ik weten"], no: ["Kan niet", "volgende keer"] })
-    .map(([s, [t, sub]]) => `<button type="button" data-act="rsvp" data-m="${esc(mid)}" data-s="${s}" aria-pressed="${cur === s}">${t}<small>${sub}</small></button>`).join("")}</div>`;
+  const yes = attFor(mid).filter((a) => a.status === "yes").length;
+  const full = yes >= CONFIG.maxPlayers && cur !== "yes";
+  const opts = full
+    ? { fan: ["Ik kom supporteren", `schip is vol (${yes}/${CONFIG.maxPlayers})`], maybe: ["Misschien", "laat ik weten"], no: ["Kan niet", "volgende keer"] }
+    : { yes: ["Aan boord", "ik speel mee"], maybe: ["Misschien", "laat ik weten"], no: ["Kan niet", "volgende keer"] };
+  const btns = Object.entries(opts).map(([st, [t, sub]]) => `<button type="button" class="${st === "fan" ? "fan" : ""}" data-act="rsvp" data-m="${esc(mid)}" data-s="${st}" aria-pressed="${cur === st}">${t}<small>${sub}</small></button>`).join("");
+  const note = full ? `<p class="rsvp-note">Er zijn al ${CONFIG.maxPlayers} spelers. Valt er iemand af, dan kan je weer aan boord.</p>`
+    : cur === "fan" ? `<p class="rsvp-note">Je staat bij de supporters. Wil je toch spelen? Tik op Aan boord.</p>` : "";
+  return `<div class="rsvp" role="group" aria-label="Ben je erbij?">${btns}</div>${note}`;
 }
 function crewMeter(mid) {
   const yes = attFor(mid).filter((a) => a.status === "yes").map((a) => player(a.player_id)).filter(Boolean);
   const maybe = attFor(mid).filter((a) => a.status === "maybe").length;
-  const need = CONFIG.minPlayers; const slots = Math.max(need, yes.length); const extra = yes.length - need;
-  const label = extra >= 0 ? `<span class="pill good">Genoeg volk · ${extra} wissel${extra === 1 ? "" : "s"}</span>` : `<span class="pill ${extra === -1 ? "warn" : "bad"}">Nog ${-extra} nodig</span>`;
-  return `<div class="crew"><div class="row"><div class="grow"><b class="num">${yes.length}</b> aan boord${maybe ? `, <span class="muted">${maybe} misschien</span>` : ""}</div>${label}</div>
+  const need = CONFIG.minPlayers; const slots = Math.max(need, Math.min(yes.length, CONFIG.maxPlayers)); const extra = yes.length - need; const fans = attFor(mid).filter((a) => a.status === "fan").length;
+  const label = yes.length >= CONFIG.maxPlayers ? `<span class="pill gold">Schip vol · ${yes.length}/${CONFIG.maxPlayers}</span>` : extra >= 0 ? `<span class="pill good">Genoeg volk · ${extra} wissel${extra === 1 ? "" : "s"}</span>` : `<span class="pill ${extra === -1 ? "warn" : "bad"}">Nog ${-extra} nodig</span>`;
+  return `<div class="crew"><div class="row"><div class="grow"><b class="num">${yes.length}</b> aan boord${maybe ? `, <span class="muted">${maybe} misschien</span>` : ""}${fans ? `, <span class="muted">${fans} supporter${fans === 1 ? "" : "s"}</span>` : ""}</div>${label}</div>
     <div class="slots" aria-hidden="true">${Array.from({ length: slots }, (_, i) => `<span class="slot ${i < yes.length ? (i >= need ? "extra" : "on") : ""}">${i < yes.length ? av(yes[i]) : ""}</span>`).join("")}</div></div>`;
 }
 function formStrip(n = 5) {
@@ -551,7 +567,8 @@ function whoIsComing(mid, open) {
   const g = (st) => list.filter((x) => x.s === st); const unknown = list.filter((x) => !x.s);
   const chips = (arr) => arr.length ? `<div class="chips">${arr.map((x) => `<span class="chip"><span class="avatar">${av(x.p)}</span>${esc(pname(x.p))}</span>`).join("")}</div>` : `<span class="muted" style="font-size:13px">Niemand</span>`;
   return `<details class="who" ${open ? "open" : ""}><summary>${crewMeter(mid)}<span class="who-hint"><span class="h-closed">Bekijk wie er komt</span><span class="h-open">Verberg lijst</span></span></summary>
-    <div class="who-list"><p class="eyebrow" style="color:var(--good)">Aan boord (${g("yes").length})</p>${chips(g("yes"))}<p class="eyebrow" style="color:var(--warn)">Misschien (${g("maybe").length})</p>${chips(g("maybe"))}<p class="eyebrow" style="color:var(--bad)">Kan niet (${g("no").length})</p>${chips(g("no"))}<p class="eyebrow muted">Nog niets laten weten (${unknown.length})</p>${chips(unknown)}</div></details>`;
+    <div class="who-list who-cols"><div><p class="eyebrow" style="color:var(--good)">Aan boord (${g("yes").length}/${CONFIG.maxPlayers})</p>${chips(g("yes"))}<p class="eyebrow" style="color:var(--warn)">Misschien (${g("maybe").length})</p>${chips(g("maybe"))}<p class="eyebrow" style="color:var(--bad)">Kan niet (${g("no").length})</p>${chips(g("no"))}<p class="eyebrow muted">Nog niets laten weten (${unknown.length})</p>${chips(unknown)}</div>
+    <div class="fans"><p class="eyebrow">📣 Supporters (${g("fan").length})</p>${chips(g("fan"))}</div></div></details>`;
 }
 const pdraft = {};
 function predictBox(m) {
@@ -717,7 +734,7 @@ function viewMatch(id) {
     <div class="card list">${allPreds.map((p) => { const pp = player(p.player_id); let pts = ""; if (pl) { const n = predPoints(p, s); pts = `<span class="pill ${n === 3 ? "gold" : n ? "good" : ""}">+${n}</span>`; } return `<div class="row"><span class="avatar">${av(pp)}</span><b class="grow">${esc(pname(pp))}</b><span class="num">${p.us}–${p.them}</span>${pts}</div>`; }).join("") || `<div class="empty-state">Niemand gaf een pronostiek door.</div>`}</div>
   </section>` : ""}
 
-  <section class="section"><h2>Aanwezigheden</h2><div class="card list">${S.db.profiles.map((p) => { const st = att(m.id, p.id); return `<div class="row"><span class="avatar">${av(p)}</span><span class="grow">${esc(pname(p))}</span>${isAdmin() ? `<select data-act="adminatt" data-m="${esc(m.id)}" data-p="${esc(p.id)}" aria-label="Aanwezigheid ${esc(pname(p))}" style="width:auto"><option value="">—</option>${Object.entries(STATUS).map(([k, v]) => `<option value="${k}" ${st === k ? "selected" : ""}>${v}</option>`).join("")}</select>` : `<span class="pill ${st === "yes" ? "good" : st === "maybe" ? "warn" : st === "no" ? "bad" : ""}">${st ? STATUS[st] : "?"}</span>`}</div>`; }).join("") || `<div class="empty-state">Nog geen spelers.</div>`}</div></section>
+  <section class="section"><h2>Aanwezigheden</h2><div class="card list">${S.db.profiles.map((p) => { const st = att(m.id, p.id); return `<div class="row"><span class="avatar">${av(p)}</span><span class="grow">${esc(pname(p))}</span>${isAdmin() ? `<select data-act="adminatt" data-m="${esc(m.id)}" data-p="${esc(p.id)}" aria-label="Aanwezigheid ${esc(pname(p))}" style="width:auto"><option value="">—</option>${Object.entries(STATUS).map(([k, v]) => `<option value="${k}" ${st === k ? "selected" : ""}>${v}</option>`).join("")}</select>` : `<span class="pill ${st === "yes" ? "good" : st === "maybe" ? "warn" : st === "no" ? "bad" : st === "fan" ? "gold" : ""}">${st ? STATUS[st] : "?"}</span>`}</div>`; }).join("") || `<div class="empty-state">Nog geen spelers.</div>`}</div></section>
   </div>`;
 }
 function viewProfiel() {
@@ -784,7 +801,7 @@ document.addEventListener("click", (e) => {
   const b = e.target.closest("[data-act]"); if (!b || b.tagName === "SELECT") return;
   const d = b.dataset; const u = me();
   switch (d.act) {
-    case "rsvp": if (!u) return; act(() => S.api.upsert("attendance", { match_id: d.m, player_id: u.id, status: d.s }), d.s === "yes" ? "Top, je bent aan boord!" : d.s === "maybe" ? "Genoteerd als misschien." : "Jammer! Genoteerd."); break;
+    case "rsvp": if (!u) return; act(() => S.api.upsert("attendance", { match_id: d.m, player_id: u.id, status: d.s }), d.s === "yes" ? "Top, je bent aan boord!" : d.s === "fan" ? "Top, je staat bij de supporters!" : d.s === "maybe" ? "Genoteerd als misschien." : "Jammer! Genoteerd."); break;
     case "goal": { const cur = S.db.goals.find((g) => g.match_id === d.m && g.player_id === d.p) || { goals: 0, assists: 0 }; const val = Math.max(0, Math.min(30, (cur[d.f] || 0) + Number(d.d)));
       act(() => S.api.upsert("goals", { match_id: d.m, player_id: d.p, goals: d.f === "goals" ? val : cur.goals || 0, assists: d.f === "assists" ? val : cur.assists || 0 })); break; }
     case "pstep": { const mm = (S.data.matches || []).find((x) => x.id === d.m); const mine = S.db.predictions.find((p) => p.match_id === d.m && p.player_id === u?.id);
