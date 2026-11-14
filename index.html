@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Slaappiraten</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Teamsite van de Slaappiraten: aanwezigheden, schema, stand, topscorers en awards.">
@@ -1057,7 +1057,7 @@ function render() {
   const [v, arg] = currentView(); const app = $("#app");
   const html = v === "aanwezig" ? viewAanwezig() : v === "schema" ? viewSchema() : v === "ranking" ? viewRanking() : v === "profiel" ? viewProfiel() : v === "match" ? viewMatch(arg) : v === "installeren" ? viewInstall() : v === "chat" ? viewChat() : viewHome();
   const demo = S.api.mode === "demo" && v !== "chat" ? `<div class="banner" style="margin-bottom:14px">Voorbeeldmodus: spelers, goals en stemmen zijn verzonnen en blijven in jouw browser. Het schema en de stand komen echt uit Tournify.</div>` : "";
-  const keepY = v === "chat" && S.lastView === "chat" ? window.scrollY : null;
+  const keepY = S.lastView === v ? window.scrollY : null;
   app.innerHTML = demo + html;
   if (keepY != null) window.scrollTo(0, keepY);
   const navV = v === "match" ? "schema" : v === "installeren" ? "profiel" : v;
@@ -1068,6 +1068,16 @@ function render() {
   S.lastView = v;
   updateChatDot(); if (me() && S.api.subscribeChat) S.api.subscribeChat();
 }
+/* app vergrendelen: geen zoom door dubbeltikken of knijpen (vraag van de kapitein) */
+let lastTap = 0;
+document.addEventListener("touchend", (e) => {
+  const now = Date.now();
+  if (now - lastTap < 400 && !e.target.closest("input, select, textarea")) { e.preventDefault(); const t = e.target.closest("button, a, [data-act], label"); if (t) t.click(); }
+  lastTap = now;
+}, { passive: false });
+["gesturestart", "gesturechange", "gestureend"].forEach((ev) => document.addEventListener(ev, (e) => e.preventDefault(), { passive: false }));
+document.addEventListener("touchmove", (e) => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+document.addEventListener("dblclick", (e) => e.preventDefault(), { passive: false });
 let lastHash = "";
 window.addEventListener("hashchange", () => { S.lastView = null; render(); if (location.hash !== lastHash) { window.scrollTo(0, 0); lastHash = location.hash; } });
 
