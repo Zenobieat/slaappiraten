@@ -1,0 +1,127 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Slaappiraten//Matchen//NL
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Slaappiraten ⚽
+X-WR-TIMEZONE:Europe/Brussels
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+X-PUBLISHED-TTL:PT6H
+BEGIN:VTIMEZONE
+TZID:Europe/Brussels
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+TZNAME:CEST
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+TZNAME:CET
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:2026-10-28-slaappiraten-foot-ball-lovers@slaappiraten
+DTSTAMP:20261114T174500Z
+DTSTART;TZID=Europe/Brussels:20261028T194500
+DTEND;TZID=Europe/Brussels:20261028T205000
+SUMMARY:⚽ Slaappiraten - Foot/Ball Lovers (15-4)
+LOCATION:Zaal 3BC · Sporthal HoGent
+DESCRIPTION:Verzamelen om 19:45\, aftrap om 20:00 (uur nog niet bevestigd).\nGeef je aanwezigheid door: https://zenobieat.github.io/slaappiraten/#match-2026-10-28-slaappiraten-foot-ball-lovers
+URL:https://zenobieat.github.io/slaappiraten/#match-2026-10-28-slaappiraten-foot-ball-lovers
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT1H
+DESCRIPTION:Over een uur verzamelen voor Foot/Ball Lovers
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15M
+DESCRIPTION:Vertrekken! Over een kwartier verzamelen
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-18-the-ghentlemen-slaappiraten@slaappiraten
+DTSTAMP:20261114T174500Z
+DTSTART;TZID=Europe/Brussels:20261118T194500
+DTEND;TZID=Europe/Brussels:20261118T205000
+SUMMARY:⚽ Slaappiraten - The Ghentlemen
+LOCATION:Zaal 3BC · Sporthal HoGent
+DESCRIPTION:Verzamelen om 19:45\, aftrap om 20:00.\nGeef je aanwezigheid door: https://zenobieat.github.io/slaappiraten/#match-2026-11-18-the-ghentlemen-slaappiraten
+URL:https://zenobieat.github.io/slaappiraten/#match-2026-11-18-the-ghentlemen-slaappiraten
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT1H
+DESCRIPTION:Over een uur verzamelen voor The Ghentlemen
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15M
+DESCRIPTION:Vertrekken! Over een kwartier verzamelen
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-25-slaappiraten-kvdo@slaappiraten
+DTSTAMP:20261114T174500Z
+DTSTART;TZID=Europe/Brussels:20261125T194500
+DTEND;TZID=Europe/Brussels:20261125T205000
+SUMMARY:⚽ Slaappiraten - KVDO
+LOCATION:Zaal 3BC · Sporthal HoGent
+DESCRIPTION:Verzamelen om 19:45\, aftrap om 20:00.\nGeef je aanwezigheid door: https://zenobieat.github.io/slaappiraten/#match-2026-11-25-slaappiraten-kvdo
+URL:https://zenobieat.github.io/slaappiraten/#match-2026-11-25-slaappiraten-kvdo
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT1H
+DESCRIPTION:Over een uur verzamelen voor KVDO
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15M
+DESCRIPTION:Vertrekken! Over een kwartier verzamelen
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-02-slaappiraten-fc-emmatje@slaappiraten
+DTSTAMP:20261114T174500Z
+DTSTART;TZID=Europe/Brussels:20261202T194500
+DTEND;TZID=Europe/Brussels:20261202T205000
+SUMMARY:⚽ Slaappiraten - FC EMMATJE
+LOCATION:Zaal 3BC · Sporthal HoGent
+DESCRIPTION:Verzamelen om 19:45\, aftrap om 20:00.\nGeef je aanwezigheid door: https://zenobieat.github.io/slaappiraten/#match-2026-12-02-slaappiraten-fc-emmatje
+URL:https://zenobieat.github.io/slaappiraten/#match-2026-12-02-slaappiraten-fc-emmatje
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT1H
+DESCRIPTION:Over een uur verzamelen voor FC EMMATJE
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15M
+DESCRIPTION:Vertrekken! Over een kwartier verzamelen
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-16-fc-a-nul-slaappiraten@slaappiraten
+DTSTAMP:20261114T174500Z
+DTSTART;TZID=Europe/Brussels:20261216T194500
+DTEND;TZID=Europe/Brussels:20261216T205000
+SUMMARY:⚽ Slaappiraten - FC A-nul
+LOCATION:Zaal 3BC · Sporthal HoGent
+DESCRIPTION:Verzamelen om 19:45\, aftrap om 20:00.\nGeef je aanwezigheid door: https://zenobieat.github.io/slaappiraten/#match-2026-12-16-fc-a-nul-slaappiraten
+URL:https://zenobieat.github.io/slaappiraten/#match-2026-12-16-fc-a-nul-slaappiraten
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT1H
+DESCRIPTION:Over een uur verzamelen voor FC A-nul
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15M
+DESCRIPTION:Vertrekken! Over een kwartier verzamelen
+END:VALARM
+END:VEVENT
+END:VCALENDAR

@@ -74,10 +74,57 @@ button, input, select { font: inherit; color: inherit; }
 .avatar.lg { width: 64px; height: 64px; font-size: 34px; }
 @media (max-width: 380px) { .wordmark small { display: none; } .top .who span:last-child { display: none; } }
 
+/* Chat (Snapchat-stijl: gekleurde namen, lijntje links, geen bubbels) */
+.chat { display: grid; gap: 2px; padding-bottom: 84px; }
+.chat-day { text-align: center; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 14px 0 6px; }
+.chat-group { display: grid; gap: 2px; margin-top: 8px; }
+.chat-name { font-size: 11.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--c); display: flex; gap: 8px; align-items: baseline; }
+.chat-name time { font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--muted); font-size: 11px; }
+.chat-msg { position: relative; border-left: 3px solid var(--c); padding: 2px 10px; cursor: pointer; font-size: 15px; line-height: 1.4; overflow-wrap: anywhere; white-space: pre-wrap; border-radius: 0 6px 6px 0; }
+.chat-item.sel > .chat-msg { background: var(--surface-2); }
+.composer { position: fixed; left: 0; right: 0; bottom: calc(60px + env(safe-area-inset-bottom, 0px)); z-index: 19; background: var(--bg); border-top: 1px solid var(--line); }
+.composer form { max-width: 760px; margin: 0 auto; display: flex; gap: 8px; padding: 8px max(16px, env(safe-area-inset-right, 0px)) 8px max(16px, env(safe-area-inset-left, 0px)); }
+.composer input { flex: 1; border-radius: 999px !important; padding: 11px 16px !important; }
+.composer .send { width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--gold); color: var(--on-gold); display: grid; place-items: center; cursor: pointer; flex: none; }
+.composer .send svg { width: 20px; height: 20px; }
+.nav a { position: relative; }
+.nav .dot[hidden] { display: none; }
+.chat-msg.card-msg { border-left: 0; padding: 4px 0; }
+.chat-msg.bevel { font-family: var(--display, inherit); font-weight: 800; font-size: 17px; letter-spacing: .02em; color: var(--gold); text-transform: uppercase; }
+.chat-msg.bevel::before { content: "📣 Kapiteinsbevel"; display: block; font-size: 10.5px; letter-spacing: .14em; color: var(--muted); margin-bottom: 2px; }
+.ccard { border: 1px solid var(--line); border-left: 3px solid var(--c); border-radius: 12px; background: var(--surface); padding: 12px; display: grid; gap: 8px; max-width: 480px; white-space: normal; }
+.ccard .k { font-size: 10.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.ccard .t { font-weight: 800; font-size: 16px; }
+.ccard .acts { display: flex; gap: 6px; flex-wrap: wrap; }
+.ccard .acts button, .ccard .acts a { font-size: 13px; padding: 7px 11px; border-radius: 999px; border: 1.5px solid var(--line); background: transparent; color: var(--fg); cursor: pointer; text-decoration: none; font-weight: 600; }
+.ccard .acts [aria-pressed="true"] { background: var(--gold); border-color: var(--gold); color: var(--on-gold); }
+.ccard table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.ccard td { padding: 3px 4px; } .ccard td.n { text-align: right; font-variant-numeric: tabular-nums; } .ccard tr.us td { color: var(--gold); font-weight: 800; }
+.popt { position: relative; display: flex; justify-content: space-between; gap: 8px; width: 100%; text-align: left; border: 1.5px solid var(--line); border-radius: 10px; padding: 9px 11px; background: transparent; color: var(--fg); cursor: pointer; overflow: hidden; font: inherit; font-size: 14px; }
+.popt .pbar { position: absolute; top: 0; bottom: 0; left: 0; height: auto; border-radius: 0; background: color-mix(in srgb, var(--gold) 22%, transparent); z-index: 0; transition: width .3s; }
+.popt > span { position: relative; z-index: 1; } .popt[aria-pressed="true"] { border-color: var(--gold); font-weight: 700; }
+.reacts { display: flex; gap: 4px; flex-wrap: wrap; margin: 2px 0 2px 13px; }
+.reacts button { border: 1px solid var(--line); background: var(--surface); color: var(--fg); border-radius: 999px; padding: 1px 8px; font-size: 13px; cursor: pointer; }
+.reacts button[aria-pressed="true"] { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 18%, transparent); }
+.msgbar { display: none; gap: 4px; margin: 2px 0 4px 13px; flex-wrap: wrap; }
+.chat-item.sel .msgbar { display: flex; }
+.msgbar button { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 4px 9px; font-size: 16px; cursor: pointer; color: var(--fg); }
+.msgbar .del { font-size: 12px; font-weight: 700; color: var(--bad); }
+.tray { max-width: 760px; margin: 0 auto; padding: 10px 16px 0; display: flex; gap: 6px; flex-wrap: wrap; }
+.tray button { border: 1.5px solid var(--line); background: var(--surface); color: var(--fg); border-radius: 999px; padding: 8px 12px; font-size: 13.5px; font-weight: 600; cursor: pointer; }
+.tray button[aria-pressed="true"] { border-color: var(--gold); color: var(--gold); }
+.tray form { display: grid; gap: 6px; width: 100%; }
+.composer .plus { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--line); background: transparent; color: var(--fg); font-size: 22px; line-height: 1; cursor: pointer; flex: none; transition: transform .2s; }
+.composer .plus[aria-expanded="true"] { transform: rotate(45deg); border-color: var(--gold); color: var(--gold); }
+.mention { color: var(--c); font-weight: 800; }
+.cal-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.nav .dot { position: absolute; top: 5px; left: calc(50% + 8px); min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px; background: var(--bad); color: #fff; font-size: 10px; font-weight: 800; display: grid; place-items: center; }
+@media (min-width: 900px) { .composer { bottom: 0; } .nav .dot { top: 8px; left: auto; right: 18%; } }
+
 /* Nav */
 .nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--surface); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
-.nav ul { list-style: none; margin: 0 auto; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); max-width: 760px; }
-.nav a { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 2px 9px; text-decoration: none; color: var(--muted); font-size: 11.5px; font-weight: 600; letter-spacing: .02em; }
+.nav ul { list-style: none; margin: 0 auto; padding: 0; display: grid; grid-template-columns: repeat(6, 1fr); max-width: 760px; }
+.nav a { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 2px 9px; text-decoration: none; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: 0; }
 .nav a svg { width: 22px; height: 22px; }
 .nav a[aria-current="page"] { color: var(--gold-text); }
 .nav a[aria-current="page"] svg { stroke: var(--gold); }
@@ -297,6 +344,7 @@ details.who .who-list { margin-top: 12px; padding-top: 12px; border-top: 1px sol
   <ul>
     <li><a href="#home" data-v="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</a></li>
     <li><a href="#aanwezig" data-v="aanwezig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="17" rx="2"/><path d="M9 3v3M15 3v3M8.5 13l2.5 2.5 4.5-5"/></svg>Aanwezig</a></li>
+    <li><a href="#chat" data-v="chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>Chat<span class="dot" id="chat-dot" hidden></span></a></li>
     <li><a href="#schema" data-v="schema"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Schema</a></li>
     <li><a href="#ranking" data-v="ranking"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 6h3v2a3 3 0 0 1-3 3M7 6H4v2a3 3 0 0 0 3 3"/></svg>Ranking</a></li>
     <li><a href="#profiel" data-v="profiel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Profiel</a></li>
@@ -352,6 +400,17 @@ function kickoff(m) { return new Date(`${m.date}T${m.time || "20:00"}:00`); }
 function played(m) { return m.homeScore != null && m.awayScore != null; }
 function side(m) { const home = isUs(m.home); return { home, opp: home ? m.away : m.home, us: home ? m.homeScore : m.awayScore, them: home ? m.awayScore : m.homeScore }; }
 function result(m) { const v = side(m); return v.us > v.them ? "W" : v.us < v.them ? "V" : "G"; }
+const hhmm = (d) => `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+const arrival = (m) => new Date(kickoff(m).getTime() - 15 * 60e3);
+function calUrlGoogle(m) {
+  const st = arrival(m), en = new Date(kickoff(m).getTime() + 50 * 60e3); const g = (d) => d.toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent("⚽ Slaappiraten - " + side(m).opp)}&dates=${g(st)}/${g(en)}&location=${encodeURIComponent(m.venue || "Sporthal HoGent")}&details=${encodeURIComponent(`Verzamelen om ${hhmm(st)}, aftrap om ${m.time || "20:00"}.`)}`;
+}
+function calButtons(m) {
+  return `<div class="stack" style="gap:6px"><div class="cal-row"><a class="btn sm" href="data/ics/${encodeURIComponent(m.id)}.ics">📅 Zet in mijn agenda</a><a class="btn ghost sm" href="${calUrlGoogle(m)}" target="_blank" rel="noopener">Google Agenda</a></div>
+  <p class="muted" style="font-size:12.5px;margin:0">Verzamelen om <b>${hhmm(arrival(m))}</b>${m.time ? "" : " (uur nog niet bevestigd)"}, een kwartier voor de aftrap. Je gsm geeft een melding 1 uur en 15 minuten op voorhand.</p></div>`;
+}
+function feedUrl() { const base = location.protocol.startsWith("http") ? location.host + location.pathname.replace(/[^/]*$/, "") : "zenobieat.github.io/slaappiraten/"; return "webcal://" + base + "data/slaappiraten.ics"; }
 function fmtDate(m, long) { const d = kickoff(m); return `${long ? LONGDAYS[d.getDay()] : DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`; }
 
 /* ---------- backends ---------- */
@@ -372,11 +431,14 @@ function seedDemo() {
   [0,1,2,5].forEach((x) => v(x, "zeebonk", 6)); [0,2,4].forEach((x) => v(x, "schipbreuk", 3)); [0,1,2,3,4].forEach((x) => v(x, "slaapkop", 8));
   preds.push({ match_id: m1, player_id: "demo2", us: 15, them: 4 }, { match_id: m1, player_id: "demo1", us: 8, them: 3 }, { match_id: m1, player_id: "demo3", us: 4, them: 6 });
   preds.push({ match_id: m2, player_id: "demo0", us: 8, them: 5 }, { match_id: m2, player_id: "demo2", us: 10, them: 3 }, { match_id: m2, player_id: "demo1", us: 6, them: 6 });
-  return { uid: null, profiles, attendance: att, goals, votes, predictions: preds };
+  const t0 = Date.now() - 26 * 3600e3; let k = 0;
+  const msg = (pi, body, mins) => ({ id: ++k, player_id: "demo" + pi, body, created_at: new Date(t0 + mins * 60e3).toISOString() });
+  const messages = [msg(0, "Woensdag 20u tegen The Ghentlemen. Iedereen aanwezigheid doorgeven aub 🏴‍☠️", 0), msg(2, "Ik ben er!", 3), msg(4, "Ook. Wie brengt de ballen mee?", 5), msg(4, "Vorige keer was ik het al 😤", 5.5), msg(8, "zzz ik kom misschien, hangt af van mijn les", 40), msg(1, "Robbe de Slaapkop award staat al klaar 😂", 42), msg(0, "§match:" + m2, 44), msg(6, "Na de match iets drinken?", 1500), msg(0, "Uiteraard 🍻", 1502), msg(0, "§poll:Waar na de match?|Overpoort|Kot van Lars|Gewoon slapen 😴", 1503), msg(2, "§vote:10:0", 1504), msg(4, "§vote:10:1", 1505), msg(6, "§vote:10:0", 1506), msg(8, "§vote:10:2", 1507), msg(2, "§react:9:🔥", 1508), msg(4, "§react:9:🔥", 1509), msg(8, "§react:6:😂", 1510), msg(1, "§lot:demo4|brengt de ballen mee ⚽", 1512), msg(4, "Ik weer 😭", 1513)];
+  return { uid: null, profiles, attendance: att, goals, votes, predictions: preds, messages };
 }
-const KEYS = { profiles: ["id"], attendance: ["match_id", "player_id"], goals: ["match_id", "player_id"], votes: ["match_id", "voter_id", "category"], predictions: ["match_id", "player_id"] };
+const KEYS = { messages: ["id"], profiles: ["id"], attendance: ["match_id", "player_id"], goals: ["match_id", "player_id"], votes: ["match_id", "voter_id", "category"], predictions: ["match_id", "player_id"] };
 const Demo = {
-  mode: "demo", key: "slaappiraten-demo-v2",
+  mode: "demo", key: "slaappiraten-demo-v3",
   async init() { let db = null; try { db = JSON.parse(store.get(this.key)); } catch {} this.db = db || seedDemo(); },
   save() { store.set(this.key, JSON.stringify(this.db)); },
   async fetchAll() { return this.db; },
@@ -385,7 +447,10 @@ const Demo = {
   async signOut() { this.db.uid = null; this.save(); },
   async upsert(table, row) { const arr = this.db[table]; const i = arr.findIndex((r) => KEYS[table].every((k) => r[k] === row[k])); if (i >= 0) arr[i] = { ...arr[i], ...row }; else arr.push(row); this.save(); },
   async remove(table, match) { this.db[table] = this.db[table].filter((r) => !Object.keys(match).every((k) => r[k] === match[k])); this.save(); },
-  reset() { const uid = this.db.uid; this.db = seedDemo(); this.db.uid = uid; this.save(); }
+  reset() { const uid = this.db.uid; this.db = seedDemo(); this.db.uid = uid; this.save(); },
+  async sendMessage(body) { const m = { id: Date.now(), player_id: this.db.uid, body, created_at: new Date().toISOString() }; (this.db.messages ||= []).push(m); this.save(); return m; },
+  async deleteMessage(id) { this.db.messages = (this.db.messages || []).filter((m) => m.id !== id); this.save(); },
+  subscribeChat() {}
 };
 function loadScript(src) { return new Promise((ok, bad) => { const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = () => bad(new Error("Kon " + src + " niet laden")); document.head.appendChild(s); }); }
 const Live = {
@@ -403,9 +468,11 @@ const Live = {
   },
   uid() { return this._uid; },
   async fetchAll() {
-    const tables = Object.keys(KEYS);
+    const tables = Object.keys(KEYS).filter((t) => t !== "messages");
     const res = await Promise.all(tables.map((t) => this.c.from(t).select("*")));
     const out = {}; res.forEach((r, i) => { if (r.error) throw r.error; out[tables[i]] = r.data; });
+    out.messages = [];
+    if (this._uid) { const m = await this.c.from("messages").select("*").order("created_at", { ascending: false }).limit(300); if (!m.error) out.messages = m.data.reverse(); }
     return out;
   },
   async signIn(email, password) { const { error } = await this.c.auth.signInWithPassword({ email, password }); if (error) throw error; },
@@ -417,7 +484,16 @@ const Live = {
   async updatePassword(password) { const { error } = await this.c.auth.updateUser({ password }); if (error) throw error; this.recovery = false; },
   async signOut() { await this.c.auth.signOut(); this._uid = null; },
   async upsert(table, row) { const { error } = await this.c.from(table).upsert(row); if (error) throw error; },
-  async remove(table, match) { const { error } = await this.c.from(table).delete().match(match); if (error) throw error; }
+  async remove(table, match) { const { error } = await this.c.from(table).delete().match(match); if (error) throw error; },
+  async sendMessage(body) { const { data, error } = await this.c.from("messages").insert({ body, player_id: this._uid }).select().single(); if (error) throw error; return data; },
+  async deleteMessage(id) { const { error } = await this.c.from("messages").delete().eq("id", id); if (error) throw error; },
+  subscribeChat() {
+    if (this._chan || !this._uid) return;
+    this._chan = this.c.channel("ploegchat")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "messages" }, (p) => { if (!S.db.messages.some((m) => m.id === p.new.id)) { S.db.messages.push(p.new); onChatUpdate(); notifyChat(p.new); } })
+      .on("postgres_changes", { event: "DELETE", schema: "public", table: "messages" }, (p) => { S.db.messages = S.db.messages.filter((m) => m.id !== p.old.id); onChatUpdate(); })
+      .subscribe();
+  }
 };
 function niceError(e) {
   const m = String(e?.message || e);
@@ -435,7 +511,7 @@ function niceError(e) {
 }
 
 /* ---------- state ---------- */
-const S = { api: null, data: { matches: [], standings: [] }, db: { profiles: [], attendance: [], goals: [], votes: [], predictions: [] }, schemaTab: store.get("sp-schema-tab") || "wedstrijden", authTab: "login" };
+const S = { api: null, data: { matches: [], standings: [] }, db: { profiles: [], attendance: [], goals: [], votes: [], predictions: [], messages: [] }, schemaTab: store.get("sp-schema-tab") || "wedstrijden", authTab: "login" };
 const me = () => S.db.profiles.find((p) => p.id === S.api.uid()) || null;
 const player = (id) => S.db.profiles.find((p) => p.id === id);
 const pname = (p) => (p ? p.nickname || p.name : "Onbekende piraat");
@@ -660,6 +736,124 @@ function viewInstall() {
   <p class="muted" style="font-size:13px;margin:0">Deel deze uitleg met de ploeg: stuur de link van de site in de groepschat en zeg "Profiel → Op je beginscherm".</p></div>`;
 }
 
+/* ---------- ploegchat ---------- */
+const CHAT_COLORS = ["#e2574c", "#3f8cff", "#2fb67c", "#b46cf0", "#f08c2e", "#16a9b8", "#e0559b", "#8a9a2b", "#c9a467", "#6a7cff"];
+function chatColor(pid) { let h = 0; for (const ch of String(pid)) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return CHAT_COLORS[h % CHAT_COLORS.length]; }
+let chatDraft = "";
+function dayLabel(d) { const t = new Date(); const y = new Date(Date.now() - 864e5); const same = (a, b) => a.toDateString() === b.toDateString(); return same(d, t) ? "Vandaag" : same(d, y) ? "Gisteren" : `${LONGDAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`; }
+const hm = (d) => `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+const parseMsg = (body) => { if (!body || body[0] !== "§") return null; const i = body.indexOf(":"); return i < 0 ? { t: body.slice(1), rest: "" } : { t: body.slice(1, i), rest: body.slice(i + 1) }; };
+const HIDDEN = ["vote", "react"];
+const isHidden = (m) => HIDDEN.includes(parseMsg(m.body)?.t);
+const REACTS = ["😂", "🔥", "💀", "🏴‍☠️", "👍", "😴"];
+const LOTS = ["brengt de ballen mee ⚽", "trakteert de eerste ronde 🍻", "neemt de hesjes mee 🦺", "staat de eerste helft in doel 🧤", "rijdt de Bob 🚗", "kiest de muziek in de kleedkamer 🎶", "moet een goal maken of trakteert 🎯"];
+let chatTray = false, pirateMode = store.get("sp-pirate") === "1";
+function chatMeta() {
+  const reacts = {}, votes = {};
+  (S.db.messages || []).forEach((m) => { const x = parseMsg(m.body); if (!x) return; const [id, val] = [x.rest.split(":")[0], x.rest.slice(x.rest.indexOf(":") + 1)];
+    if (x.t === "react") { const r = ((reacts[id] ||= {})[val] ||= new Set()); r.has(m.player_id) ? r.delete(m.player_id) : r.add(m.player_id); }
+    if (x.t === "vote") (votes[id] ||= {})[m.player_id] = Number(val); });
+  return { reacts, votes };
+}
+const mention = (pid) => `<span class="mention" style="--c:${chatColor(pid)}">@${esc(pname(player(pid)))}</span>`;
+function chatRsvp(mm) {
+  const u = me(); if (!u) return ""; const cur = att(mm.id, u.id); const yes = attFor(mm.id).filter((a) => a.status === "yes").length; const full = yes >= CONFIG.maxPlayers && cur !== "yes";
+  const o = full ? [["fan", "📣 Supporteren"], ["maybe", "🤔 Misschien"], ["no", "❌ Kan niet"]] : [["yes", "✅ Aan boord"], ["maybe", "🤔 Misschien"], ["no", "❌ Kan niet"]];
+  return o.map(([st, t]) => `<button type="button" data-act="rsvp" data-m="${esc(mm.id)}" data-s="${st}" aria-pressed="${cur === st}">${t}</button>`).join("");
+}
+function matchCard(mm, kicker) {
+  const s2 = side(mm); const yes = attFor(mm.id).filter((a) => a.status === "yes").length;
+  return `<div class="k">${kicker}</div><div class="t">Slaappiraten – ${esc(s2.opp)}</div>
+  <div class="muted" style="font-size:13px">${fmtDate(mm, true)} · verzamelen <b>${hhmm(arrival(mm))}</b> · aftrap ${esc(mm.time || "20:00")} · <b>${yes}/${CONFIG.maxPlayers}</b> aan boord</div>
+  <div class="acts">${chatRsvp(mm)}</div><div class="acts"><a href="data/ics/${encodeURIComponent(mm.id)}.ics">📅 Agenda</a><a href="#match-${esc(mm.id)}">Details →</a></div>`;
+}
+function renderBody(m, meta) {
+  const x = parseMsg(m.body); const sender = player(m.player_id); const u = me();
+  if (!x) return { cls: "", html: esc(m.body) };
+  const box = (inner) => ({ cls: "card-msg", html: `<div class="ccard">${inner}</div>` });
+  if (x.t === "bevel" && sender?.is_admin) return { cls: "bevel", html: esc(x.rest) };
+  if (x.t === "match") { const mm = (S.data.matches || []).find((q) => q.id === x.rest); if (mm) return box(matchCard(mm, played(mm) ? "⚽ Match" : "⚽ Matchoproep")); }
+  if (x.t === "stand") { const rows = S.data.standings || []; if (rows.length) { const ui = rows.findIndex((r) => isUs(r.team)); const show = rows.filter((r, i) => i < 3 || Math.abs(i - ui) <= 1);
+    return box(`<div class="k">📊 Live stand · ${esc(S.data.poule || "")}</div><table>${show.map((r) => `<tr class="${isUs(r.team) ? "us" : ""}"><td class="n">${r.rank}.</td><td>${esc(r.team)}</td><td class="n">${r.played}g</td><td class="n">${r.goalsFor - r.goalsAgainst > 0 ? "+" : ""}${r.goalsFor - r.goalsAgainst}</td><td class="n"><b>${r.points}p</b></td></tr>`).join("")}</table><div class="acts"><button type="button" data-act="gostand">Volledige stand →</button></div>`); } }
+  if (x.t === "poll") { const [q, ...opts] = x.rest.split("|"); const v = meta.votes[m.id] || {}; const total = Object.values(v).filter((i) => i >= 0).length; const mine = u ? v[u.id] : undefined;
+    return box(`<div class="k">🗳️ Poll · ${total} stem${total === 1 ? "" : "men"}</div><div class="t">${esc(q)}</div>${opts.map((o, i) => { const voters = Object.keys(v).filter((pid) => v[pid] === i); const pct = total ? Math.round((voters.length / total) * 100) : 0;
+      return `<button type="button" class="popt" data-act="chatvote" data-id="${esc(m.id)}" data-i="${mine === i ? -1 : i}" aria-pressed="${mine === i}"><i class="pbar" style="width:${pct}%"></i><span>${esc(o)}</span><span>${voters.map((pid) => av(player(pid))).join("")} ${pct}%</span></button>`; }).join("")}`); }
+  if (x.t === "wekker") { const [mid, ids] = x.rest.split("|"); const mm = (S.data.matches || []).find((q) => q.id === mid); const list = (ids || "").split(",").filter(Boolean);
+    const still = mm ? list.filter((pid) => !att(mid, pid)) : list;
+    return box(`<div class="k">⏰ Slaapalarm</div><div class="t">${list.length ? "WAKKER WORDEN! 📢" : "Iedereen is wakker 🎉"}</div>${list.length ? `<div style="font-size:14px">${list.map((pid) => (still.includes(pid) ? mention(pid) : `<s class="muted">@${esc(pname(player(pid)))}</s>`)).join(" ")}</div><div class="muted" style="font-size:13px">${still.length ? `${still.length} slaapkop${still.length === 1 ? "" : "pen"} moet${still.length === 1 ? "" : "en"} nog laten weten of ze komen.` : "Iedereen heeft geantwoord. Goed zo, matrozen."}</div>` : ""}${mm && u && list.includes(u.id) ? `<div class="acts">${chatRsvp(mm)}</div>` : ""}`); }
+  if (x.t === "lot") { const [pid, reason] = x.rest.split("|"); return box(`<div class="k">🎲 Het lot heeft gesproken</div><div class="t">${mention(pid)} ${esc(reason || "")}</div><div class="muted" style="font-size:12.5px">Geen discussie, de dobbelsteen is heilig.</div>`); }
+  return { cls: "", html: esc(m.body) };
+}
+function chatList() {
+  const u = me(); const msgs = (S.db.messages || []).filter((m) => !isHidden(m)); const meta = chatMeta();
+  if (!msgs.length) return `<div class="empty-state">Nog geen berichten. Trap de chat af met de + knop! 🏴‍☠️</div>`;
+  let out = "", lastDay = "", lastSender = null, lastTime = 0;
+  msgs.forEach((m) => {
+    const d = new Date(m.created_at); const day = d.toDateString();
+    if (day !== lastDay) { out += `${lastSender !== null ? "</div>" : ""}<p class="chat-day">${dayLabel(d)}</p>`; lastDay = day; lastSender = null; }
+    const newGroup = m.player_id !== lastSender || d - lastTime > 15 * 60e3;
+    if (newGroup) { const p = player(m.player_id); const mine = u && m.player_id === u.id; out += `${lastSender !== null ? "</div>" : ""}<div class="chat-group" style="--c:${mine ? "var(--bad)" : chatColor(m.player_id)}"><div class="chat-name">${mine ? "Ik" : esc(pname(p))}<time datetime="${esc(m.created_at)}">${hm(d)}</time></div>`; }
+    const canDel = u && (m.player_id === u.id || u.is_admin); const b = renderBody(m, meta);
+    const rx = meta.reacts[m.id] || {}; const chips = Object.entries(rx).filter(([, set]) => set.size);
+    out += `<div class="chat-item"><div class="chat-msg ${b.cls}" data-act="chatsel" tabindex="0">${b.html}</div>`
+      + (chips.length ? `<div class="reacts">${chips.map(([e, set]) => `<button type="button" data-act="chatreact" data-id="${esc(m.id)}" data-e="${e}" aria-pressed="${!!u && set.has(u.id)}" title="${esc([...set].map((pid) => pname(player(pid))).join(", "))}">${e} ${set.size}</button>`).join("")}</div>` : "")
+      + (u ? `<div class="msgbar">${REACTS.map((e) => `<button type="button" data-act="chatreact" data-id="${esc(m.id)}" data-e="${e}" aria-label="Reageer met ${e}">${e}</button>`).join("")}${canDel ? `<button class="del" type="button" data-act="chatdel" data-id="${esc(m.id)}">Verwijder</button>` : ""}</div>` : "")
+      + `</div>`;
+    lastSender = m.player_id; lastTime = d;
+  });
+  return out + "</div>";
+}
+function trayHtml() {
+  if (!chatTray) return "";
+  if (chatTray === "poll") return `<div class="tray"><form data-form="poll"><input name="q" maxlength="120" placeholder="Vraag, bv. Waar gaan we na de match iets drinken?" required><input name="o1" maxlength="60" placeholder="Optie 1" required><input name="o2" maxlength="60" placeholder="Optie 2" required><input name="o3" maxlength="60" placeholder="Optie 3 (mag leeg)"><input name="o4" maxlength="60" placeholder="Optie 4 (mag leeg)"><div class="cal-row"><button type="submit" class="btn sm">Poll sturen</button><button type="button" data-act="tray" data-t="main">Terug</button></div></form></div>`;
+  const n = nextMatch();
+  return `<div class="tray" role="group" aria-label="Snelle acties">
+    ${n ? `<button type="button" data-act="quick" data-q="match">⚽ Matchoproep</button>` : ""}
+    <button type="button" data-act="quick" data-q="stand">📊 Stand</button>
+    <button type="button" data-act="tray" data-t="poll">🗳️ Poll</button>
+    ${n ? `<button type="button" data-act="quick" data-q="wekker">⏰ Slaapalarm</button>` : ""}
+    <button type="button" data-act="quick" data-q="lot">🎲 Wie draait op?</button>
+    <button type="button" data-act="quick" data-q="pirate" aria-pressed="${pirateMode}">🦜 Piratentaal ${pirateMode ? "aan" : "uit"}</button>
+    ${isAdmin() ? `<button type="button" data-act="quick" data-q="bevel">📣 Kapiteinsbevel</button>` : ""}
+    ${"Notification" in window ? `<button type="button" data-act="quick" data-q="notif" aria-pressed="${Notification.permission === "granted" && store.get("sp-notif") === "1"}">🔔 Meldingen</button>` : ""}
+  </div>`;
+}
+function composerHtml() {
+  return `<div class="composer" id="composer">${trayHtml()}<form data-form="chat"><button type="button" class="plus" data-act="tray" data-t="${chatTray ? "" : "main"}" aria-expanded="${!!chatTray}" aria-label="Snelle acties">+</button><label for="chat-in" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Bericht</label><input id="chat-in" name="body" type="text" maxlength="400" autocomplete="off" placeholder="${pirateMode ? "Ahoy, stuur een bericht 🦜" : "Stuur een bericht"}" value="${esc(chatDraft)}" enterkeyhint="send"><button class="send" type="submit" aria-label="Verstuur"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></form></div>`;
+}
+function fitChat() { const c = document.getElementById("composer"), l = document.getElementById("chat-list"); if (c && l) l.style.paddingBottom = c.offsetHeight + 24 + "px"; }
+function rerenderComposer() { const c = document.getElementById("composer"); if (c) c.outerHTML = composerHtml(); fitChat(); }
+function viewChat() {
+  const u = me();
+  if (!u) return `<div class="stack"><div><p class="eyebrow">Ploegchat</p><h1>Kajuit</h1><hr class="rule"></div><div class="card empty-state">De chat is alleen voor de ploeg. <a href="#profiel">Log in</a> om mee te praten.</div></div>`;
+  return `<div><p class="eyebrow">Ploegchat · alleen voor de bemanning</p><h1>Kajuit</h1><hr class="rule"></div>
+  <div class="chat" id="chat-list" aria-live="polite">${chatList()}</div>${composerHtml()}`;
+}
+const PIRATE = [[/\b(hallo|hoi|hey|hej|yo|salut)\b/gi, "Ahoy"], [/\bja\b/gi, "Aye"], [/\bjongens\b|\bgasten\b|\bmannen\b/gi, "bemanning"], [/\bvrienden\b/gi, "maten"], [/\bvriend\b/gi, "maat"], [/\b(bier|pint|pintje|pinten|pintjes)\b/gi, "grog"], [/\b(geld|euro|euros)\b/gi, "dukaten"], [/\b(auto|fiets)\b/gi, "schip"], [/\b(huis|kot)\b/gi, "kajuit"], [/\b(eten|frietjes|friet)\b/gi, "scheepsbeschuit"], [/\bslapen\b/gi, "in mijn kooi kruipen"], [/\b(top|nice|goed|super)\b/gi, "zeemansgoed"], [/\bwinnen\b/gi, "de buit binnenhalen"], [/\bverliezen\b/gi, "zinken"], [/\bscheidsrechter\b/gi, "landrot"], [/\bmatch\b/gi, "zeeslag"], [/\bgoal\b/gi, "kanonskogel"]];
+function pirate(t) { let o = t; PIRATE.forEach(([re, w]) => (o = o.replace(re, w))); const end = [" Arrr!", " Yo-ho-ho!", " 🏴‍☠️", " Bij Neptunus!", " Arrr 🦜"]; return o + end[Math.floor(Math.random() * end.length)]; }
+async function chatSend(body) {
+  if (!me()) return false;
+  try { const row = await S.api.sendMessage(body); if (row && !S.db.messages.some((m) => m.id === row.id)) S.db.messages.push(row); onChatUpdate(); return true; }
+  catch (err) { toast(/relation .*messages|does not exist|schema cache/i.test(String(err?.message)) ? "De chat wordt nog geactiveerd in de database." : niceError(err)); return false; }
+}
+function msgPreview(m) { const x = parseMsg(m.body); if (!x) return m.body; return { match: "⚽ Matchoproep: geef je aanwezigheid door", stand: "📊 deelde de stand", poll: "🗳️ Poll: " + x.rest.split("|")[0], wekker: "⏰ Slaapalarm! Laat weten of je komt", lot: "🎲 Het lot heeft gesproken", bevel: "📣 " + x.rest }[x.t] || ""; }
+function notifyChat(m) {
+  const u = me(); if (!u || m.player_id === u.id || isHidden(m) || store.get("sp-notif") !== "1" || !("Notification" in window) || Notification.permission !== "granted") return;
+  if (!document.hidden && currentView()[0] === "chat") return;
+  try { const n = new Notification(pname(player(m.player_id)) + " · Kajuit", { body: msgPreview(m), icon: "icon-192.png", tag: "chat" }); n.onclick = () => { window.focus(); location.hash = "chat"; }; } catch {}
+}
+function markChatSeen() { const last = (S.db.messages || []).slice(-1)[0]; if (last) store.set("sp-chat-seen", last.created_at); }
+function updateChatDot() {
+  const dot = document.getElementById("chat-dot"); if (!dot) return; const u = me(); const seen = store.get("sp-chat-seen") || "";
+  const n = u ? (S.db.messages || []).filter((m) => m.player_id !== u.id && m.created_at > seen && !isHidden(m)).length : 0;
+  dot.hidden = !n || currentView()[0] === "chat"; dot.textContent = n > 9 ? "9+" : String(n);
+}
+function scrollChatBottom() { window.scrollTo(0, document.body.scrollHeight); }
+function onChatUpdate() {
+  if (currentView()[0] === "chat") { const el = document.getElementById("chat-list"); const nearBottom = window.innerHeight + window.scrollY > document.body.scrollHeight - 160; if (el) { const sel = el.querySelector(".chat-item.sel [data-act=chatsel]"); el.innerHTML = chatList(); } markChatSeen(); if (nearBottom) scrollChatBottom(); }
+  updateChatDot();
+}
+
 /* ---------- views ---------- */
 function viewHome() {
   const n = nextMatch(); const st = seasonStats(); const lastPlayed = playedOurs().slice(-1)[0];
@@ -673,6 +867,7 @@ function viewHome() {
       <p class="meta"><span>${fmtDate(n, true)}</span><span>${esc(n.time || "")}</span><span>${esc(n.venue || "")}</span></p>
       ${countdown(n)}
       <div class="stack" style="gap:10px"><h2>Ben jij erbij?</h2>${rsvpButtons(n.id)}${whoIsComing(n.id)}</div>
+      ${calButtons(n)}
     </section>
     ${predictBox(n)}
     ${scouting(n)}` : `<section class="hero">${crestBg}<p class="eyebrow">Volgende wedstrijd</p><p style="margin:0">Geen geplande wedstrijden meer in het schema. Rust uit, piraten.</p></section>`}
@@ -713,7 +908,8 @@ function viewSchema() {
   return `<div class="stack"><div class="row" style="flex-wrap:wrap"><div class="grow"><p class="eyebrow">${esc(S.data.poule || "")} · Minivoetbal</p><h1>${tab === "stand" ? "Stand" : "Schema"}</h1><hr class="rule"></div>
     <div class="seg" role="group" aria-label="Kies weergave"><button type="button" data-act="schematab" data-t="wedstrijden" aria-pressed="${tab === "wedstrijden"}">Wedstrijden</button><button type="button" data-act="schematab" data-t="stand" aria-pressed="${tab === "stand"}">Stand</button></div></div>
   ${tab === "stand" ? `<div class="card">${standingsTable()}</div><p class="muted" style="font-size:12.5px;margin:0">G gespeeld · W gewonnen · GL gelijk · V verloren · DV/DT doelpunten voor/tegen · P punten</p>`
-    : `<div class="card list">${ours().map(matchRow).join("") || `<div class="empty-state">Nog geen wedstrijden.</div>`}</div>`}
+    : `<div class="card list">${ours().map(matchRow).join("") || `<div class="empty-state">Nog geen wedstrijden.</div>`}</div>
+    <section class="card stack" style="gap:8px"><b>📅 Alle matchen automatisch in je agenda</b><p class="muted" style="font-size:13px;margin:0">Eén keer abonneren en nieuwe matchen of gewijzigde uren komen er vanzelf bij. Elke match staat er een kwartier voor de aftrap in, zodat je op tijd bent.</p><div class="cal-row"><a class="btn sm" href="${feedUrl()}">iPhone of Mac: abonneren</a><a class="btn ghost sm" href="https://calendar.google.com/calendar/r?cid=${encodeURIComponent(feedUrl())}" target="_blank" rel="noopener">Google Agenda</a></div></section>`}
   ${updatedLine()}</div>`;
 }
 function viewRanking() {
@@ -762,7 +958,7 @@ function viewMatch(id) {
   <section class="hero">${crestBg}<p class="eyebrow">${fmtDate(m, true)}${m.time ? " · " + esc(m.time) : ""} · ${esc(m.venue || "")}</p>${versus(m)}
     ${pl ? `<p class="meta"><span class="res ${result(m)}">${result(m)}</span><span>${verdict[result(m)]}</span></p>` : countdown(m)}</section>
 
-  ${!pl ? `<section class="section"><h2>Ben jij erbij?</h2>${rsvpButtons(m.id)}<div class="card">${whoIsComing(m.id, true)}</div></section>${predictBox(m)}${scouting(m)}` : ""}
+  ${!pl ? `<section class="section"><h2>Ben jij erbij?</h2>${rsvpButtons(m.id)}<div class="card">${whoIsComing(m.id, true)}</div>${calButtons(m)}</section>${predictBox(m)}${scouting(m)}` : ""}
 
   ${pl ? `<section class="section" aria-labelledby="goals-h"><div class="section-head"><h2 id="goals-h">Doelpunten</h2><span class="pill ${loggedGoals === s.us ? "good" : "warn"}">${loggedGoals}/${s.us} doorgegeven</span></div>
     ${u ? `<div class="card row" style="flex-wrap:wrap"><div class="grow" style="min-width:140px"><b>Jouw match</b><div class="muted" style="font-size:12.5px">Geef eerlijk door. De ploeg kijkt mee.</div></div><div class="row"><span style="font-size:13px">Goals</span>${stepper(m.id, u.id, "goals", myGoals.goals || 0)}</div><div class="row"><span style="font-size:13px">Assists</span>${stepper(m.id, u.id, "assists", myGoals.assists || 0)}</div></div>` : `<div class="banner"><a href="#profiel">Log in</a> om je goals door te geven.</div>`}
@@ -829,19 +1025,24 @@ function viewLogin() {
 }
 
 /* ---------- router ---------- */
-function currentView() { const h = decodeURIComponent(location.hash.slice(1)); if (!h || h.includes("=")) return ["home"]; if (h.startsWith("match-")) return ["match", h.slice(6)]; return [["home", "aanwezig", "schema", "ranking", "profiel", "installeren"].includes(h) ? h : "home"]; }
+function currentView() { const h = decodeURIComponent(location.hash.slice(1)); if (!h || h.includes("=")) return ["home"]; if (h.startsWith("match-")) return ["match", h.slice(6)]; return [["home", "aanwezig", "schema", "ranking", "profiel", "installeren", "chat"].includes(h) ? h : "home"]; }
 function render() {
   const [v, arg] = currentView(); const app = $("#app");
-  const html = v === "aanwezig" ? viewAanwezig() : v === "schema" ? viewSchema() : v === "ranking" ? viewRanking() : v === "profiel" ? viewProfiel() : v === "match" ? viewMatch(arg) : v === "installeren" ? viewInstall() : viewHome();
-  const demo = S.api.mode === "demo" ? `<div class="banner" style="margin-bottom:14px">Voorbeeldmodus: spelers, goals en stemmen zijn verzonnen en blijven in jouw browser. Het schema en de stand komen echt uit Tournify.</div>` : "";
+  const html = v === "aanwezig" ? viewAanwezig() : v === "schema" ? viewSchema() : v === "ranking" ? viewRanking() : v === "profiel" ? viewProfiel() : v === "match" ? viewMatch(arg) : v === "installeren" ? viewInstall() : v === "chat" ? viewChat() : viewHome();
+  const demo = S.api.mode === "demo" && v !== "chat" ? `<div class="banner" style="margin-bottom:14px">Voorbeeldmodus: spelers, goals en stemmen zijn verzonnen en blijven in jouw browser. Het schema en de stand komen echt uit Tournify.</div>` : "";
+  const keepY = v === "chat" && S.lastView === "chat" ? window.scrollY : null;
   app.innerHTML = demo + html;
+  if (keepY != null) window.scrollTo(0, keepY);
   const navV = v === "match" ? "schema" : v === "installeren" ? "profiel" : v;
   document.querySelectorAll(".nav a").forEach((a) => { if (a.dataset.v === navV) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
   const u = me(); $("#who").innerHTML = u ? `<span class="avatar">${av(u)}</span><span>${esc(pname(u))}</span>` : `<span class="btn sm ghost">Inloggen</span>`;
   const tp = $("#theme-pick"); if (tp) tp.value = store.get("sp-theme") || "";
+  if (v === "chat") { fitChat(); markChatSeen(); if (S.lastView !== "chat") requestAnimationFrame(scrollChatBottom); }
+  S.lastView = v;
+  updateChatDot(); if (me() && S.api.subscribeChat) S.api.subscribeChat();
 }
 let lastHash = "";
-window.addEventListener("hashchange", () => { render(); if (location.hash !== lastHash) { window.scrollTo(0, 0); lastHash = location.hash; } });
+window.addEventListener("hashchange", () => { S.lastView = null; render(); if (location.hash !== lastHash) { window.scrollTo(0, 0); lastHash = location.hash; } });
 
 /* ---------- actions ---------- */
 async function act(fn, okMsg) { try { await fn(); await reloadDb(); render(); if (okMsg) toast(okMsg); return true; } catch (e) { console.error(e); toast(niceError(e)); return false; } }
@@ -858,6 +1059,24 @@ document.addEventListener("click", (e) => {
     case "psave": { if (!u) return; const dr = pdraft[d.m] || { us: 0, them: 0 }; act(() => S.api.upsert("predictions", { match_id: d.m, player_id: u.id, us: dr.us, them: dr.them }), "Pronostiek opgeslagen. Succes!").then((ok) => ok && delete pdraft[d.m]).then(() => render()); break; }
     case "installhide": store.set("sp-install-hide", "1"); render(); toast("Je vindt de uitleg later terug bij Profiel."); break;
     case "installnow": if (deferredInstall) { deferredInstall.prompt(); deferredInstall.userChoice.finally(() => { deferredInstall = null; render(); }); } break;
+    case "chatsel": { const it = b.closest(".chat-item"); const was = it.classList.contains("sel"); document.querySelectorAll(".chat-item.sel").forEach((x) => x.classList.remove("sel")); if (!was) it.classList.add("sel"); break; }
+    case "chatdel": e.stopPropagation(); S.api.deleteMessage(Number(d.id)).then(() => { S.db.messages = S.db.messages.filter((m) => String(m.id) !== d.id); if (S.api.mode === "demo") S.api.db.messages = S.db.messages.slice(); onChatUpdate(); toast("Bericht verwijderd."); }).catch((err) => toast(niceError(err))); break;
+    case "chatreact": chatSend(`§react:${d.id}:${d.e}`); break;
+    case "chatvote": chatSend(`§vote:${d.id}:${d.i}`); break;
+    case "gostand": S.schemaTab = "stand"; store.set("sp-schema-tab", "stand"); location.hash = "schema"; break;
+    case "tray": chatTray = d.t || false; rerenderComposer(); if (chatTray === "poll") $("#composer input[name=q]")?.focus(); scrollChatBottom(); break;
+    case "quick": {
+      const n = nextMatch(); const q = d.q;
+      if (q === "match" && n) chatSend(`§match:${n.id}`);
+      if (q === "stand") chatSend("§stand");
+      if (q === "wekker" && n) { const ids = S.db.profiles.filter((p) => !att(n.id, p.id)).map((p) => p.id); chatSend(`§wekker:${n.id}|${ids.join(",")}`); }
+      if (q === "lot") { const pool = n ? attFor(n.id).filter((a) => a.status === "yes").map((a) => a.player_id) : []; const ids = pool.length >= 2 ? pool : S.db.profiles.map((p) => p.id); chatSend(`§lot:${ids[Math.floor(Math.random() * ids.length)]}|${LOTS[Math.floor(Math.random() * LOTS.length)]}`); }
+      if (q === "pirate") { pirateMode = !pirateMode; store.set("sp-pirate", pirateMode ? "1" : "0"); toast(pirateMode ? "Piratentaal aan. Arrr! 🦜" : "Piratentaal uit."); rerenderComposer(); return; }
+      if (q === "bevel") { const i = $("#chat-in"); const t = (i?.value || "").trim(); if (!t) { toast("Typ eerst je bevel in het tekstvak."); i?.focus(); return; } chatDraft = ""; chatSend(`§bevel:${t}`).then(() => { const j = $("#chat-in"); if (j) j.value = ""; }); }
+      if (q === "notif") { if (store.get("sp-notif") === "1" && Notification.permission === "granted") { store.set("sp-notif", "0"); toast("Chatmeldingen uit."); rerenderComposer(); return; }
+        Notification.requestPermission().then((r) => { if (r === "granted") { store.set("sp-notif", "1"); toast("Meldingen aan zolang de app open staat."); } else toast("Meldingen zijn geblokkeerd in je instellingen."); rerenderComposer(); }); return; }
+      chatTray = false; rerenderComposer(); break;
+    }
     case "schematab": S.schemaTab = d.t; store.set("sp-schema-tab", d.t); if (location.hash === "#schema") render(); break;
     case "authtab": S.authTab = d.t; render(); break;
     case "demologin": act(() => S.api.signInAs(d.p), "Welkom aan boord!").then(() => (location.hash = "home")); break;
@@ -867,6 +1086,7 @@ document.addEventListener("click", (e) => {
     case "avatar": { const f = b.closest("form"); f.querySelector('[name="avatar"]').value = d.a; f.querySelectorAll('[data-act="avatar"]').forEach((x) => x.setAttribute("aria-pressed", String(x === b))); break; }
   }
 });
+document.addEventListener("input", (e) => { if (e.target.id === "chat-in") chatDraft = e.target.value; });
 document.addEventListener("change", (e) => {
   const el = e.target; const d = el.dataset; const u = me();
   if (d.act === "vote" && u) act(() => (el.value ? S.api.upsert("votes", { match_id: d.m, voter_id: u.id, category: d.c, nominee_id: el.value }) : S.api.remove("votes", { match_id: d.m, voter_id: u.id, category: d.c })), "Stem opgeslagen.");
@@ -882,6 +1102,10 @@ document.addEventListener("submit", (e) => {
     case "reset": act(() => S.api.resetPassword(v.email.trim()), "Herstelmail verstuurd als dat adres bestaat."); break;
     case "newpw": act(() => S.api.updatePassword(v.pw), "Nieuw wachtwoord opgeslagen."); break;
     case "profile": act(() => S.api.upsert("profiles", { id: u.id, name: v.name.trim(), nickname: v.nickname.trim() || null, number: v.number === "" ? null : Number(v.number), position: v.position, avatar: v.avatar, motto: v.motto.trim() || null }), "Profiel opgeslagen."); break;
+    case "chat": { let body = (v.body || "").trim(); if (!body || !u) break; if (body[0] === "§") body = " " + body; if (pirateMode) body = "🦜 " + pirate(body); const prev = chatDraft; chatDraft = ""; const i = $("#chat-in"); if (i) i.value = "";
+      chatSend(body.slice(0, 500)).then((ok) => { if (ok) { scrollChatBottom(); $("#chat-in")?.focus(); } else { chatDraft = prev; const j = $("#chat-in"); if (j) j.value = prev; } }); break; }
+    case "poll": { const opts = [v.o1, v.o2, v.o3, v.o4].map((o) => (o || "").replace(/\|/g, "/").trim()).filter(Boolean); const q = (v.q || "").replace(/\|/g, "/").trim(); if (!q || opts.length < 2) break;
+      chatSend(`§poll:${[q, ...opts].join("|")}`).then((ok) => { if (ok) { chatTray = false; rerenderComposer(); scrollChatBottom(); } }); break; }
     case "predict": act(() => S.api.upsert("predictions", { match_id: f.dataset.m, player_id: u.id, us: Number(v.us), them: Number(v.them) }), "Voorspelling opgeslagen."); break;
   }
 });
@@ -891,7 +1115,7 @@ async function loadMatchData() {
   try { const r = await fetch(CONFIG.dataUrl + "?t=" + Math.floor(Date.now() / 3e5), { cache: "no-store" }); if (!r.ok) throw new Error(r.status); S.data = await r.json(); }
   catch (e) { if (SEED_DATA) S.data = SEED_DATA; else console.warn("Geen wedstrijddata", e); }
 }
-async function reloadDb() { const db = await S.api.fetchAll(); S.db = { profiles: [], attendance: [], goals: [], votes: [], predictions: [], ...db }; S.db.profiles = [...S.db.profiles].sort((a, b) => pname(a).localeCompare(pname(b), "nl")); }
+async function reloadDb() { const db = await S.api.fetchAll(); S.db = { profiles: [], attendance: [], goals: [], votes: [], predictions: [], messages: [], ...db }; S.db.messages = [...(S.db.messages || [])]; S.db.profiles = [...S.db.profiles].sort((a, b) => pname(a).localeCompare(pname(b), "nl")); }
 async function refresh() { try { await reloadDb(); } catch (e) { toast(niceError(e)); } render(); }
 (async function boot() {
   const th = store.get("sp-theme"); if (th) document.documentElement.setAttribute("data-theme", th);
