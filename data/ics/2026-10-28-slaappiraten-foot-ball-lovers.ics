@@ -31,8 +31,8 @@ DTSTART;TZID=Europe/Brussels:20261028T194500
 DTEND;TZID=Europe/Brussels:20261028T205000
 SUMMARY:⚽ Slaappiraten - Foot/Ball Lovers (15-4) · aanwezig 19:45
 LOCATION:Zaal 3BC · Sporthal HoGent
-DESCRIPTION:Slaappiraten tegen Foot/Ball Lovers (thuis)\, Poule B Ghent Students League.\n\n⏰ Aanwezig om 19:45\n⚽ Aftrap om 20:00 (uur nog niet bevestigd)\n📍 Zaal 3BC · Sporthal HoGent\n\n🍻 Te laat = trakteren!\n\nAanwezigheid doorgeven: https://zenobieat.github.io/slaappiraten/#match-2026-10-28-slaappiraten-foot-ball-lovers
-URL:https://zenobieat.github.io/slaappiraten/#match-2026-10-28-slaappiraten-foot-ball-lovers
+DESCRIPTION:Slaappiraten tegen Foot/Ball Lovers (thuis)\, Poule B Ghent Students League.\n\n⏰ Aanwezig om 19:45\n⚽ Aftrap om 20:00 (uur nog niet bevestigd)\n📍 Zaal 3BC · Sporthal HoGent\n\n🍻 Te laat = trakteren!\n\nAanwezigheid doorgeven: https://slaappiraten.github.io/#match-2026-10-28-slaappiraten-foot-ball-lovers
+URL:https://slaappiraten.github.io/#match-2026-10-28-slaappiraten-foot-ball-lovers
 BEGIN:VALARM
 ACTION:DISPLAY
 TRIGGER:-PT1H

@@ -8,7 +8,7 @@ const TEAM = (d.team || "Slaappiraten").toLowerCase();
 const ours = d.matches.filter((m) => [m.home, m.away].some((t) => t.toLowerCase() === TEAM));
 const pad = (n) => String(n).padStart(2, "0");
 const hhmm = (mins) => `${pad(Math.floor(mins / 60))}:${pad(mins % 60)}`;
-const SITE = "https://zenobieat.github.io/slaappiraten/";
+const SITE = "https://slaappiraten.github.io/";
 const TZ = `BEGIN:VTIMEZONE\r\nTZID:Europe/Brussels\r\nBEGIN:DAYLIGHT\r\nTZOFFSETFROM:+0100\r\nTZOFFSETTO:+0200\r\nTZNAME:CEST\r\nDTSTART:19700329T020000\r\nRRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU\r\nEND:DAYLIGHT\r\nBEGIN:STANDARD\r\nTZOFFSETFROM:+0200\r\nTZOFFSETTO:+0100\r\nTZNAME:CET\r\nDTSTART:19701025T030000\r\nRRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU\r\nEND:STANDARD\r\nEND:VTIMEZONE`;
 const esc = (s) => String(s).replace(/([,;\\])/g, "\\$1").replace(/\n/g, "\\n");
 function local(date, mins) { const [y, mo, da] = date.split("-").map(Number); const t = new Date(Date.UTC(y, mo - 1, da, 0, mins)); return `${t.getUTCFullYear()}${pad(t.getUTCMonth() + 1)}${pad(t.getUTCDate())}T${pad(t.getUTCHours())}${pad(t.getUTCMinutes())}00`; }

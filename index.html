@@ -407,14 +407,14 @@ function calUrlGoogle(m) {
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent("⚽ Slaappiraten - " + side(m).opp)}&dates=${g(st)}/${g(en)}&location=${encodeURIComponent(m.venue || "Sporthal HoGent")}&details=${encodeURIComponent(calText(m))}`;
 }
 function calText(m) {
-  const s2 = side(m); const site = location.protocol.startsWith("http") ? location.href.split("#")[0] : "https://zenobieat.github.io/slaappiraten/";
+  const s2 = side(m); const site = location.protocol.startsWith("http") ? location.href.split("#")[0] : "https://slaappiraten.github.io/";
   return `Slaappiraten tegen ${s2.opp} (${s2.home ? "thuis" : "uit"}), ${m.poule || "Poule B"} Ghent Students League.\n\n⏰ Aanwezig om ${hhmm(arrival(m))}\n⚽ Aftrap om ${m.time || "20:00"}${m.time ? "" : " (uur nog niet bevestigd)"}\n📍 ${m.venue || "Sporthal HoGent"}\n\n🍻 Te laat = trakteren!\n\nAanwezigheid doorgeven: ${site}#match-${m.id}`;
 }
 function calButtons(m) {
   return `<div class="stack" style="gap:6px"><div class="cal-row"><a class="btn sm" href="data/ics/${encodeURIComponent(m.id)}.ics">📅 Zet in mijn agenda</a><a class="btn ghost sm" href="${calUrlGoogle(m)}" target="_blank" rel="noopener">Google Agenda</a></div>
   <p class="muted" style="font-size:12.5px;margin:0">Iedereen aanwezig om <b>${hhmm(arrival(m))}</b>${m.time ? "" : " (uur nog niet bevestigd)"}, een kwartier voor de aftrap. <b>Te laat = trakteren.</b> Je gsm geeft een melding 1 uur en 15 minuten op voorhand.</p></div>`;
 }
-function feedUrl() { const base = location.protocol.startsWith("http") ? location.host + location.pathname.replace(/[^/]*$/, "") : "zenobieat.github.io/slaappiraten/"; return "webcal://" + base + "data/slaappiraten.ics"; }
+function feedUrl() { const base = location.protocol.startsWith("http") ? location.host + location.pathname.replace(/[^/]*$/, "") : "slaappiraten.github.io/"; return "webcal://" + base + "data/slaappiraten.ics"; }
 function fmtDate(m, long) { const d = kickoff(m); return `${long ? LONGDAYS[d.getDay()] : DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`; }
 
 /* ---------- backends ---------- */
