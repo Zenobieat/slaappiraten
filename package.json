@@ -1,0 +1,12 @@
+{
+  "name": "slaappiraten",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync": "node scripts/sync-tournify.mjs",
+    "build": "python3 build.py"
+  },
+  "devDependencies": {
+    "playwright": "1.47.2"
+  }
+}
