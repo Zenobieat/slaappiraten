@@ -51,6 +51,10 @@ body { color: var(--fg); font-family: var(--font-body); font-size: 15px; line-he
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
 a { color: var(--gold-text); }
 button, input, select { font: inherit; color: inherit; }
+/* geen zoom bij snel dubbeltikken (knijpen om te zoomen blijft werken) */
+html, body, button, a, input, select, label, [data-act] { touch-action: manipulation; }
+button, [data-act] { -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+@media (pointer: coarse) { input, select, textarea { font-size: max(16px, 1em) !important; } }
 :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 6px; }
 .wrap { max-width: 760px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .num { font-variant-numeric: tabular-nums; }
