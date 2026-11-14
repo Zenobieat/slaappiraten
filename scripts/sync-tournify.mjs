@@ -82,7 +82,7 @@ async function main() {
 
   await page.goto(`${BASE}/standings`, { waitUntil: "domcontentloaded", timeout: 60000 });
   await clickText(page, DIVISION_LABEL);
-  await page.getByText(/Team\s+G\s+W/).first().waitFor({ state: "attached", timeout: 30000 }); await page.waitForTimeout(1000);
+  await page.getByText(/Speelschema/).first().waitFor({ state: "attached", timeout: 30000 }); await page.waitForTimeout(1000);
   const teams = [...new Set(matches.flatMap((m) => [m.home, m.away]))];
   const standings = parseStandings(await page.innerText("body"), poule, teams);
   await browser.close();
