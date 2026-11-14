@@ -66,7 +66,7 @@ async function main() {
 
   await page.goto(`${BASE}/schedule`, { waitUntil: "domcontentloaded", timeout: 60000 });
   await clickText(page, VENUE_LABEL);
-  await page.getByText(/^Poule [A-Z]/).first().waitFor({ timeout: 30000 }); await page.waitForTimeout(1500);
+  await page.getByText(/^Poule [A-Z]/).first().waitFor({ state: "attached", timeout: 30000 }); await page.waitForTimeout(1500);
   // Ingeklapte speeldagen openklappen (dagen zonder wedstrijden eronder in de tekst)
   for (let round = 0; round < 3; round++) {
     const lines = (await page.innerText("body")).split("\n").map((l) => l.trim()).filter(Boolean);
@@ -82,7 +82,7 @@ async function main() {
 
   await page.goto(`${BASE}/standings`, { waitUntil: "domcontentloaded", timeout: 60000 });
   await clickText(page, DIVISION_LABEL);
-  await page.getByText(/Team\s+G\s+W/).first().waitFor({ timeout: 30000 }); await page.waitForTimeout(1000);
+  await page.getByText(/Team\s+G\s+W/).first().waitFor({ state: "attached", timeout: 30000 }); await page.waitForTimeout(1000);
   const teams = [...new Set(matches.flatMap((m) => [m.home, m.away]))];
   const standings = parseStandings(await page.innerText("body"), poule, teams);
   await browser.close();
