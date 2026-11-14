@@ -3,7 +3,12 @@
 <meta name="description" content="Teamsite van de Slaappiraten: aanwezigheden, schema, stand, topscorers en awards.">
 <meta name="theme-color" content="#0c0b09">
 <link rel="icon" href="icon.png">
-<link rel="apple-touch-icon" href="icon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Slaappiraten">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Figtree:wght@400;500;600;700&display=swap">
@@ -55,7 +60,7 @@ button, input, select { font: inherit; color: inherit; }
 .top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
 .top .wrap { display: flex; align-items: center; gap: 14px; padding-block: 8px; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--fg); min-width: 0; }
-.brand img { width: 34px; height: 45px; object-fit: contain; flex: none; }
+.brand img { width: 32px; height: 42px; object-fit: contain; flex: none; }
 .wordmark { font-family: var(--font-display); font-weight: 700; font-size: 16px; line-height: 1; letter-spacing: .22em; text-transform: uppercase; }
 .wordmark small { display: block; font-family: var(--font-body); font-weight: 500; font-size: 11px; letter-spacing: .06em; color: var(--gold-text); text-transform: none; margin-top: 5px; }
 .top .who { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); text-decoration: none; white-space: nowrap; }
@@ -100,7 +105,7 @@ h3 { font-size: 14px; letter-spacing: .08em; }
 .banner { background: var(--surface-2); border: 1px dashed var(--gold); border-radius: var(--radius); padding: 10px 14px; font-size: 13.5px; }
 
 /* Hero: volgende wedstrijd */
-.hero { position: relative; overflow: hidden; background: radial-gradient(120% 140% at 100% 0%, color-mix(in srgb, var(--gold) 20%, transparent), transparent 55%), var(--surface); border: 1px solid color-mix(in srgb, var(--gold) 50%, var(--line)); border-radius: 18px; padding: 18px; display: grid; gap: 16px; }
+.hero { position: relative; overflow: hidden; gap: 18px !important; background: radial-gradient(120% 140% at 100% 0%, color-mix(in srgb, var(--gold) 20%, transparent), transparent 55%), var(--surface); border: 1px solid color-mix(in srgb, var(--gold) 50%, var(--line)); border-radius: 18px; padding: 18px; display: grid; gap: 16px; }
 .hero > * { position: relative; }
 .hero .crest-bg { position: absolute; right: -30px; bottom: -40px; width: 180px; opacity: .08; pointer-events: none; }
 .versus { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; text-align: center; }
@@ -237,6 +242,15 @@ input:focus, select:focus { border-color: var(--gold); outline: none; }
 .back { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 600; text-decoration: none; margin-bottom: 10px; }
 .empty-state { text-align: center; padding: 24px 12px; color: var(--muted); }
 details summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+.install { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; }
+.install img { width: 44px; height: 44px; border-radius: 11px; }
+.install .x { background: none; border: 0; font-size: 20px; color: var(--muted); cursor: pointer; padding: 6px; line-height: 1; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; counter-reset: st; }
+.steps li { display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: start; counter-increment: st; }
+.steps li::before { content: counter(st); width: 30px; height: 30px; border-radius: 50%; background: var(--gold); color: var(--on-gold); font-weight: 800; display: grid; place-items: center; font-family: var(--font-display); }
+.steps svg { width: 20px; height: 20px; vertical-align: -4px; stroke: var(--gold-text); }
+.app-preview { display: flex; align-items: center; gap: 14px; }
+.app-preview img { width: 64px; height: 64px; border-radius: 15px; box-shadow: 0 2px 8px rgb(0 0 0 / .3); }
 details.who > summary { list-style: none; display: grid; gap: 6px; font-weight: 400; border-radius: 12px; }
 details.who > summary::-webkit-details-marker { display: none; }
 .who-hint { font-size: 12.5px; font-weight: 700; color: var(--gold-text); display: inline-flex; align-items: center; gap: 4px; }
@@ -508,7 +522,7 @@ function countdown(m) {
   const d = Math.floor(diff / 864e5), h = Math.floor((diff % 864e5) / 36e5), mi = Math.floor((diff % 36e5) / 6e4);
   return `<div class="countdown" role="timer" aria-label="Nog ${d} dagen, ${h} uur en ${mi} minuten"><div><b class="num">${d}</b><span>dagen</span></div><div><b class="num">${h}</b><span>uur</span></div><div><b class="num">${mi}</b><span>min</span></div></div>`;
 }
-const crestBg = `<img class="crest-bg" src="logo.png" alt="" aria-hidden="true">`;
+const crestBg = "";
 function matchRow(m) {
   const d = kickoff(m), s = side(m);
   const right = played(m) ? `<span class="num">${s.us}–${s.them}</span><span class="res ${result(m)}">${result(m)}</span>` : `<span class="pill">${esc(m.time || "?")}</span>`;
@@ -607,12 +621,44 @@ function scouting(m) {
   </section>`;
 }
 
+/* ---------- op je beginscherm ---------- */
+let deferredInstall = null;
+window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); deferredInstall = e; });
+const isStandalone = () => window.navigator.standalone === true || window.matchMedia("(display-mode: standalone)").matches;
+const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+function installCard() {
+  if (isStandalone() || store.get("sp-install-hide") === "1") return "";
+  return `<div class="card install"><img src="apple-touch-icon.png" alt=""><div style="min-width:0"><b>Zet Slaappiraten op je beginscherm</b><div class="muted" style="font-size:12.5px">Dan open je de site als een app, met ons logo.</div><a href="#installeren" style="font-size:13.5px;font-weight:700">Toon hoe →</a></div><button class="x" type="button" data-act="installhide" aria-label="Verberg deze tip">×</button></div>`;
+}
+const shareIcon = `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/></svg>`;
+const plusIcon = `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/></svg>`;
+function viewInstall() {
+  const ios = isIOS();
+  const iphone = `<section class="card stack"><h2>iPhone (Safari)</h2><ol class="steps">
+    <li><span>Open deze site in <b>Safari</b>. In Chrome of Instagram lukt het niet: tik dan eerst op de drie puntjes en kies <b>Open in Safari</b>.</span></li>
+    <li><span>Tik onderaan op de <b>Deel-knop</b> ${shareIcon} (het vierkantje met het pijltje omhoog).</span></li>
+    <li><span>Scroll naar beneden en tik op <b>Zet op beginscherm</b> ${plusIcon}.</span></li>
+    <li><span>Laat de naam <b>Slaappiraten</b> staan en tik rechtsboven op <b>Voeg toe</b>.</span></li>
+    <li><span>Klaar! Het schild staat nu op je beginscherm. Log één keer in, daarna blijf je ingelogd.</span></li></ol></section>`;
+  const android = `<section class="card stack"><h2>Android (Chrome)</h2>${deferredInstall ? `<button class="btn" type="button" data-act="installnow">Installeer de app</button>` : ""}<ol class="steps">
+    <li><span>Open deze site in <b>Chrome</b>.</span></li>
+    <li><span>Tik rechtsboven op de <b>drie puntjes</b> ⋮.</span></li>
+    <li><span>Kies <b>App installeren</b> of <b>Toevoegen aan startscherm</b>.</span></li>
+    <li><span>Bevestig met <b>Installeren</b>. Het schild staat nu tussen je apps.</span></li></ol></section>`;
+  return `<a class="back" href="#home">← Home</a><div class="stack"><div><p class="eyebrow">Handleiding</p><h1>Slaappiraten als app</h1><hr class="rule"></div>
+  ${isStandalone() ? `<div class="banner">Je gebruikt de app al vanaf je beginscherm. 💪</div>` : ""}
+  <div class="card app-preview"><img src="apple-touch-icon.png" alt="App-icoon Slaappiraten"><div><b>Zo ziet het icoon eruit</b><div class="muted" style="font-size:13px">Gratis, geen App Store nodig. Updates komen er vanzelf bij.</div></div></div>
+  ${ios ? iphone + android : android + iphone}
+  <p class="muted" style="font-size:13px;margin:0">Deel deze uitleg met de ploeg: stuur de link van de site in de groepschat en zeg "Profiel → Op je beginscherm".</p></div>`;
+}
+
 /* ---------- views ---------- */
 function viewHome() {
   const n = nextMatch(); const st = seasonStats(); const lastPlayed = playedOurs().slice(-1)[0];
   const ourRow = (S.data.standings || []).find((r) => isUs(r.team));
   const top = scorers().filter((s) => s.goals > 0).sort((a, b) => b.goals - a.goals).slice(0, 3);
   return `<div class="stack">
+  ${installCard()}
   ${n ? `<section class="hero" aria-labelledby="next-h">${crestBg}
       <div class="row"><div class="grow"><p class="eyebrow" id="next-h">Volgende wedstrijd</p></div><a class="btn ghost sm" href="#match-${esc(n.id)}">Details</a></div>
       ${versus(n)}
@@ -755,6 +801,7 @@ function viewProfiel() {
       <button class="btn" type="submit">Opslaan</button>
     </form></section>
   <section class="section"><h2>De bemanning</h2><div class="card list">${S.db.profiles.map((p) => `<div class="row"><span class="avatar">${av(p)}</span><div class="grow"><b>${esc(pname(p))}</b>${p.number != null ? ` <span class="muted num">#${esc(p.number)}</span>` : ""}<div class="muted" style="font-size:12.5px">${esc(p.position || "")}${p.motto ? " · “" + esc(p.motto) + "”" : ""}</div></div></div>`).join("")}</div></section>
+  <a class="card install" href="#installeren" style="text-decoration:none;color:inherit"><img src="apple-touch-icon.png" alt=""><div><b>Op je beginscherm zetten</b><div class="muted" style="font-size:12.5px">Stap-voor-stap uitleg voor iPhone en Android</div></div><span aria-hidden="true">→</span></a>
   <div class="row" style="flex-wrap:wrap"><button class="btn ghost" type="button" data-act="logout">Uitloggen</button>${S.api.mode === "demo" ? `<button class="btn ghost" type="button" data-act="demoreset">Demo terugzetten</button>` : ""}<label class="row" style="margin-left:auto;font-size:13.5px;gap:8px" for="theme-pick">Thema <select id="theme-pick" data-act="theme" style="width:auto"><option value="">Systeem</option><option value="dark">Donker</option><option value="light">Licht</option></select></label></div>
   ${sponsorBlock()}</div>`;
 }
@@ -774,13 +821,13 @@ function viewLogin() {
 }
 
 /* ---------- router ---------- */
-function currentView() { const h = decodeURIComponent(location.hash.slice(1)); if (!h || h.includes("=")) return ["home"]; if (h.startsWith("match-")) return ["match", h.slice(6)]; return [["home", "aanwezig", "schema", "ranking", "profiel"].includes(h) ? h : "home"]; }
+function currentView() { const h = decodeURIComponent(location.hash.slice(1)); if (!h || h.includes("=")) return ["home"]; if (h.startsWith("match-")) return ["match", h.slice(6)]; return [["home", "aanwezig", "schema", "ranking", "profiel", "installeren"].includes(h) ? h : "home"]; }
 function render() {
   const [v, arg] = currentView(); const app = $("#app");
-  const html = v === "aanwezig" ? viewAanwezig() : v === "schema" ? viewSchema() : v === "ranking" ? viewRanking() : v === "profiel" ? viewProfiel() : v === "match" ? viewMatch(arg) : viewHome();
+  const html = v === "aanwezig" ? viewAanwezig() : v === "schema" ? viewSchema() : v === "ranking" ? viewRanking() : v === "profiel" ? viewProfiel() : v === "match" ? viewMatch(arg) : v === "installeren" ? viewInstall() : viewHome();
   const demo = S.api.mode === "demo" ? `<div class="banner" style="margin-bottom:14px">Voorbeeldmodus: spelers, goals en stemmen zijn verzonnen en blijven in jouw browser. Het schema en de stand komen echt uit Tournify.</div>` : "";
   app.innerHTML = demo + html;
-  const navV = v === "match" ? "schema" : v;
+  const navV = v === "match" ? "schema" : v === "installeren" ? "profiel" : v;
   document.querySelectorAll(".nav a").forEach((a) => { if (a.dataset.v === navV) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
   const u = me(); $("#who").innerHTML = u ? `<span class="avatar">${av(u)}</span><span>${esc(pname(u))}</span>` : `<span class="btn sm ghost">Inloggen</span>`;
   const tp = $("#theme-pick"); if (tp) tp.value = store.get("sp-theme") || "";
@@ -801,6 +848,8 @@ document.addEventListener("click", (e) => {
       const cur = pdraft[d.m] || (mine ? { us: mine.us, them: mine.them } : { us: 0, them: 0 }); pdraft[d.m] = { ...cur, [d.k]: Math.max(0, Math.min(40, cur[d.k] + Number(d.d))) };
       const y = window.scrollY; render(); window.scrollTo(0, y); const again = document.querySelector(`[data-act="pstep"][data-m="${CSS.escape(d.m)}"][data-k="${d.k}"][data-d="${d.d}"]`); if (again) again.focus(); void mm; break; }
     case "psave": { if (!u) return; const dr = pdraft[d.m] || { us: 0, them: 0 }; act(() => S.api.upsert("predictions", { match_id: d.m, player_id: u.id, us: dr.us, them: dr.them }), "Pronostiek opgeslagen. Succes!").then((ok) => ok && delete pdraft[d.m]).then(() => render()); break; }
+    case "installhide": store.set("sp-install-hide", "1"); render(); toast("Je vindt de uitleg later terug bij Profiel."); break;
+    case "installnow": if (deferredInstall) { deferredInstall.prompt(); deferredInstall.userChoice.finally(() => { deferredInstall = null; render(); }); } break;
     case "schematab": S.schemaTab = d.t; store.set("sp-schema-tab", d.t); if (location.hash === "#schema") render(); break;
     case "authtab": S.authTab = d.t; render(); break;
     case "demologin": act(() => S.api.signInAs(d.p), "Welkom aan boord!").then(() => (location.hash = "home")); break;
