@@ -921,7 +921,7 @@ function viewHome() {
     <a class="card" href="#match-${esc(lastPlayed.id)}" style="text-decoration:none;color:inherit;display:grid;gap:8px">${versus(lastPlayed)}<p class="meta">${fmtDate(lastPlayed, true)} · ${esc(lastPlayed.venue || "")}</p></a></section>` : ""}
 
   <section class="section" aria-labelledby="ts-h"><div class="section-head"><h2 id="ts-h">Topscorers</h2><a href="#ranking">Alle rankings</a></div>
-    ${top.length ? `<div class="card list">${top.map((s, i) => `<div class="rank"><span class="pos">${i + 1}</span><span class="avatar">${av(s.p)}</span><div style="min-width:0"><b>${esc(pname(s.p))}</b><div class="muted" style="font-size:12.5px">${s.assists} assist${s.assists === 1 ? "" : "s"}</div></div><span class="val num">${s.goals}</span></div>`).join("")}</div>` : `<div class="card empty-state">Nog geen doelpunten doorgegeven. Scoorde je? Geef het door bij de wedstrijd.</div>`}
+    ${top.length ? `<div class="card list">${top.map((s, i) => `<div class="rank"><span class="pos">${i + 1}</span><span class="avatar">${av(s.p)}</span><div style="min-width:0"><b>${esc(pname(s.p))}</b></div><span class="val num">${s.goals}</span></div>`).join("")}</div>` : `<div class="card empty-state">Nog geen doelpunten doorgegeven. Scoorde je? Geef het door bij de wedstrijd.</div>`}
   </section>
   ${sponsorBlock()}
   </div>`;
@@ -948,6 +948,7 @@ function viewSchema() {
   ${tab === "stand" ? `<div class="card">${standingsTable()}</div><p class="muted" style="font-size:12.5px;margin:0">G gespeeld · W gewonnen · GL gelijk · V verloren · DV/DT doelpunten voor/tegen · P punten</p>`
     : `<div class="card list">${ours().map(matchRow).join("") || `<div class="empty-state">Nog geen wedstrijden.</div>`}</div>
     <section class="card stack" style="gap:8px"><b>📅 Alle matchen automatisch in je agenda</b><p class="muted" style="font-size:13px;margin:0">Eén keer abonneren en nieuwe matchen of gewijzigde uren komen er vanzelf bij. Elke match staat erin vanaf het uur dat je aanwezig moet zijn: een kwartier voor de aftrap. Te laat = trakteren.</p><div class="cal-row"><a class="btn sm" href="${feedUrl()}">iPhone of Mac: abonneren</a><a class="btn ghost sm" href="https://calendar.google.com/calendar/r?cid=${encodeURIComponent(feedUrl())}" target="_blank" rel="noopener">Google Agenda</a></div></section>`}
+  ${isAdmin() ? `<div class="card stack" style="gap:8px"><b>👑 Kapitein: Tournify nu verversen</b><p class="muted" style="font-size:13px;margin:0">Uitslag net ingegeven in Tournify? Tik op de knop, dan op <b>Run workflow</b> en nog eens op het groene <b>Run workflow</b>. Na ongeveer 2 minuten staat alles in de app. Op woensdagavond gebeurt dit ook vanzelf, elke 10 minuten.</p><a class="btn sm" href="https://github.com/slaappiraten/slaappiraten.github.io/actions/workflows/tournify.yml" target="_blank" rel="noopener">🔄 Tournify verversen</a></div>` : ""}
   ${updatedLine()}</div>`;
 }
 function viewRanking() {
@@ -965,7 +966,6 @@ function viewRanking() {
   <section class="section" aria-labelledby="g-h"><h2 id="g-h">Topscorers</h2>
     ${podium.length ? `<div class="podium">${[1, 0, 2].map((i) => podium[i] ? `<div class="p${i + 1}"><span class="avatar ${i === 0 ? "lg" : ""}">${av(podium[i].p)}</span><span class="nm">${esc(pname(podium[i].p))}</span><span class="gl num">${podium[i].goals}</span><span aria-label="plaats ${i + 1}">${["🥇", "🥈", "🥉"][i]}</span></div>` : `<div aria-hidden="true" style="visibility:hidden"></div>`).join("")}</div>` : ""}
     <div class="card list">${sc.map((s, i) => `<div class="rank"><span class="pos">${i + 1}</span><span class="avatar">${av(s.p)}</span><div style="min-width:0"><b>${esc(pname(s.p))}</b><div class="bar"><i style="width:${(s.goals / maxG) * 100}%"></i></div></div><span class="val num">${s.goals}</span></div>`).join("") || `<div class="empty-state">Nog geen spelers.</div>`}</div></section>
-  ${assists.length ? `<section class="section" aria-labelledby="a-h"><h2 id="a-h">Assistkoningen</h2><div class="card list">${assists.map((s, i) => `<div class="rank"><span class="pos">${i + 1}</span><span class="avatar">${av(s.p)}</span><b style="min-width:0">${esc(pname(s.p))}</b><span class="val num">${s.assists}</span></div>`).join("")}</div></section>` : ""}
   <section class="section" aria-labelledby="att-h"><h2 id="att-h">IJzeren piraat</h2><p class="muted" style="margin:-6px 0 0;font-size:13.5px">Aanwezig bij gespeelde wedstrijden.</p>
     <div class="card list">${as.map((a, i) => `<div class="rank"><span class="pos">${i + 1}</span><span class="avatar">${av(a.p)}</span><div style="min-width:0"><b>${esc(pname(a.p))}</b><div class="bar"><i style="width:${a.pct}%"></i></div></div><span class="val num" style="font-size:16px">${a.n}/${a.total}</span></div>`).join("")}</div></section>
   ${(() => { if (!me()) return ""; const t = treatTally(); const rows = Object.entries(t).sort((a, b) => (b[1].late - b[1].paid) - (a[1].late - a[1].paid) || b[1].late - a[1].late); return `<section class="section" aria-labelledby="tr-h"><h2 id="tr-h">🍻 Trakteerlijst</h2><p class="muted" style="margin:-6px 0 0;font-size:13.5px">${RULE}. Aanwezig een kwartier voor de aftrap.</p>
@@ -998,8 +998,8 @@ function afterMatchCard(m, onHome) {
   const step = (ok, n) => `<span class="pill ${ok ? "good" : "warn"}" style="flex:none">${ok ? "✓" : n}</span>`;
   return `<section class="hero after" aria-labelledby="after-h-${esc(m.id)}"><p class="eyebrow" id="after-h-${esc(m.id)}">📝 Na de match · ${t.done ? "alles ingevuld, merci!" : "nog even invullen"}</p>
     <div class="t" style="font-weight:800;font-size:18px">Slaappiraten ${s2.us}–${s2.them} ${esc(s2.opp)}</div>
-    <div class="row" style="flex-wrap:wrap;gap:10px;align-items:center">${step(t.goalsDone, 1)}<b class="grow" style="min-width:120px">Jouw goals en assists</b>
-      <span class="row" style="gap:6px"><span style="font-size:13px">⚽</span>${stepper(m.id, u.id, "goals", g.goals || 0)}</span><span class="row" style="gap:6px"><span style="font-size:13px">🅰️</span>${stepper(m.id, u.id, "assists", g.assists || 0)}</span>
+    <div class="row" style="flex-wrap:wrap;gap:10px;align-items:center">${step(t.goalsDone, 1)}<b class="grow" style="min-width:120px">Jouw doelpunten</b>
+      <span class="row" style="gap:6px"><span style="font-size:13px">⚽</span>${stepper(m.id, u.id, "goals", g.goals || 0)}</span>
       ${t.goalsDone ? "" : `<button type="button" class="btn ghost sm" data-act="nogoal" data-m="${esc(m.id)}">Niet gescoord</button>`}</div>
     <div class="row" style="flex-wrap:wrap;gap:10px;align-items:center">${step(!!t.motm, 2)}<label class="grow" for="motm-${onHome ? "h" : "m"}-${esc(m.id)}" style="min-width:120px"><b>🏆 Speler van de match</b></label>
       <select id="motm-${onHome ? "h" : "m"}-${esc(m.id)}" data-act="vote" data-m="${esc(m.id)}" data-c="kapitein" style="max-width:220px"><option value="">Kies een piraat…</option>${roster.map((p) => `<option value="${esc(p.id)}" ${t.motm?.nominee_id === p.id ? "selected" : ""}>${esc(pname(p))}</option>`).join("")}</select></div>
@@ -1012,7 +1012,7 @@ function viewMatch(id) {
   const u = me(); const pl = played(m); const s = side(m);
   const yesIds = attFor(m.id).filter((a) => a.status === "yes").map((a) => a.player_id);
   const roster = yesIds.length ? yesIds.map(player).filter(Boolean) : S.db.profiles;
-  const goalRows = S.db.goals.filter((g) => g.match_id === m.id && (g.goals || g.assists));
+  const goalRows = S.db.goals.filter((g) => g.match_id === m.id && g.goals);
   const loggedGoals = goalRows.reduce((t, g) => t + (g.goals || 0), 0);
   const myGoals = u ? S.db.goals.find((g) => g.match_id === m.id && g.player_id === u.id) || { goals: 0, assists: 0 } : null;
   const winners = pl ? awardWinners(m.id) : null;
@@ -1027,9 +1027,9 @@ function viewMatch(id) {
   ${!pl ? `<section class="section"><h2>Ben jij erbij?</h2>${rsvpButtons(m.id)}<div class="card">${whoIsComing(m.id, true)}</div>${calButtons(m)}</section>${lateSection(m)}${predictBox(m)}${scouting(m)}` : lateSection(m)}
 
   ${pl ? `<section class="section" aria-labelledby="goals-h"><div class="section-head"><h2 id="goals-h">Doelpunten</h2><span class="pill ${loggedGoals === s.us ? "good" : "warn"}">${loggedGoals}/${s.us} doorgegeven</span></div>
-    ${u ? `<div class="card row" style="flex-wrap:wrap"><div class="grow" style="min-width:140px"><b>Jouw match</b><div class="muted" style="font-size:12.5px">Geef eerlijk door. De ploeg kijkt mee.</div></div><div class="row"><span style="font-size:13px">Goals</span>${stepper(m.id, u.id, "goals", myGoals.goals || 0)}</div><div class="row"><span style="font-size:13px">Assists</span>${stepper(m.id, u.id, "assists", myGoals.assists || 0)}</div></div>` : `<div class="banner"><a href="#profiel">Log in</a> om je goals door te geven.</div>`}
-    <div class="card list">${goalRows.sort((a, b) => b.goals - a.goals).map((g) => { const p = player(g.player_id); return `<div class="row"><span class="avatar">${av(p)}</span><b class="grow">${esc(pname(p))}</b><span class="num">${"⚽".repeat(Math.min(g.goals || 0, 8))}${g.goals > 8 ? " " + g.goals : ""}${g.assists ? ` <span class="muted">· ${g.assists} assist${g.assists > 1 ? "s" : ""}</span>` : ""}</span></div>`; }).join("") || `<div class="empty-state">Nog niemand heeft goals doorgegeven.</div>`}</div>
-    ${isAdmin() ? `<details class="card"><summary>Kapitein: goals invullen voor anderen</summary><div class="list" style="margin-top:8px">${S.db.profiles.map((p) => { const g = S.db.goals.find((x) => x.match_id === m.id && x.player_id === p.id) || {}; return `<div class="row" style="flex-wrap:wrap"><b class="grow">${esc(pname(p))}</b>${stepper(m.id, p.id, "goals", g.goals || 0, pname(p))}${stepper(m.id, p.id, "assists", g.assists || 0, pname(p))}</div>`; }).join("")}</div></details>` : ""}
+    ${u ? `<div class="card row" style="flex-wrap:wrap"><div class="grow" style="min-width:140px"><b>Jouw match</b><div class="muted" style="font-size:12.5px">Geef enkel je eigen doelpunten door. De kapitein kan bijsturen.</div></div><div class="row"><span style="font-size:13px">Goals</span>${stepper(m.id, u.id, "goals", myGoals.goals || 0)}</div></div>` : `<div class="banner"><a href="#profiel">Log in</a> om je goals door te geven.</div>`}
+    <div class="card list">${goalRows.sort((a, b) => b.goals - a.goals).map((g) => { const p = player(g.player_id); return `<div class="row"><span class="avatar">${av(p)}</span><b class="grow">${esc(pname(p))}</b><span class="num">${"⚽".repeat(Math.min(g.goals || 0, 8))}${g.goals > 8 ? " " + g.goals : ""}</span></div>`; }).join("") || `<div class="empty-state">Nog niemand heeft goals doorgegeven.</div>`}</div>
+    ${isAdmin() ? `<details class="card" open><summary><b>👑 Kapitein: doelpunten van iedereen invullen</b></summary><div class="list" style="margin-top:8px">${S.db.profiles.map((p) => { const g = S.db.goals.find((x) => x.match_id === m.id && x.player_id === p.id) || {}; return `<div class="row" style="flex-wrap:wrap"><b class="grow">${esc(pname(p))}</b><span style="font-size:13px">⚽</span>${stepper(m.id, p.id, "goals", g.goals || 0, pname(p))}</div>`; }).join("")}</div></details>` : ""}
   </section>
 
   <section class="section" aria-labelledby="aw-h"><h2 id="aw-h">Awards van deze match</h2>
@@ -1057,7 +1057,7 @@ function viewProfiel() {
   const as = attendanceStats().find((a) => a.p.id === u.id); const badges = badgesFor(u.id); const cab = medalCabinet()[u.id] || {};
   return `<div class="stack">
   <div class="row"><span class="avatar lg">${av(u)}</span><div class="grow"><p class="eyebrow">${u.number != null ? "#" + esc(u.number) + " · " : ""}${esc(u.position || "Piraat")}${u.is_admin ? " · Kapitein" : ""}</p><h1>${esc(pname(u))}</h1>${u.nickname ? `<p class="muted" style="margin:2px 0 0">${esc(u.name)}</p>` : ""}</div></div>
-  <div class="tiles"><div class="tile"><b class="num">${sc.goals}</b><span>Goals</span></div><div class="tile"><b class="num">${sc.assists}</b><span>Assists</span></div><div class="tile"><b class="num">${as ? as.n + "/" + as.total : "0"}</b><span>Aanwezig</span></div><div class="tile"><b class="num">${Object.values(cab).reduce((t, n) => t + n, 0)}</b><span>Awards</span></div></div>
+  <div class="tiles"><div class="tile"><b class="num">${sc.goals}</b><span>Goals</span></div><div class="tile"><b class="num">${as ? as.n + "/" + as.total : "0"}</b><span>Aanwezig</span></div><div class="tile"><b class="num">${Object.values(cab).reduce((t, n) => t + n, 0)}</b><span>Awards</span></div></div>
   <section class="section"><h2>Badges</h2>${badges.length ? `<div class="badges">${badges.map(([ic, t, d]) => `<span class="pill gold" title="${esc(d)}">${ic} ${esc(t)}</span>`).join("")}</div>` : `<p class="muted" style="margin:0">Nog geen badges. Scoor, kom opdagen of voorspel juist om ze te verdienen.</p>`}
     <details><summary>Welke badges bestaan er?</summary><ul class="muted" style="font-size:13.5px;padding-left:18px"><li>🎯 Eerste buit: minstens één goal</li><li>🎩 Hattrick-held: drie goals in één match</li><li>💰 Schatzoeker: tien goals dit seizoen</li><li>👑 Topschutter: meeste goals van de ploeg</li><li>⚓ IJzeren piraat: bij elke wedstrijd aanwezig</li><li>🔮 Waarzegger: een uitslag exact voorspeld</li><li>🏅 Medaillekast: drie of meer awards</li></ul></details></section>
   <section class="section"><h2>Profiel aanpassen</h2>
@@ -1117,7 +1117,8 @@ document.addEventListener("touchend", (e) => {
 ["gesturestart", "gesturechange", "gestureend"].forEach((ev) => document.addEventListener(ev, (e) => e.preventDefault(), { passive: false }));
 document.addEventListener("touchmove", (e) => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
 document.addEventListener("dblclick", (e) => e.preventDefault(), { passive: false });
-document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.api) reloadDb().then(liveRender).catch(() => {}); });
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.api) Promise.all([loadMatchData(), reloadDb()]).then(liveRender).catch(() => {}); });
+setInterval(() => { if (document.visibilityState === "visible" && S.api) loadMatchData().then(liveRender); }, 120000);
 let lastHash = "";
 window.addEventListener("hashchange", () => { S.lastView = null; render(); if (location.hash !== lastHash) { window.scrollTo(0, 0); lastHash = location.hash; } });
 
@@ -1192,7 +1193,7 @@ document.addEventListener("submit", (e) => {
 
 /* ---------- boot ---------- */
 async function loadMatchData() {
-  try { const r = await fetch(CONFIG.dataUrl + "?t=" + Math.floor(Date.now() / 3e5), { cache: "no-store" }); if (!r.ok) throw new Error(r.status); S.data = await r.json(); }
+  try { const r = await fetch(CONFIG.dataUrl + "?t=" + Math.floor(Date.now() / 6e4), { cache: "no-store" }); if (!r.ok) throw new Error(r.status); S.data = await r.json(); }
   catch (e) { if (SEED_DATA) S.data = SEED_DATA; else console.warn("Geen wedstrijddata", e); }
 }
 async function reloadDb() { const db = await S.api.fetchAll(); S.db = { profiles: [], attendance: [], goals: [], votes: [], predictions: [], messages: [], settings: [], ...db }; S.db.messages = [...(S.db.messages || [])]; S.db.profiles = [...S.db.profiles].sort((a, b) => pname(a).localeCompare(pname(b), "nl")); }
