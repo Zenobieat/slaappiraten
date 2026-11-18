@@ -1,6 +1,6 @@
 {
  "source": "https://tournifyapp.com/live/ghentstudentsleague26-27/schedule",
- "updatedAt": "2026-11-14T17:45:00Z",
+ "updatedAt": "2026-11-18T20:32:44.268Z",
  "team": "Slaappiraten",
  "poule": "Poule B",
  "matches": [
@@ -51,13 +51,13 @@
   {
    "id": "2026-11-18-fc-emmatje-foot-ball-lovers",
    "date": "2026-11-18",
-   "time": "19:00",
+   "time": null,
    "venue": "Zaal 3BC · Sporthal HoGent",
    "poule": "Poule B",
    "home": "FC EMMATJE",
    "away": "Foot/Ball Lovers",
-   "homeScore": null,
-   "awayScore": null
+   "homeScore": 2,
+   "awayScore": 9
   },
   {
    "id": "2026-11-18-the-ghentlemen-slaappiraten",
@@ -221,26 +221,26 @@
   },
   {
    "rank": 5,
-   "team": "FC EMMATJE",
-   "played": 1,
-   "won": 0,
+   "team": "Foot/Ball Lovers",
+   "played": 3,
+   "won": 1,
    "drawn": 0,
-   "lost": 1,
-   "points": 0,
-   "goalsFor": 4,
-   "goalsAgainst": 12,
+   "lost": 2,
+   "points": 3,
+   "goalsFor": 16,
+   "goalsAgainst": 43,
    "fairPlay": 0
   },
   {
    "rank": 6,
-   "team": "Foot/Ball Lovers",
+   "team": "FC EMMATJE",
    "played": 2,
    "won": 0,
    "drawn": 0,
    "lost": 2,
    "points": 0,
-   "goalsFor": 7,
-   "goalsAgainst": 41,
+   "goalsFor": 6,
+   "goalsAgainst": 21,
    "fairPlay": 0
   }
  ]
