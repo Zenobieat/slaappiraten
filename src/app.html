@@ -436,7 +436,7 @@ function seedDemo() {
   const messages = [msg(0, "Woensdag 20u tegen The Ghentlemen. Iedereen aanwezigheid doorgeven aub 🏴‍☠️", 0), msg(2, "Ik ben er!", 3), msg(4, "Ook. Wie brengt de ballen mee?", 5), msg(4, "Vorige keer was ik het al 😤", 5.5), msg(8, "zzz ik kom misschien, hangt af van mijn les", 40), msg(1, "Robbe de Slaapkop award staat al klaar 😂", 42), msg(0, "§match:" + m2, 44), msg(6, "Na de match iets drinken?", 1500), msg(0, "Uiteraard 🍻", 1502), msg(0, "§poll:Waar na de match?|Overpoort|Kot van Lars|Gewoon slapen 😴", 1503), msg(2, "§vote:10:0", 1504), msg(4, "§vote:10:1", 1505), msg(6, "§vote:10:0", 1506), msg(8, "§vote:10:2", 1507), msg(2, "§react:9:🔥", 1508), msg(4, "§react:9:🔥", 1509), msg(8, "§react:6:😂", 1510), msg(1, "§lot:demo4|brengt de ballen mee ⚽", 1512), msg(4, "Ik weer 😭", 1513)];
   return { uid: null, profiles, attendance: att, goals, votes, predictions: preds, messages };
 }
-const KEYS = { messages: ["id"], profiles: ["id"], attendance: ["match_id", "player_id"], goals: ["match_id", "player_id"], votes: ["match_id", "voter_id", "category"], predictions: ["match_id", "player_id"] };
+const KEYS = { settings: ["key"], messages: ["id"], profiles: ["id"], attendance: ["match_id", "player_id"], goals: ["match_id", "player_id"], votes: ["match_id", "voter_id", "category"], predictions: ["match_id", "player_id"] };
 const Demo = {
   mode: "demo", key: "slaappiraten-demo-v3",
   async init() { let db = null; try { db = JSON.parse(store.get(this.key)); } catch {} this.db = db || seedDemo(); },
@@ -445,7 +445,7 @@ const Demo = {
   uid() { return this.db.uid; },
   async signInAs(id) { this.db.uid = id; this.save(); },
   async signOut() { this.db.uid = null; this.save(); },
-  async upsert(table, row) { const arr = this.db[table]; const i = arr.findIndex((r) => KEYS[table].every((k) => r[k] === row[k])); if (i >= 0) arr[i] = { ...arr[i], ...row }; else arr.push(row); this.save(); },
+  async upsert(table, row) { const arr = (this.db[table] ||= []); const i = arr.findIndex((r) => KEYS[table].every((k) => r[k] === row[k])); if (i >= 0) arr[i] = { ...arr[i], ...row }; else arr.push(row); this.save(); },
   async remove(table, match) { this.db[table] = this.db[table].filter((r) => !Object.keys(match).every((k) => r[k] === match[k])); this.save(); },
   reset() { const uid = this.db.uid; this.db = seedDemo(); this.db.uid = uid; this.save(); },
   async sendMessage(body) { const m = { id: Date.now(), player_id: this.db.uid, body, created_at: new Date().toISOString() }; (this.db.messages ||= []).push(m); this.save(); return m; },
@@ -468,10 +468,10 @@ const Live = {
   },
   uid() { return this._uid; },
   async fetchAll() {
-    const tables = Object.keys(KEYS).filter((t) => t !== "messages");
+    const tables = Object.keys(KEYS).filter((t) => t !== "messages" && t !== "settings");
     const res = await Promise.all(tables.map((t) => this.c.from(t).select("*")));
     const out = {}; res.forEach((r, i) => { if (r.error) throw r.error; out[tables[i]] = r.data; });
-    out.messages = [];
+    out.messages = []; const st = await this.c.from("settings").select("*"); out.settings = st.error ? [] : st.data;
     if (this._uid) { const m = await this.c.from("messages").select("*").order("created_at", { ascending: false }).limit(1000); if (!m.error) out.messages = m.data.reverse(); }
     return out;
   },
@@ -487,6 +487,16 @@ const Live = {
   async remove(table, match) { const { error } = await this.c.from(table).delete().match(match); if (error) throw error; },
   async sendMessage(body) { const { data, error } = await this.c.from("messages").insert({ body, player_id: this._uid }).select().single(); if (error) throw error; return data; },
   async deleteMessage(id) { const { error } = await this.c.from("messages").delete().eq("id", id); if (error) throw error; },
+  subscribeLive() {
+    if (this._live) return;
+    const upd = (tbl, keys) => (p) => { const arr = (S.db[tbl] ||= []); const same = (r, o) => keys.every((k) => r[k] === o[k]);
+      if (p.eventType === "DELETE") S.db[tbl] = arr.filter((r) => !same(r, p.old)); else { const i = arr.findIndex((r) => same(r, p.new)); if (i >= 0) arr[i] = p.new; else arr.push(p.new); }
+      liveRender(); };
+    this._live = this.c.channel("live")
+      .on("postgres_changes", { event: "*", schema: "public", table: "settings" }, upd("settings", ["key"]))
+      .on("postgres_changes", { event: "*", schema: "public", table: "attendance" }, upd("attendance", ["match_id", "player_id"]))
+      .subscribe();
+  },
   subscribeChat() {
     if (this._chan || !this._uid) return;
     this._chan = this.c.channel("ploegchat")
@@ -496,6 +506,7 @@ const Live = {
   }
 };
 function niceError(e) {
+  if (/settings/i.test(String(e?.message)) && /exist|schema cache/i.test(String(e?.message))) return "De limiet-instelling wordt nog geactiveerd in de database.";
   const m = String(e?.message || e);
   if (/Invalid login/i.test(m)) return "E-mailadres of wachtwoord klopt niet.";
   if (/already registered|already been registered/i.test(m)) return "Er bestaat al een account met dit e-mailadres. Log in of vraag een nieuw wachtwoord.";
@@ -523,6 +534,14 @@ const nextMatch = () => upcoming()[0] || null;
 const att = (mid, pid) => S.db.attendance.find((a) => a.match_id === mid && a.player_id === pid)?.status || null;
 const attFor = (mid) => S.db.attendance.filter((a) => a.match_id === mid);
 const isAdmin = () => !!me()?.is_admin;
+function maxP() { const r = (S.db.settings || []).find((x) => x.key === "max_players"); const n = Number(r?.value); return n >= 5 && n <= 30 ? n : CONFIG.maxPlayers; }
+let liveTimer;
+function liveRender() { clearTimeout(liveTimer); liveTimer = setTimeout(() => { const a = document.activeElement; if (a && /INPUT|SELECT|TEXTAREA/.test(a.tagName)) { liveTimer = setTimeout(liveRender, 1500); return; } render(); }, 150); }
+function limitControl() {
+  if (!isAdmin()) return "";
+  return `<div class="card row" style="flex-wrap:wrap;gap:10px"><div class="grow" style="min-width:160px"><b>👑 Kapitein: spelerslimiet</b><div class="muted" style="font-size:12.5px">Hoeveel spelers mogen zich op "Aan boord" zetten. Past meteen aan bij iedereen.</div></div>
+    <span class="stepper" role="group" aria-label="Spelerslimiet"><button type="button" data-act="limit" data-d="-1" aria-label="Eén speler minder">−</button><output class="num" aria-live="polite">${maxP()}</output><button type="button" data-act="limit" data-d="1" aria-label="Eén speler meer">+</button></span></div>`;
+}
 
 function seasonStats() {
   const ps = playedOurs(); let w = 0, g = 0, v = 0, gf = 0, ga = 0;
@@ -576,20 +595,20 @@ function rsvpButtons(mid) {
   const u = me(); if (!u) return `<a class="btn ghost" href="#profiel" style="width:100%">Log in om je aanwezigheid door te geven</a>`;
   const cur = att(mid, u.id);
   const yes = attFor(mid).filter((a) => a.status === "yes").length;
-  const full = yes >= CONFIG.maxPlayers && cur !== "yes";
+  const full = yes >= maxP() && cur !== "yes";
   const opts = full
-    ? { fan: ["Ik kom supporteren", `schip is vol (${yes}/${CONFIG.maxPlayers})`], maybe: ["Misschien", "laat ik weten"], no: ["Kan niet", "volgende keer"] }
+    ? { fan: ["Ik kom supporteren", `schip is vol (${yes}/${maxP()})`], maybe: ["Misschien", "laat ik weten"], no: ["Kan niet", "volgende keer"] }
     : { yes: ["Aan boord", "ik speel mee"], maybe: ["Misschien", "laat ik weten"], no: ["Kan niet", "volgende keer"] };
   const btns = Object.entries(opts).map(([st, [t, sub]]) => `<button type="button" class="${st === "fan" ? "fan" : ""}" data-act="rsvp" data-m="${esc(mid)}" data-s="${st}" aria-pressed="${cur === st}">${t}<small>${sub}</small></button>`).join("");
-  const note = full ? `<p class="rsvp-note">Er zijn al ${CONFIG.maxPlayers} spelers. Valt er iemand af, dan kan je weer aan boord.</p>`
+  const note = full ? `<p class="rsvp-note">Er zijn al ${maxP()} spelers. Valt er iemand af, dan kan je weer aan boord.</p>`
     : cur === "fan" ? `<p class="rsvp-note">Je staat bij de supporters. Wil je toch spelen? Tik op Aan boord.</p>` : "";
   return `<div class="rsvp" role="group" aria-label="Ben je erbij?">${btns}</div>${note}`;
 }
 function crewMeter(mid) {
   const yes = attFor(mid).filter((a) => a.status === "yes").map((a) => player(a.player_id)).filter(Boolean);
   const maybe = attFor(mid).filter((a) => a.status === "maybe").length;
-  const need = CONFIG.minPlayers; const slots = Math.max(need, Math.min(yes.length, CONFIG.maxPlayers)); const extra = yes.length - need; const fans = attFor(mid).filter((a) => a.status === "fan").length;
-  const label = yes.length >= CONFIG.maxPlayers ? `<span class="pill gold">Schip vol · ${yes.length}/${CONFIG.maxPlayers}</span>` : extra >= 0 ? `<span class="pill good">Genoeg volk · ${extra} wissel${extra === 1 ? "" : "s"}</span>` : `<span class="pill ${extra === -1 ? "warn" : "bad"}">Nog ${-extra} nodig</span>`;
+  const need = CONFIG.minPlayers; const slots = Math.max(need, Math.min(yes.length, maxP())); const extra = yes.length - need; const fans = attFor(mid).filter((a) => a.status === "fan").length;
+  const label = yes.length >= maxP() ? `<span class="pill gold">Schip vol · ${yes.length}/${maxP()}</span>` : extra >= 0 ? `<span class="pill good">Genoeg volk · ${extra} wissel${extra === 1 ? "" : "s"}</span>` : `<span class="pill ${extra === -1 ? "warn" : "bad"}">Nog ${-extra} nodig</span>`;
   return `<div class="crew"><div class="row"><div class="grow"><b class="num">${yes.length}</b> aan boord${maybe ? `, <span class="muted">${maybe} misschien</span>` : ""}${fans ? `, <span class="muted">${fans} supporter${fans === 1 ? "" : "s"}</span>` : ""}</div>${label}</div>
     <div class="slots" aria-hidden="true">${Array.from({ length: slots }, (_, i) => `<span class="slot ${i < yes.length ? (i >= need ? "extra" : "on") : ""}">${i < yes.length ? av(yes[i]) : ""}</span>`).join("")}</div></div>`;
 }
@@ -659,7 +678,7 @@ function whoIsComing(mid, open) {
   const g = (st) => list.filter((x) => x.s === st); const unknown = list.filter((x) => !x.s);
   const chips = (arr) => arr.length ? `<div class="chips">${arr.map((x) => `<span class="chip"><span class="avatar">${av(x.p)}</span>${esc(pname(x.p))}</span>`).join("")}</div>` : `<span class="muted" style="font-size:13px">Niemand</span>`;
   return `<details class="who" ${open ? "open" : ""}><summary>${crewMeter(mid)}<span class="who-hint"><span class="h-closed">Bekijk wie er komt</span><span class="h-open">Verberg lijst</span></span></summary>
-    <div class="who-list who-cols"><div><p class="eyebrow" style="color:var(--good)">Aan boord (${g("yes").length}/${CONFIG.maxPlayers})</p>${chips(g("yes"))}<p class="eyebrow" style="color:var(--warn)">Misschien (${g("maybe").length})</p>${chips(g("maybe"))}<p class="eyebrow" style="color:var(--bad)">Kan niet (${g("no").length})</p>${chips(g("no"))}<p class="eyebrow muted">Nog niets laten weten (${unknown.length})</p>${chips(unknown)}</div>
+    <div class="who-list who-cols"><div><p class="eyebrow" style="color:var(--good)">Aan boord (${g("yes").length}/${maxP()})</p>${chips(g("yes"))}<p class="eyebrow" style="color:var(--warn)">Misschien (${g("maybe").length})</p>${chips(g("maybe"))}<p class="eyebrow" style="color:var(--bad)">Kan niet (${g("no").length})</p>${chips(g("no"))}<p class="eyebrow muted">Nog niets laten weten (${unknown.length})</p>${chips(unknown)}</div>
     <div class="fans"><p class="eyebrow">📣 Supporters (${g("fan").length})</p>${chips(g("fan"))}</div></div></details>`;
 }
 const pdraft = {};
@@ -776,14 +795,14 @@ function chatMeta() {
 }
 const mention = (pid) => `<span class="mention" style="--c:${chatColor(pid)}">@${esc(pname(player(pid)))}</span>`;
 function chatRsvp(mm) {
-  const u = me(); if (!u) return ""; const cur = att(mm.id, u.id); const yes = attFor(mm.id).filter((a) => a.status === "yes").length; const full = yes >= CONFIG.maxPlayers && cur !== "yes";
+  const u = me(); if (!u) return ""; const cur = att(mm.id, u.id); const yes = attFor(mm.id).filter((a) => a.status === "yes").length; const full = yes >= maxP() && cur !== "yes";
   const o = full ? [["fan", "📣 Supporteren"], ["maybe", "🤔 Misschien"], ["no", "❌ Kan niet"]] : [["yes", "✅ Aan boord"], ["maybe", "🤔 Misschien"], ["no", "❌ Kan niet"]];
   return o.map(([st, t]) => `<button type="button" data-act="rsvp" data-m="${esc(mm.id)}" data-s="${st}" aria-pressed="${cur === st}">${t}</button>`).join("");
 }
 function matchCard(mm, kicker) {
   const s2 = side(mm); const yes = attFor(mm.id).filter((a) => a.status === "yes").length;
   return `<div class="k">${kicker}</div><div class="t">Slaappiraten – ${esc(s2.opp)}</div>
-  <div class="muted" style="font-size:13px">${fmtDate(mm, true)} · aanwezig <b>${hhmm(arrival(mm))}</b> · aftrap ${esc(mm.time || "20:00")} · <b>${yes}/${CONFIG.maxPlayers}</b> aan boord</div>
+  <div class="muted" style="font-size:13px">${fmtDate(mm, true)} · aanwezig <b>${hhmm(arrival(mm))}</b> · aftrap ${esc(mm.time || "20:00")} · <b>${yes}/${maxP()}</b> aan boord</div>
   <div class="acts">${chatRsvp(mm)}</div><div class="acts"><a href="data/ics/${encodeURIComponent(mm.id)}.ics">📅 Agenda</a><a href="#match-${esc(mm.id)}">Details →</a></div>`;
 }
 function renderBody(m, meta) {
@@ -910,7 +929,7 @@ function viewHome() {
 function viewAanwezig() {
   const up = upcoming(); const u = me();
   const chips = (arr) => arr.length ? `<div class="chips">${arr.map((x) => `<span class="chip"><span class="avatar">${av(x.p)}</span>${esc(pname(x.p))}</span>`).join("")}</div>` : `<span class="muted" style="font-size:13px">Niemand</span>`;
-  return `<div class="stack"><div><p class="eyebrow">Aanwezigheden</p><h1>Wie is er aan boord?</h1><hr class="rule"></div>
+  return `<div class="stack"><div><p class="eyebrow">Aanwezigheden</p><h1>Wie is er aan boord?</h1><hr class="rule"></div>${limitControl()}
   ${!u ? `<div class="banner">Je bent niet ingelogd. <a href="#profiel">Log in</a> om door te geven of je komt.</div>` : ""}
   ${up.length ? up.map((m) => {
     const list = S.db.profiles.map((p) => ({ p, s: att(m.id, p.id) }));
@@ -1086,7 +1105,7 @@ function render() {
   const tp = $("#theme-pick"); if (tp) tp.value = store.get("sp-theme") || "";
   if (v === "chat") { fitChat(); markChatSeen(); if (S.lastView !== "chat") requestAnimationFrame(scrollChatBottom); }
   S.lastView = v;
-  updateChatDot(); if (me() && S.api.subscribeChat) S.api.subscribeChat();
+  updateChatDot(); if (me() && S.api.subscribeChat) S.api.subscribeChat(); if (S.api.subscribeLive) S.api.subscribeLive();
 }
 /* app vergrendelen: geen zoom door dubbeltikken of knijpen (vraag van de kapitein) */
 let lastTap = 0;
@@ -1098,6 +1117,7 @@ document.addEventListener("touchend", (e) => {
 ["gesturestart", "gesturechange", "gestureend"].forEach((ev) => document.addEventListener(ev, (e) => e.preventDefault(), { passive: false }));
 document.addEventListener("touchmove", (e) => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
 document.addEventListener("dblclick", (e) => e.preventDefault(), { passive: false });
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.api) reloadDb().then(liveRender).catch(() => {}); });
 let lastHash = "";
 window.addEventListener("hashchange", () => { S.lastView = null; render(); if (location.hash !== lastHash) { window.scrollTo(0, 0); lastHash = location.hash; } });
 
@@ -1110,6 +1130,7 @@ document.addEventListener("click", (e) => {
     case "rsvp": if (!u) return; act(() => S.api.upsert("attendance", { match_id: d.m, player_id: u.id, status: d.s }), d.s === "yes" ? "Top, je bent aan boord!" : d.s === "fan" ? "Top, je staat bij de supporters!" : d.s === "maybe" ? "Genoteerd als misschien." : "Jammer! Genoteerd."); break;
     case "goal": { const cur = S.db.goals.find((g) => g.match_id === d.m && g.player_id === d.p) || { goals: 0, assists: 0 }; const val = Math.max(0, Math.min(30, (cur[d.f] || 0) + Number(d.d)));
       act(() => S.api.upsert("goals", { match_id: d.m, player_id: d.p, goals: d.f === "goals" ? val : cur.goals || 0, assists: d.f === "assists" ? val : cur.assists || 0 })); break; }
+    case "limit": { if (!isAdmin()) return; const n = Math.max(5, Math.min(30, maxP() + Number(d.d))); act(() => S.api.upsert("settings", { key: "max_players", value: n }), `Limiet staat nu op ${n} spelers.`); break; }
     case "nogoal": if (!u) return; act(() => S.api.upsert("goals", { match_id: d.m, player_id: u.id, goals: 0, assists: 0 }), "Genoteerd. Volgende keer prijs! ⚽"); break;
     case "jump": document.getElementById(d.to)?.scrollIntoView({ behavior: "smooth", block: "start" }); break;
     case "pstep": { const mm = (S.data.matches || []).find((x) => x.id === d.m); const mine = S.db.predictions.find((p) => p.match_id === d.m && p.player_id === u?.id);
@@ -1174,7 +1195,7 @@ async function loadMatchData() {
   try { const r = await fetch(CONFIG.dataUrl + "?t=" + Math.floor(Date.now() / 3e5), { cache: "no-store" }); if (!r.ok) throw new Error(r.status); S.data = await r.json(); }
   catch (e) { if (SEED_DATA) S.data = SEED_DATA; else console.warn("Geen wedstrijddata", e); }
 }
-async function reloadDb() { const db = await S.api.fetchAll(); S.db = { profiles: [], attendance: [], goals: [], votes: [], predictions: [], messages: [], ...db }; S.db.messages = [...(S.db.messages || [])]; S.db.profiles = [...S.db.profiles].sort((a, b) => pname(a).localeCompare(pname(b), "nl")); }
+async function reloadDb() { const db = await S.api.fetchAll(); S.db = { profiles: [], attendance: [], goals: [], votes: [], predictions: [], messages: [], settings: [], ...db }; S.db.messages = [...(S.db.messages || [])]; S.db.profiles = [...S.db.profiles].sort((a, b) => pname(a).localeCompare(pname(b), "nl")); }
 async function refresh() { try { await reloadDb(); } catch (e) { toast(niceError(e)); } render(); }
 (async function boot() {
   const th = store.get("sp-theme"); if (th) document.documentElement.setAttribute("data-theme", th);
